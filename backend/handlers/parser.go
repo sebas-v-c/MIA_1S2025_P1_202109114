@@ -1,13 +1,12 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type CodeRequest struct {
-	Code string `json:"code"`
+	Code string `json:"code" binding:"required"`
 }
 
 func ParseCodeHandler(c *gin.Context) {
@@ -18,6 +17,5 @@ func ParseCodeHandler(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("Received req: ", req.Code)
 	c.JSON(http.StatusOK, gin.H{"message": "Code received", "code": req.Code})
 }
