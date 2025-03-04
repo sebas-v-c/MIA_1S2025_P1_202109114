@@ -34,10 +34,38 @@ RW_mkfile       : 'mkfile'                  ;
 RW_mkdir        : 'mkdir'                   ;
 RW_rep          : 'rep'                     ;
 
+RW_size        : '-'([ ])*'size'          ;
+RW_fit         : '-'([ ])*'fit'           ;
+RW_unit        : '-'([ ])*'unit'          ;
+RW_driveletter : '-'([ ])*'driveletter'   ;
+RW_name        : '-'([ ])*'name'          ;
+RW_type        : '-'([ ])*'type'          ;
+RW_delete      : '-'([ ])*'delete'        ;
+RW_add         : '-'([ ])*'add'           ;
+RW_id          : '-'([ ])*'id'            ;
+RW_fs          : '-'([ ])*'fs'            ;
+RW_user        : '-'([ ])*'user'          ;
+RW_pass        : '-'([ ])*'pass'          ;
+RW_grp         : '-'([ ])*'grp'           ;
+RW_path        : '-'([ ])*'path'          ;
+RW_r           : '-'([ ])*'r'             ;
+RW_cont        : '-'([ ])*'cont'          ;
+RW_fileN       : '-'([ ])*'file'(INTEGER) ;
+RW_destino     : '-'([ ])*'destino'       ;
+RW_ugo         : '-'([ ])*'ugo'           ;
+RW_ruta        : '-'([ ])*'ruta'          ;
+
 // Tokens
-TK_option       : '-' EXT+                      ;
-TK_value        : STRING | PATH | INTEGER | ID1 ;
-TK_equ          : '='                           ;
+TK_fit         : 'BF' | 'FF' | 'WF'       ;
+TK_unit        : 'B' | 'K' | 'M'          ;
+TK_type        : 'P' | 'E' | 'L'          ;
+TK_fs          : '2fs' | '3fs'            ;
+TK_number      : INTEGER                  ;
+TK_id          : EXT                      ;
+TK_path        : PATH                     ;
+TK_equ         : '='                      ;
+TK_sym         : '?' | '*'                ;
+
 COMMENTARY      : COMMENTS                      ;
 NEWLINE         : '\n' -> skip                  ;
 UNUSED_         : UNUSED -> skip                ;

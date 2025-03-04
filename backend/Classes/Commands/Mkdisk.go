@@ -23,7 +23,7 @@ func (c *Mkdisk) GetLine() int {
 	return c.Line
 }
 
-func (c *Mkdisk) GetColumn(column int) int {
+func (c *Mkdisk) GetColumn() int {
 	return c.Column
 }
 
@@ -31,7 +31,12 @@ func (c *Mkdisk) GetType() Utils.Type {
 	return c.Type
 }
 
-// TODO
 func (c *Mkdisk) Exec() {
+	// TODO
+	panic("implement me")
+}
 
+func (c *Mkdisk) GetResult() string {
+	//TODO implement me
+	panic("implement me")
 }
