@@ -1,0 +1,46 @@
+// Code generated from /home/zibas/Documents/USAC/SEMESTRE-9/MIA/MIA_1S2025_P1_202109114/backend/Language/Parser.g4 by ANTLR 4.13.1. DO NOT EDIT.
+
+package parser // Parser
+
+import "github.com/antlr4-go/antlr/v4"
+
+// ParserListener is a complete listener for a parse tree produced by ParserParser.
+type ParserListener interface {
+	antlr.ParseTreeListener
+
+	// EnterInit is called when entering the init production.
+	EnterInit(c *InitContext)
+
+	// EnterCommands is called when entering the commands production.
+	EnterCommands(c *CommandsContext)
+
+	// EnterCommand is called when entering the command production.
+	EnterCommand(c *CommandContext)
+
+	// EnterMkdisk is called when entering the mkdisk production.
+	EnterMkdisk(c *MkdiskContext)
+
+	// EnterMkdiskparams is called when entering the mkdiskparams production.
+	EnterMkdiskparams(c *MkdiskparamsContext)
+
+	// EnterMkdiskparam is called when entering the mkdiskparam production.
+	EnterMkdiskparam(c *MkdiskparamContext)
+
+	// ExitInit is called when exiting the init production.
+	ExitInit(c *InitContext)
+
+	// ExitCommands is called when exiting the commands production.
+	ExitCommands(c *CommandsContext)
+
+	// ExitCommand is called when exiting the command production.
+	ExitCommand(c *CommandContext)
+
+	// ExitMkdisk is called when exiting the mkdisk production.
+	ExitMkdisk(c *MkdiskContext)
+
+	// ExitMkdiskparams is called when exiting the mkdiskparams production.
+	ExitMkdiskparams(c *MkdiskparamsContext)
+
+	// ExitMkdiskparam is called when exiting the mkdiskparam production.
+	ExitMkdiskparam(c *MkdiskparamContext)
+}

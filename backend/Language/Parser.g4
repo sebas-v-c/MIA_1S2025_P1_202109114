@@ -1,6 +1,5 @@
 grammar Parser;
 
-// TODO: import all the Classes
 @header {
     import (
         commands "backend/Classes/Commands"
@@ -11,7 +10,7 @@ grammar Parser;
 
 options {
     language = Go;
-    tokenVocab = Lexer;
+    tokenVocab = Scanner;
 }
 
 // =============== START ===============

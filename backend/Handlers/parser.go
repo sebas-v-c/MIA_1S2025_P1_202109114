@@ -1,6 +1,9 @@
 package Handlers
 
 import (
+	listener "backend/Language"
+	parser "backend/Language/Parser"
+	"github.com/antlr4-go/antlr/v4"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -9,13 +12,41 @@ type CodeRequest struct {
 	Code string `json:"code" binding:"required"`
 }
 
+type JSONResponse struct {
+	Error   []listener.CustomSyntaxError `json:"error" binding:"required"`
+	Message string                       `json:"message" binding:"required"`
+}
+
 func ParseCodeHandler(c *gin.Context) {
 	// TODO: parse code and return the result
 	var req CodeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Code received", "code": req.Code})
+	inputStream := antlr.NewInputStream(req.Code)
+	scanner := parser.NewScanner(inputStream)
+	tokens := antlr.NewCommonTokenStream(scanner, antlr.TokenDefaultChannel)
+	parserParser := parser.NewParserParser(tokens)
+	parserParser.RemoveErrorListeners()
+	parserErrors := listener.NewEXT2ErrorListener()
+	parserParser.AddErrorListener(parserErrors)
+
+	parserParser.BuildParseTrees = true
+	tree := parserParser.Init()
+	var ext2Listener = listener.NewEXT2Listener()
+	antlr.ParseTreeWalkerDefault.Walk(ext2Listener, tree)
+
+	var errors []listener.CustomSyntaxError
+	for _, fail := range parserErrors.Errors {
+		errors = append(errors, listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
+	}
+
+	// TODO get data from the execution
+	for _, cmd := range ext2Listener.Execute {
+		cmd.Exec()
+	}
+
+	c.IndentedJSON(http.StatusOK, JSONResponse{Message: "something", Error: errors})
 }

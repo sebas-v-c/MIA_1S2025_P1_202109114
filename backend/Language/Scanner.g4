@@ -1,4 +1,4 @@
-lexer grammar Lexer;
+lexer grammar Scanner;
 
 options {
     language = Go;

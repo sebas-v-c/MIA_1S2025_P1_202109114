@@ -15,7 +15,7 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-func TestParseCode_ValirRequest(t *testing.T) {
+func TestParseCode_ValidRequest(t *testing.T) {
 	router := setupRouter()
 
 	jsonBody := `{"code": "mkdir ola"}`
