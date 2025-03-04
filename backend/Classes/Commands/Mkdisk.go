@@ -1,6 +1,9 @@
 package Commands
 
-import "backend/Classes/Utils"
+import (
+	"backend/Classes/Utils"
+	"fmt"
+)
 
 type Mkdisk struct {
 	Result string
@@ -33,7 +36,7 @@ func (c *Mkdisk) GetType() Utils.Type {
 
 func (c *Mkdisk) Exec() {
 	// TODO
-	panic("implement me")
+	fmt.Println("Mkdisk Exec")
 }
 
 func (c *Mkdisk) GetResult() string {

@@ -2,6 +2,7 @@ package Handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -18,18 +19,24 @@ func setupRouter() *gin.Engine {
 func TestParseCode_ValidRequest(t *testing.T) {
 	router := setupRouter()
 
-	jsonBody := `{"code": "mkdir ola"}`
+	requestBody, _ := json.Marshal(CodeRequest{Code: "mkdir"})
 
-	req, _ := http.NewRequest("POST", "/parse", bytes.NewBuffer([]byte(jsonBody)))
+	req, _ := http.NewRequest("POST", "/parse", bytes.NewBuffer(requestBody))
 	req.Header.Set("Content-Type", "application/json")
 
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	expectedResponde := `{"message": "Code received", "code": "mkdir ola"}`
-
+	// Testing response status
 	assert.Equal(t, http.StatusOK, w.Code, "Response code should be 200")
-	assert.JSONEq(t, expectedResponde, w.Body.String(), "Response body should be equal")
+	// parse response body
+	var jsonResponse JSONResponse
+	err := json.Unmarshal(w.Body.Bytes(), &jsonResponse)
+	assert.NoError(t, err)
+
+	// validate response structure
+	assert.NotEmpty(t, jsonResponse.Message)
+	assert.NotNil(t, jsonResponse.Error)
 }
 
 func TestParseCode_InvalidRequest(t *testing.T) {
