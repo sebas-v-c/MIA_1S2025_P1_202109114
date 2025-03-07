@@ -1,6 +1,7 @@
 package Handlers
 
 import (
+	"backend/Classes/Env"
 	listener "backend/Language"
 	parser "backend/Language/Parser"
 	"github.com/antlr4-go/antlr/v4"
@@ -13,8 +14,9 @@ type CodeRequest struct {
 }
 
 type JSONResponse struct {
-	Error   []listener.CustomSyntaxError `json:"error" binding:"required"`
-	Message string                       `json:"message" binding:"required"`
+	SynErrors   []listener.CustomSyntaxError `json:"synErrors" binding:"required"`
+	RunErrors   []Env.RuntimeError           `json:"runError" binding:"required"`
+	CommandLogs []string                     `json:"commandLogs" binding:"required"`
 }
 
 func ParseCodeHandler(c *gin.Context) {
@@ -38,15 +40,28 @@ func ParseCodeHandler(c *gin.Context) {
 	var ext2Listener = listener.NewEXT2Listener()
 	antlr.ParseTreeWalkerDefault.Walk(ext2Listener, tree)
 
-	var errors []listener.CustomSyntaxError
+	var synErrors []listener.CustomSyntaxError
 	for _, fail := range parserErrors.Errors {
-		errors = append(errors, listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
+		synErrors = append(synErrors, listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
 	}
 
-	// TODO get data from the execution
+	if synErrors != nil {
+		c.IndentedJSON(http.StatusBadRequest, JSONResponse{
+			SynErrors:   synErrors,
+			RunErrors:   nil,
+			CommandLogs: nil,
+		})
+	}
+
+	env := Env.NewEnv()
 	for _, cmd := range ext2Listener.Execute {
-		cmd.Exec()
+		cmd.Exec(env)
 	}
 
-	c.IndentedJSON(http.StatusOK, JSONResponse{Message: "something", Error: errors})
+	if len(env.Errors) > 0 {
+		c.IndentedJSON(http.StatusBadRequest, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: nil})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: env.CommandLog})
 }

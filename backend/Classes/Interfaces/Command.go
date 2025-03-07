@@ -1,11 +1,14 @@
 package Interfaces
 
-import "backend/Classes/Utils"
+import (
+	"backend/Classes/Env"
+	"backend/Classes/Utils"
+)
 
 type Command interface {
 	GetLine() int
 	GetColumn() int
 	GetType() Utils.Type
-	Exec()
+	Exec(env *Env.Env)
 	GetResult() string
 }

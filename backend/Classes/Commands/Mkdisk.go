@@ -1,9 +1,9 @@
 package Commands
 
 import (
+	Env "backend/Classes/Env"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -37,11 +37,15 @@ func (m *Mkdisk) GetType() Utils.Type {
 	return m.Type
 }
 
-func (m *Mkdisk) Exec() {
-	fmt.Println("Mkdisk Exec")
+func (m *Mkdisk) Exec(env *Env.Env) {
 	// if the parameters are not valid
 	if !m.validParams() {
-		fmt.Println("Mkdisk Exec: Params invalid")
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    m.Line,
+			Column:  m.Column,
+			Command: Utils.MKDISK,
+			Msg:     "Parameters are invalid",
+		})
 		return
 	}
 
@@ -49,13 +53,23 @@ func (m *Mkdisk) Exec() {
 
 	err := Utils.CreateFile(filePath)
 	if err != nil {
-		fmt.Println("Error creating disk file ", err)
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    m.Line,
+			Column:  m.Column,
+			Command: Utils.MKDISK,
+			Msg:     err.Error(),
+		})
 		return
 	}
 
 	file, err := Utils.OpenFile(filePath)
 	if err != nil {
-		fmt.Println("Error opening disk file ", err)
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    m.Line,
+			Column:  m.Column,
+			Command: Utils.MKDISK,
+			Msg:     err.Error(),
+		})
 		return
 	}
 
@@ -78,20 +92,17 @@ func (m *Mkdisk) Exec() {
 	// Write MBR to the file
 	newMBR := Structs.NewMBR(int32(size), m.getFit())
 	if err := Utils.WriteObject(file, newMBR, 0); err != nil {
-		fmt.Println("Error inserting MBR", err)
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    m.Line,
+			Column:  m.Column,
+			Command: Utils.MKDISK,
+			Msg:     err.Error(),
+		})
 		return
 	}
 
-	/*
-		// ============= TESTING =============
-		var tempMBR Structs.MBR
-		if err := Utils.ReadObject(file, &tempMBR, 0); err != nil {
-			return
-		}
-		fmt.Printf("Creation Date: %s, Fit: %s, Size: %d, Signature: %d\n", string(tempMBR.CreationDate[:]), string(tempMBR.Fit[:]), tempMBR.MbrSize, tempMBR.Signature)
-	*/
-
 	defer file.Close()
+	env.CommandLog = append(env.CommandLog, "MKDISK: Disk created successfully")
 }
 
 func (m *Mkdisk) validParams() bool {
