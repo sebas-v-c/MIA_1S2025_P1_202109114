@@ -8,11 +8,10 @@ import (
 	"path/filepath"
 )
 
-// TODO check if this optimization is enough
 func CreateFile(name string) error {
 	// Make sure file exist
 	dir := filepath.Dir(name)
-	if err := os.Mkdir(dir, os.ModePerm); err != nil {
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		fmt.Println("Err CreateFile dir==", err)
 		return err
 	}

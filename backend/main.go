@@ -3,9 +3,12 @@ package main
 import (
 	"backend/Handlers"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/exp/rand"
+	"time"
 )
 
 func main() {
+	rand.Seed(uint64(time.Now().UnixNano()))
 	r := gin.Default()
 
 	r.GET("/status", Handlers.StatusHandler)

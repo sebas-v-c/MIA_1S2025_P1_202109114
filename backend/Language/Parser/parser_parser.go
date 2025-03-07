@@ -892,7 +892,7 @@ func (p *ParserParser) Mkdisk() (localctx IMkdiskContext) {
 			} else {
 				return localctx.(*MkdiskContext).GetM().GetColumn()
 			}
-		}()), map[string]string{"fit": "FF", "unit": "M"})
+		}()), map[string]string{})
 
 	case antlr.ATNInvalidAltNumber:
 		goto errorExit
@@ -1066,7 +1066,7 @@ func (p *ParserParser) mkdiskparams(_p int) (localctx IMkdiskparamsContext) {
 
 		localctx.(*MkdiskparamsContext).p = _x
 	}
-	localctx.(*MkdiskparamsContext).result = map[string]string{"fit": "FF", "unit": "M", localctx.(*MkdiskparamsContext).GetP().GetResult()[0]: localctx.(*MkdiskparamsContext).GetP().GetResult()[1]}
+	localctx.(*MkdiskparamsContext).result = map[string]string{localctx.(*MkdiskparamsContext).GetP().GetResult()[0]: localctx.(*MkdiskparamsContext).GetP().GetResult()[1]}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
 	p.SetState(54)

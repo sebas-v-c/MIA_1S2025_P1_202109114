@@ -31,12 +31,12 @@ command returns[interfaces.Command result]:
 // =============== MKDISK ===============
 mkdisk returns[*commands.Mkdisk result]:
         m = RW_mkdisk p = mkdiskparams  {$result = commands.NewMkdisk($m.line, $m.pos, $p.result)} // mkdisk {parametros}
-    |   m = RW_mkdisk                   {$result = commands.NewMkdisk($m.line, $m.pos, map[string]string{"fit":"FF", "unit":"M"})} // mkdisk
+    |   m = RW_mkdisk                   {$result = commands.NewMkdisk($m.line, $m.pos, map[string]string{})} // mkdisk
     ;
 
 mkdiskparams returns[map[string]string result]:
         l = mkdiskparams p = mkdiskparam    {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
-    |   p = mkdiskparam                     {$result = map[string]string{"fit": "FF", "unit": "M", $p.result[0]: $p.result[1] }}
+    |   p = mkdiskparam                     {$result = map[string]string{$p.result[0]: $p.result[1] }}
     ;
 
 mkdiskparam returns[[]string result]:
