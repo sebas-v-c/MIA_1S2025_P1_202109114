@@ -66,6 +66,6 @@ TK_path        : PATH                     ;
 TK_equ         : '='                      ;
 TK_sym         : '?' | '*'                ;
 
-COMMENTARY      : COMMENTS                      ;
-NEWLINE         : '\n' -> skip                  ;
-UNUSED_         : UNUSED -> skip                ;
+COMMENTARY      : COMMENTS -> skip        ;
+NEWLINE         : '\n' -> skip            ;
+UNUSED_         : UNUSED -> skip          ;

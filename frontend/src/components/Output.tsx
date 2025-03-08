@@ -17,7 +17,7 @@ function Output({synErrors, runErrors, commandLogs}: OutputProps) {
                         {
                             synErrors.map((err, index) => (
                                 <div key={index}>
-                                    [Line {err.line}, Col {err.column}]: {err.msg}
+                                    [Line {err.Line}, Col {err.Column}]: {err.Msg}
                                 </div>
                             ))
                         }
@@ -29,13 +29,13 @@ function Output({synErrors, runErrors, commandLogs}: OutputProps) {
                         <strong>Runtime Errors:</strong>
                         {runErrors.map((err, index)=>(
                             <div key={index}>
-                                [Line {err.line}, Col {err.column}, Command {err.command}]: {err.msg}
+                                [Line {err.Line}, Col {err.Column}, Command {err.Command}]: {err.Msg}
                             </div>
                         ))}
                     </div>
                 )}
                 {/* Display command logs in green */}
-                { runErrors.length > 0 && (
+                { commandLogs.length > 0 && (
                     <div className="text-green-400">
                         <strong>Execution Logs:</strong>
                         {commandLogs.map((log, index)=>(

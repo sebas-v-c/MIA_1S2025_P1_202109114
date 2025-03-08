@@ -15,7 +15,7 @@ type CodeRequest struct {
 
 type JSONResponse struct {
 	SynErrors   []listener.CustomSyntaxError `json:"synErrors" binding:"required"`
-	RunErrors   []Env.RuntimeError           `json:"runError" binding:"required"`
+	RunErrors   []Env.RuntimeError           `json:"runErrors" binding:"required"`
 	CommandLogs []string                     `json:"commandLogs" binding:"required"`
 }
 
@@ -46,11 +46,12 @@ func ParseCodeHandler(c *gin.Context) {
 	}
 
 	if synErrors != nil {
-		c.IndentedJSON(http.StatusBadRequest, JSONResponse{
+		c.IndentedJSON(http.StatusAccepted, JSONResponse{
 			SynErrors:   synErrors,
 			RunErrors:   nil,
 			CommandLogs: nil,
 		})
+		return
 	}
 
 	env := Env.NewEnv()
@@ -59,7 +60,7 @@ func ParseCodeHandler(c *gin.Context) {
 	}
 
 	if len(env.Errors) > 0 {
-		c.IndentedJSON(http.StatusBadRequest, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: nil})
+		c.IndentedJSON(http.StatusAccepted, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: nil})
 		return
 	}
 

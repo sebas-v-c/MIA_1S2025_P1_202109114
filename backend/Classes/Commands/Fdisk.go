@@ -83,7 +83,8 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	//units := f.recalculateUnits()
 	size, _ := strconv.Atoi(f.Params["size"])
 	totalSize := f.recalculateUnits() * size
-	err, primaryCount, extendedCount, totalPartitions := f.validatePartitions(tempMBR, totalSize)
+	//err, primaryCount, extendedCount, totalPartitions := f.validatePartitions(tempMBR, totalSize)
+	err, _, _, totalPartitions := f.validatePartitions(tempMBR, totalSize)
 	if err != nil {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    f.Line,
@@ -94,9 +95,10 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		return
 	}
 
-	var gap int32 = int32(binary.Size(tempMBR))
+	//var gap int32 = int32(binary.Size(tempMBR))
+	var _ int32 = int32(binary.Size(tempMBR))
 	if totalPartitions > 0 {
-		gap = tempMBR.Partitions[totalPartitions-1].Start + tempMBR.Partitions[totalPartitions-1].Size
+		_ = tempMBR.Partitions[totalPartitions-1].Start + tempMBR.Partitions[totalPartitions-1].Size
 	}
 }
 
