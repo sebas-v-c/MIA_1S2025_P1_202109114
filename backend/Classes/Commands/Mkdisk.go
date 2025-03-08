@@ -77,7 +77,7 @@ func (m *Mkdisk) Exec(env *Env.Env) {
 	}
 
 	units := m.recalculateUnits()
-	size, err := strconv.Atoi(m.Params["size"])
+	size, _ := strconv.Atoi(m.Params["size"])
 	totalSize := units * size
 
 	batchSize := 1024 * 1024
