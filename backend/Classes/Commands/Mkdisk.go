@@ -4,6 +4,7 @@ import (
 	Env "backend/Classes/Env"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -100,9 +101,9 @@ func (m *Mkdisk) Exec(env *Env.Env) {
 		})
 		return
 	}
-
 	defer file.Close()
-	env.CommandLog = append(env.CommandLog, "MKDISK: Disk created successfully")
+	env.CommandLog = append(env.CommandLog, "---------------MKDISK-------------------\n"+newMBR.ToString()+"\n----------------------------------------\n")
+	fmt.Println(newMBR.ToString())
 }
 
 func (m *Mkdisk) validParams() bool {

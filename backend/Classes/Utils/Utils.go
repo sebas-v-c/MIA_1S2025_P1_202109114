@@ -26,7 +26,7 @@ func CreateFile(name string) error {
 }
 
 func OpenFile(name string) (*os.File, error) {
-	file, err := os.OpenFile(name, os.O_RDWR, 0644)
+	file, err := os.OpenFile(name, os.O_RDWR, 0664)
 	if err != nil {
 		return nil, err
 	}

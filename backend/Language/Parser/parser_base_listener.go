@@ -56,3 +56,9 @@ func (s *BaseParserListener) EnterMkdiskparam(ctx *MkdiskparamContext) {}
 
 // ExitMkdiskparam is called when production mkdiskparam is exited.
 func (s *BaseParserListener) ExitMkdiskparam(ctx *MkdiskparamContext) {}
+
+// EnterRmdisk is called when production rmdisk is entered.
+func (s *BaseParserListener) EnterRmdisk(ctx *RmdiskContext) {}
+
+// ExitRmdisk is called when production rmdisk is exited.
+func (s *BaseParserListener) ExitRmdisk(ctx *RmdiskContext) {}

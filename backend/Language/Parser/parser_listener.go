@@ -26,6 +26,9 @@ type ParserListener interface {
 	// EnterMkdiskparam is called when entering the mkdiskparam production.
 	EnterMkdiskparam(c *MkdiskparamContext)
 
+	// EnterRmdisk is called when entering the rmdisk production.
+	EnterRmdisk(c *RmdiskContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -43,4 +46,7 @@ type ParserListener interface {
 
 	// ExitMkdiskparam is called when exiting the mkdiskparam production.
 	ExitMkdiskparam(c *MkdiskparamContext)
+
+	// ExitRmdisk is called when exiting the rmdisk production.
+	ExitRmdisk(c *RmdiskContext)
 }

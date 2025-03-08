@@ -1,6 +1,7 @@
 package Structs
 
 import (
+	"fmt"
 	"golang.org/x/exp/rand"
 	"time"
 )
@@ -25,6 +26,14 @@ func NewMBR(size int32, fit [1]byte) *MBR {
 		Fit:          fit,
 		Partitions:   [4]Partition{},
 	}
+}
+
+func (m *MBR) ToString() string {
+	partitions := "\nPartitions:"
+	for _, p := range m.Partitions {
+		partitions += "\n\t" + p.ToString()
+	}
+	return fmt.Sprintf("Size: %d, CreationDate: %s, Fit: %s", m.MbrSize, m.CreationDate, m.Fit) + partitions
 }
 
 /* WAIT
