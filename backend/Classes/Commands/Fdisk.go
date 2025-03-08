@@ -3,6 +3,10 @@ package Commands
 import (
 	"backend/Classes/Env"
 	"backend/Classes/Utils"
+	"errors"
+	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 type Fdisk struct {
@@ -35,26 +39,28 @@ func (f *Fdisk) GetType() Utils.Type {
 }
 
 func (f *Fdisk) Exec(env *Env.Env) {
-	if !f.validParams() {
+	if err, ok := f.validParams(); !ok {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
-			Msg:     "Missing parameters",
+			Msg:     err.Error(),
 		})
 		return
 	}
 }
 
-func (f *Fdisk) validParams() bool {
+func (f *Fdisk) validParams() (error, bool) {
+	// obligatory parameters
 	if _, ok := f.Params["size"]; !ok {
-		return false
+		return errors.New("missing parameter -size"), false
 	} else if _, ok := f.Params["path"]; !ok {
-		return false
+		return errors.New("missing parameter -path"), false
 	} else if _, ok := f.Params["name"]; !ok {
-		return false
+		return errors.New("missing parameter -name"), false
 	}
 
+	// optional parameters
 	if _, ok := f.Params["type"]; !ok {
 		f.Params["type"] = "P"
 	}
@@ -65,7 +71,16 @@ func (f *Fdisk) validParams() bool {
 		f.Params["unit"] = "K"
 	}
 
-	return true
+	// check if size is greater than 0
+	if val, _ := strconv.Atoi(f.Params["size"]); val <= 0 {
+		return errors.New("size must be greater than 0"), false
+	}
+
+	// check if file is a disk
+	if strings.EqualFold(filepath.Ext(f.Params["path"]), ".mia") {
+		return nil, true
+	}
+	return errors.New("the specified file is not a disk"), false
 }
 
 func (f *Fdisk) GetResult() string {

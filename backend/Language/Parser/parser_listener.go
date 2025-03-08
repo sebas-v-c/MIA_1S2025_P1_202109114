@@ -29,6 +29,15 @@ type ParserListener interface {
 	// EnterRmdisk is called when entering the rmdisk production.
 	EnterRmdisk(c *RmdiskContext)
 
+	// EnterFdisk is called when entering the fdisk production.
+	EnterFdisk(c *FdiskContext)
+
+	// EnterFdiskparams is called when entering the fdiskparams production.
+	EnterFdiskparams(c *FdiskparamsContext)
+
+	// EnterFdiskparam is called when entering the fdiskparam production.
+	EnterFdiskparam(c *FdiskparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -49,4 +58,13 @@ type ParserListener interface {
 
 	// ExitRmdisk is called when exiting the rmdisk production.
 	ExitRmdisk(c *RmdiskContext)
+
+	// ExitFdisk is called when exiting the fdisk production.
+	ExitFdisk(c *FdiskContext)
+
+	// ExitFdiskparams is called when exiting the fdiskparams production.
+	ExitFdiskparams(c *FdiskparamsContext)
+
+	// ExitFdiskparam is called when exiting the fdiskparam production.
+	ExitFdiskparam(c *FdiskparamContext)
 }

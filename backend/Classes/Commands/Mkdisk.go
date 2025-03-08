@@ -4,7 +4,9 @@ import (
 	Env "backend/Classes/Env"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"errors"
 	"fmt"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -40,12 +42,12 @@ func (m *Mkdisk) GetType() Utils.Type {
 
 func (m *Mkdisk) Exec(env *Env.Env) {
 	// if the parameters are not valid
-	if !m.validParams() {
+	if err, ok := m.validParams(); !ok {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    m.Line,
 			Column:  m.Column,
 			Command: Utils.MKDISK,
-			Msg:     "Parameters are invalid",
+			Msg:     err.Error(),
 		})
 		return
 	}
@@ -106,11 +108,11 @@ func (m *Mkdisk) Exec(env *Env.Env) {
 	fmt.Println(newMBR.ToString())
 }
 
-func (m *Mkdisk) validParams() bool {
+func (m *Mkdisk) validParams() (error, bool) {
 	if _, ok := m.Params["size"]; !ok {
-		return false
+		return errors.New("missing parameter -size"), false
 	} else if _, ok := m.Params["path"]; !ok {
-		return false
+		return errors.New("missing parameter -path"), false
 	}
 
 	if _, ok := m.Params["fit"]; !ok {
@@ -120,7 +122,15 @@ func (m *Mkdisk) validParams() bool {
 		m.Params["unit"] = "M"
 	}
 
-	return true
+	if val, _ := strconv.Atoi(m.Params["size"]); val <= 0 {
+		return errors.New("size must be greater than 0"), false
+	}
+	// check if file is a disk
+	if strings.EqualFold(filepath.Ext(m.Params["path"]), ".mia") {
+		m.Params["path"] = m.Params["path"] + ".mia"
+	}
+
+	return nil, true
 }
 
 func (m *Mkdisk) GetResult() string {
