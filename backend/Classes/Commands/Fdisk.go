@@ -6,7 +6,6 @@ import (
 	"backend/Classes/Utils"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -65,8 +64,8 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	}
 
 	// Read MBR from binary disk
-	var tempMBR Structs.MBR
-	if err := Utils.ReadObject(file, &tempMBR, 0); err != nil {
+	var diskMBR Structs.MBR
+	if err := Utils.ReadObject(file, &diskMBR, 0); err != nil {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
@@ -75,16 +74,17 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		})
 		return
 	}
-	env.CommandLog = append(env.CommandLog, "----------------FDISK-------------------\n"+tempMBR.ToString()+"\n")
-	fmt.Println("----------------FDISK-------------------\n" + tempMBR.ToString() + "\n")
+	/*
+		env.CommandLog = append(env.CommandLog, "----------------FDISK-------------------\n"+diskMBR.ToString()+"\n")
+		fmt.Println("----------------FDISK-------------------\n" + diskMBR.ToString() + "\n")
+	*/
 
 	// Validate Partitions in current MBR
 	// recalculate size of the partition
 	//units := f.recalculateUnits()
 	size, _ := strconv.Atoi(f.Params["size"])
 	totalSize := f.recalculateUnits() * size
-	//err, primaryCount, extendedCount, totalPartitions := f.validatePartitions(tempMBR, totalSize)
-	err, _, _, totalPartitions := f.validatePartitions(tempMBR, totalSize)
+	err, totalPartitions := f.validatePartitions(diskMBR, totalSize)
 	if err != nil {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    f.Line,
@@ -95,11 +95,152 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		return
 	}
 
-	//var gap int32 = int32(binary.Size(tempMBR))
-	var _ int32 = int32(binary.Size(tempMBR))
+	var gap int32 = int32(binary.Size(diskMBR))
 	if totalPartitions > 0 {
-		_ = tempMBR.Partitions[totalPartitions-1].Start + tempMBR.Partitions[totalPartitions-1].Size
+		gap = diskMBR.Partitions[totalPartitions-1].Start + diskMBR.Partitions[totalPartitions-1].Size
 	}
+
+	// Send to console
+	var consoleString string
+	consoleString = "=================FDISK=================\n"
+	for i := range diskMBR.Partitions {
+		// create a primary or extended partition
+		if diskMBR.Partitions[i].Size == 0 && (f.getPartType() == 'P' || f.getPartType() == 'E') {
+			// create partition in MBR
+			diskMBR.Partitions[i] = Structs.Partition{
+				Start:       gap,
+				Size:        int32(totalSize),
+				Correlative: int32(totalPartitions + 1),
+				Status:      [1]byte{'0'},
+				Fit:         f.getFit(),
+			}
+			copy(diskMBR.Partitions[i].Name[:], f.Params["name"])
+			copy(diskMBR.Partitions[i].Type[:], string(f.getPartType()))
+			// If partition is an extended partition created his first EBR
+			if f.getPartType() == 'E' {
+				partitionEBR := Structs.EBR{
+					Fit:   f.getFit()[0],
+					Start: gap, // first EBR is placed at the start of the extended partition
+					Size:  0,
+					Next:  -1,
+				}
+				copy(partitionEBR.Name[:], "")
+				// Write object to disk
+				if err := Utils.WriteObject(file, partitionEBR, int64(gap)); err != nil {
+					env.Errors = append(env.Errors, Env.RuntimeError{
+						Line:    f.Line,
+						Column:  f.Column,
+						Command: Utils.FDISK,
+						Msg:     err.Error(),
+					})
+					return
+				}
+				consoleString += "EBR Created:\n" + "\t" + partitionEBR.ToString() + "\n"
+			}
+			break
+		}
+	}
+
+	if f.getPartType() == 'L' {
+		for i := range diskMBR.Partitions {
+			if diskMBR.Partitions[i].Type == [1]byte{'E'} {
+				ebrPosition := diskMBR.Partitions[i].Start
+				var ebr Structs.EBR
+
+				// Walk the ebr list until finding the last one
+				for {
+					Utils.ReadObject(file, &ebr, int64(ebrPosition))
+					if ebr.Next == -1 {
+						break
+					}
+					ebrPosition = ebr.Next
+				}
+
+				// Calculate the start of the new EBR and the start of the new Logical Partition
+				newEBRPosition := ebr.Start + ebr.Size
+				logicalPartitionStart := newEBRPosition + int32(binary.Size(ebr))
+				// Update last EBR
+				ebr.Next = newEBRPosition
+				if err := Utils.WriteObject(file, ebr, int64(ebrPosition)); err != nil {
+					env.Errors = append(env.Errors, Env.RuntimeError{
+						Line:    f.Line,
+						Column:  f.Column,
+						Command: Utils.FDISK,
+						Msg:     err.Error(),
+					})
+					return
+				}
+
+				// Create and write the new EBR
+				newEBR := Structs.EBR{
+					Fit:   f.getFit()[0],
+					Start: logicalPartitionStart,
+					Size:  int32(totalSize),
+					Next:  -1,
+				}
+				copy(newEBR.Name[:], f.Params["name"])
+				if err := Utils.WriteObject(file, newEBR, int64(newEBRPosition)); err != nil {
+					env.Errors = append(env.Errors, Env.RuntimeError{
+						Line:    f.Line,
+						Column:  f.Column,
+						Command: Utils.FDISK,
+						Msg:     err.Error(),
+					})
+					return
+				}
+
+				// Print Written EBR
+				consoleString += ":New EBR Created\n"
+				consoleString += "\t" + newEBR.ToString() + "\n"
+				// Print all EBRs from the current extended partition
+				consoleString += "Printing All EBR from partition: \n"
+				ebrPos := diskMBR.Partitions[i].Start
+				for {
+					if err := Utils.ReadObject(file, &ebr, int64(ebrPos)); err != nil {
+						env.Errors = append(env.Errors, Env.RuntimeError{
+							Line:    f.Line,
+							Column:  f.Column,
+							Command: Utils.FDISK,
+							Msg:     err.Error(),
+						})
+						return
+					}
+					consoleString += "\t" + ebr.ToString() + "\n"
+					if ebr.Next == -1 {
+						break
+					}
+					ebrPos = ebr.Next
+				}
+				break
+			}
+		}
+	}
+
+	if err := Utils.WriteObject(file, diskMBR, 0); err != nil {
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    f.Line,
+			Column:  f.Column,
+			Command: Utils.FDISK,
+			Msg:     err.Error(),
+		})
+		return
+	}
+
+	var updatedMBR Structs.MBR
+	if err := Utils.ReadObject(file, &updatedMBR, 0); err != nil {
+		env.Errors = append(env.Errors, Env.RuntimeError{
+			Line:    f.Line,
+			Column:  f.Column,
+			Command: Utils.FDISK,
+			Msg:     err.Error(),
+		})
+		return
+	}
+
+	// Send consoles
+	consoleString += "Updated MBR:\n" + updatedMBR.ToString() + "\n=================END FDISK================="
+	env.CommandLog = append(env.CommandLog, consoleString)
+	defer file.Close()
 }
 
 func (f *Fdisk) validParams() (error, bool) {
@@ -132,7 +273,8 @@ func (f *Fdisk) validParams() (error, bool) {
 	if strings.EqualFold(filepath.Ext(f.Params["path"]), ".mia") {
 		return nil, true
 	}
-	return errors.New("the specified file is not a disk"), false
+	f.Params["path"] = f.Params["path"] + ".mia"
+	return nil, true
 }
 
 func (f *Fdisk) GetResult() string {
@@ -153,7 +295,7 @@ func (f *Fdisk) recalculateUnits() int {
 	return 1024 * 1024
 }
 
-func (f *Fdisk) validatePartitions(mbr Structs.MBR, size int) (error, int, int, int) {
+func (f *Fdisk) validatePartitions(mbr Structs.MBR, size int) (error, int) {
 	var primaryCount, extendedCount, totalPartitions int
 	var usedSpace int32
 	for i := 0; i < 4; i++ {
@@ -170,16 +312,30 @@ func (f *Fdisk) validatePartitions(mbr Structs.MBR, size int) (error, int, int, 
 	}
 
 	if totalPartitions >= 4 {
-		return errors.New("cannot create more than 4 primary or extended partitions"), primaryCount, extendedCount, totalPartitions
+		return errors.New("cannot create more than 4 primary or extended partitions"), totalPartitions
 	}
-	if f.Type == 'E' && extendedCount >= 1 {
-		return errors.New("only one extended partition is supported"), primaryCount, extendedCount, totalPartitions
+	if f.getPartType() == 'E' && extendedCount >= 1 {
+		return errors.New("only one extended partition is supported"), totalPartitions
 	}
-	if f.Type == 'L' && extendedCount == 0 {
-		return errors.New("cannot create a logical partition without an extended partition"), primaryCount, extendedCount, totalPartitions
+	if f.getPartType() == 'L' && extendedCount == 0 {
+		return errors.New("cannot create a logical partition without an extended partition"), totalPartitions
 	}
 	if usedSpace+int32(size) > mbr.MbrSize {
-		return errors.New("not enough disk space to create this partition"), primaryCount, extendedCount, totalPartitions
+		return errors.New("not enough disk space to create this partition"), totalPartitions
 	}
-	return nil, primaryCount, extendedCount, totalPartitions
+	return nil, totalPartitions
+}
+
+func (f *Fdisk) getPartType() rune {
+	return []rune(strings.ToUpper(f.Params["type"]))[0]
+}
+
+func (f *Fdisk) getFit() [1]byte {
+	f.Params["fit"] = strings.ToUpper(f.Params["fit"])
+	if f.Params["fit"] == "FF" {
+		return [1]byte{'F'}
+	} else if f.Params["fit"] == "BF" {
+		return [1]byte{'B'}
+	}
+	return [1]byte{'W'}
 }

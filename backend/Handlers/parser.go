@@ -60,7 +60,7 @@ func ParseCodeHandler(c *gin.Context) {
 	}
 
 	if len(env.Errors) > 0 {
-		c.IndentedJSON(http.StatusAccepted, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: nil})
+		c.IndentedJSON(http.StatusAccepted, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: env.CommandLog})
 		return
 	}
 

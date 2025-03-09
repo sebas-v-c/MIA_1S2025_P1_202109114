@@ -4,6 +4,7 @@ grammar Parser;
     import (
         commands "backend/Classes/Commands"
         interfaces "backend/Classes/Interfaces"
+        "strings"
     )
 }
 
@@ -45,12 +46,12 @@ mkdiskparam returns[[]string result]:
         RW_size TK_equ v1 = TK_number   {$result = []string{"size", $v1.text}}
     |   RW_fit TK_equ v2 = TK_fit       {$result = []string{"fit", $v2.text}}
     |   RW_unit TK_equ v3 = TK_unit     {$result = []string{"unit", $v3.text}}
-    |   RW_path TK_equ v4 = TK_path     {$result = []string{"path", $v4.text}}
+    |   RW_path TK_equ v4 = TK_path     {$result = []string{"path", strings.Trim($v4.text, "\"")}}
     ;
 
 // =============== RMDISK ===============
 rmdisk returns[*commands.Rmdisk result]:
-        r = RW_rmdisk RW_path TK_equ p = TK_path    {$result = commands.NewRmdisk($r.line, $r.pos, map[string]string{"path": $p.text})}
+        r = RW_rmdisk RW_path TK_equ p = TK_path    {$result = commands.NewRmdisk($r.line, $r.pos, map[string]string{"path": strings.Trim($p.text, "\"")})}
     |   r = RW_rmdisk                               {$result = commands.NewRmdisk($r.line, $r.pos, map[string]string{})}
     ;
 
@@ -62,14 +63,14 @@ fdisk returns[*commands.Fdisk result]:
 
 fdiskparams returns[map[string]string result]:
         l = fdiskparams p = fdiskparam  {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
-    |   p = fdiskparam                  {$result = map[string]string{$p.result[0]: $p.result[1]}}
-        ;
+    |   p = fdiskparam                  {$result = map[string]string{$p.result[0]: $p.result[1] }}
+    ;
 
 fdiskparam returns[[]string result] :
         RW_size TK_equ v1 = TK_number   {$result = []string{"size", $v1.text}}
     |   RW_unit TK_equ v2 = TK_unit     {$result = []string{"unit", $v2.text}}
-    |   RW_path TK_equ v3 = TK_path     {$result = []string{"path", $v3.text}}
+    |   RW_path TK_equ v3 = TK_path     {$result = []string{"path", strings.Trim($v3.text, "\"")}}
     |   RW_type TK_equ v4 = TK_type     {$result = []string{"type", $v4.text}}
     |   RW_fit  TK_equ v5 = TK_fit      {$result = []string{"fit", $v5.text}}
-    |   RW_name TK_equ v6 = TK_id       {$result = []string{"name", $v6.text}}
+    |   RW_name TK_equ v6 = TK_id       {$result = []string{"name", strings.Trim($v6.text, "\"")}}
     ;

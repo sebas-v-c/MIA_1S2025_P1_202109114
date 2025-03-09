@@ -5,7 +5,6 @@ import (
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
 	"errors"
-	"fmt"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -93,7 +92,7 @@ func (m *Mkdisk) Exec(env *Env.Env) {
 		bytesWritten += writeSize
 	}
 	// Write MBR to the file
-	newMBR := Structs.NewMBR(int32(size), m.getFit())
+	newMBR := Structs.NewMBR(int32(totalSize), m.getFit())
 	if err := Utils.WriteObject(file, newMBR, 0); err != nil {
 		env.Errors = append(env.Errors, Env.RuntimeError{
 			Line:    m.Line,
@@ -104,8 +103,7 @@ func (m *Mkdisk) Exec(env *Env.Env) {
 		return
 	}
 	defer file.Close()
-	env.CommandLog = append(env.CommandLog, "---------------MKDISK-------------------\n"+newMBR.ToString()+"\n----------------------------------------\n")
-	fmt.Println(newMBR.ToString())
+	env.CommandLog = append(env.CommandLog, "=================MKDISK=================\n"+newMBR.ToString()+"\n=================END MKDISK=================\n")
 }
 
 func (m *Mkdisk) validParams() (error, bool) {
@@ -126,7 +124,7 @@ func (m *Mkdisk) validParams() (error, bool) {
 		return errors.New("size must be greater than 0"), false
 	}
 	// check if file is a disk
-	if strings.EqualFold(filepath.Ext(m.Params["path"]), ".mia") {
+	if !strings.EqualFold(filepath.Ext(m.Params["path"]), ".mia") {
 		m.Params["path"] = m.Params["path"] + ".mia"
 	}
 

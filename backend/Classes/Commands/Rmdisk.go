@@ -55,16 +55,16 @@ func (r *Rmdisk) Exec(env *Env.Env) {
 		return
 	}
 
-	env.CommandLog = append(env.CommandLog, "---------------RMDISK-------------------\\n"+"File succesfully removed"+"\n----------------------------------------\n")
+	env.CommandLog = append(env.CommandLog, "=================RMDISK=================\n"+"File succesfully removed"+"\n=================END RMDISK=================\n")
 }
 
 func (r *Rmdisk) validParams() (error, bool) {
 	if _, ok := r.Params["path"]; ok {
 		if strings.EqualFold(filepath.Ext(r.Params["path"]), ".mia") {
 			return nil, true
-
 		}
-		return errors.New("path not pointing to a .mia disk"), false
+		r.Params["path"] = r.Params["path"] + ".mia"
+		return nil, true
 	}
 	return errors.New("obligatory parameter not exist"), false
 }

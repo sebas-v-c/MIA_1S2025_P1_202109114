@@ -13,6 +13,7 @@ import (
 import (
 	commands "backend/Classes/Commands"
 	interfaces "backend/Classes/Interfaces"
+	"strings"
 )
 
 // Suppress unused import errors
@@ -42,7 +43,7 @@ func parserParserInit() {
 		"'cat'", "'login'", "'logout'", "'mkgrp'", "'rmgrp'", "'mkusr'", "'rmusr'",
 		"'chgrp'", "'mkfile'", "'mkdir'", "'rep'", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"", "", "", "'='", "", "", "'\\n'",
+		"", "", "", "", "'='", "", "", "'\\n'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "RW_mkdisk", "RW_rmdisk", "RW_fdisk", "RW_mount", "RW_mounted",
@@ -51,8 +52,8 @@ func parserParserInit() {
 		"RW_size", "RW_fit", "RW_unit", "RW_driveletter", "RW_name", "RW_type",
 		"RW_delete", "RW_add", "RW_id", "RW_fs", "RW_user", "RW_pass", "RW_grp",
 		"RW_path", "RW_r", "RW_cont", "RW_fileN", "RW_destino", "RW_ugo", "RW_ruta",
-		"TK_fit", "TK_unit", "TK_type", "TK_fs", "TK_number", "TK_id", "TK_path",
-		"TK_equ", "TK_sym", "COMMENTARY", "NEWLINE", "UNUSED_",
+		"TK_fit", "TK_unit", "TK_type", "TK_fs", "TK_number", "TK_id", "TK_ext",
+		"TK_path", "TK_equ", "TK_sym", "COMMENTARY", "NEWLINE", "UNUSED_",
 	}
 	staticData.RuleNames = []string{
 		"init", "commands", "command", "mkdisk", "mkdiskparams", "mkdiskparam",
@@ -60,7 +61,7 @@ func parserParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 49, 148, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 50, 148, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 1, 0, 1,
 		0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 0, 27, 8, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 5, 1, 37, 8, 1, 10, 1, 12, 1, 40, 9, 1, 1, 2, 1, 2, 1,
@@ -93,14 +94,14 @@ func parserParserInit() {
 		10, 5, 0, 62, 63, 6, 4, -1, 0, 63, 70, 1, 0, 0, 0, 64, 65, 10, 2, 0, 0,
 		65, 66, 3, 10, 5, 0, 66, 67, 6, 4, -1, 0, 67, 69, 1, 0, 0, 0, 68, 64, 1,
 		0, 0, 0, 69, 72, 1, 0, 0, 0, 70, 68, 1, 0, 0, 0, 70, 71, 1, 0, 0, 0, 71,
-		9, 1, 0, 0, 0, 72, 70, 1, 0, 0, 0, 73, 74, 5, 18, 0, 0, 74, 75, 5, 45,
+		9, 1, 0, 0, 0, 72, 70, 1, 0, 0, 0, 73, 74, 5, 18, 0, 0, 74, 75, 5, 46,
 		0, 0, 75, 76, 5, 42, 0, 0, 76, 90, 6, 5, -1, 0, 77, 78, 5, 19, 0, 0, 78,
-		79, 5, 45, 0, 0, 79, 80, 5, 38, 0, 0, 80, 90, 6, 5, -1, 0, 81, 82, 5, 20,
-		0, 0, 82, 83, 5, 45, 0, 0, 83, 84, 5, 39, 0, 0, 84, 90, 6, 5, -1, 0, 85,
-		86, 5, 31, 0, 0, 86, 87, 5, 45, 0, 0, 87, 88, 5, 44, 0, 0, 88, 90, 6, 5,
+		79, 5, 46, 0, 0, 79, 80, 5, 38, 0, 0, 80, 90, 6, 5, -1, 0, 81, 82, 5, 20,
+		0, 0, 82, 83, 5, 46, 0, 0, 83, 84, 5, 39, 0, 0, 84, 90, 6, 5, -1, 0, 85,
+		86, 5, 31, 0, 0, 86, 87, 5, 46, 0, 0, 87, 88, 5, 45, 0, 0, 88, 90, 6, 5,
 		-1, 0, 89, 73, 1, 0, 0, 0, 89, 77, 1, 0, 0, 0, 89, 81, 1, 0, 0, 0, 89,
 		85, 1, 0, 0, 0, 90, 11, 1, 0, 0, 0, 91, 92, 5, 2, 0, 0, 92, 93, 5, 31,
-		0, 0, 93, 94, 5, 45, 0, 0, 94, 95, 5, 44, 0, 0, 95, 99, 6, 6, -1, 0, 96,
+		0, 0, 93, 94, 5, 46, 0, 0, 94, 95, 5, 45, 0, 0, 95, 99, 6, 6, -1, 0, 96,
 		97, 5, 2, 0, 0, 97, 99, 6, 6, -1, 0, 98, 91, 1, 0, 0, 0, 98, 96, 1, 0,
 		0, 0, 99, 13, 1, 0, 0, 0, 100, 101, 5, 3, 0, 0, 101, 102, 3, 16, 8, 0,
 		102, 103, 6, 7, -1, 0, 103, 107, 1, 0, 0, 0, 104, 105, 5, 3, 0, 0, 105,
@@ -110,13 +111,13 @@ func parserParserInit() {
 		9, 0, 114, 115, 6, 8, -1, 0, 115, 117, 1, 0, 0, 0, 116, 112, 1, 0, 0, 0,
 		117, 120, 1, 0, 0, 0, 118, 116, 1, 0, 0, 0, 118, 119, 1, 0, 0, 0, 119,
 		17, 1, 0, 0, 0, 120, 118, 1, 0, 0, 0, 121, 122, 5, 18, 0, 0, 122, 123,
-		5, 45, 0, 0, 123, 124, 5, 42, 0, 0, 124, 146, 6, 9, -1, 0, 125, 126, 5,
-		20, 0, 0, 126, 127, 5, 45, 0, 0, 127, 128, 5, 39, 0, 0, 128, 146, 6, 9,
-		-1, 0, 129, 130, 5, 31, 0, 0, 130, 131, 5, 45, 0, 0, 131, 132, 5, 44, 0,
-		0, 132, 146, 6, 9, -1, 0, 133, 134, 5, 23, 0, 0, 134, 135, 5, 45, 0, 0,
+		5, 46, 0, 0, 123, 124, 5, 42, 0, 0, 124, 146, 6, 9, -1, 0, 125, 126, 5,
+		20, 0, 0, 126, 127, 5, 46, 0, 0, 127, 128, 5, 39, 0, 0, 128, 146, 6, 9,
+		-1, 0, 129, 130, 5, 31, 0, 0, 130, 131, 5, 46, 0, 0, 131, 132, 5, 45, 0,
+		0, 132, 146, 6, 9, -1, 0, 133, 134, 5, 23, 0, 0, 134, 135, 5, 46, 0, 0,
 		135, 136, 5, 40, 0, 0, 136, 146, 6, 9, -1, 0, 137, 138, 5, 19, 0, 0, 138,
-		139, 5, 45, 0, 0, 139, 140, 5, 38, 0, 0, 140, 146, 6, 9, -1, 0, 141, 142,
-		5, 22, 0, 0, 142, 143, 5, 45, 0, 0, 143, 144, 5, 43, 0, 0, 144, 146, 6,
+		139, 5, 46, 0, 0, 139, 140, 5, 38, 0, 0, 140, 146, 6, 9, -1, 0, 141, 142,
+		5, 22, 0, 0, 142, 143, 5, 46, 0, 0, 143, 144, 5, 43, 0, 0, 144, 146, 6,
 		9, -1, 0, 145, 121, 1, 0, 0, 0, 145, 125, 1, 0, 0, 0, 145, 129, 1, 0, 0,
 		0, 145, 133, 1, 0, 0, 0, 145, 137, 1, 0, 0, 0, 145, 141, 1, 0, 0, 0, 146,
 		19, 1, 0, 0, 0, 10, 26, 38, 50, 58, 70, 89, 98, 106, 118, 145,
@@ -201,12 +202,13 @@ const (
 	ParserParserTK_fs          = 41
 	ParserParserTK_number      = 42
 	ParserParserTK_id          = 43
-	ParserParserTK_path        = 44
-	ParserParserTK_equ         = 45
-	ParserParserTK_sym         = 46
-	ParserParserCOMMENTARY     = 47
-	ParserParserNEWLINE        = 48
-	ParserParserUNUSED_        = 49
+	ParserParserTK_ext         = 44
+	ParserParserTK_path        = 45
+	ParserParserTK_equ         = 46
+	ParserParserTK_sym         = 47
+	ParserParserCOMMENTARY     = 48
+	ParserParserNEWLINE        = 49
+	ParserParserUNUSED_        = 50
 )
 
 // ParserParser rules.
@@ -1569,13 +1571,13 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkdiskparamContext).result = []string{"path", (func() string {
+		localctx.(*MkdiskparamContext).result = []string{"path", strings.Trim((func() string {
 			if localctx.(*MkdiskparamContext).GetV4() == nil {
 				return ""
 			} else {
 				return localctx.(*MkdiskparamContext).GetV4().GetText()
 			}
-		}())}
+		}()), "\"")}
 
 	default:
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
@@ -1775,13 +1777,13 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 			} else {
 				return localctx.(*RmdiskContext).GetR().GetColumn()
 			}
-		}()), map[string]string{"path": (func() string {
+		}()), map[string]string{"path": strings.Trim((func() string {
 			if localctx.(*RmdiskContext).GetP() == nil {
 				return ""
 			} else {
 				return localctx.(*RmdiskContext).GetP().GetText()
 			}
-		}())})
+		}()), "\"")})
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
@@ -2572,13 +2574,13 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*FdiskparamContext).result = []string{"path", (func() string {
+		localctx.(*FdiskparamContext).result = []string{"path", strings.Trim((func() string {
 			if localctx.(*FdiskparamContext).GetV3() == nil {
 				return ""
 			} else {
 				return localctx.(*FdiskparamContext).GetV3().GetText()
 			}
-		}())}
+		}()), "\"")}
 
 	case ParserParserRW_type:
 		p.EnterOuterAlt(localctx, 4)
@@ -2683,13 +2685,13 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*FdiskparamContext).result = []string{"name", (func() string {
+		localctx.(*FdiskparamContext).result = []string{"name", strings.Trim((func() string {
 			if localctx.(*FdiskparamContext).GetV6() == nil {
 				return ""
 			} else {
 				return localctx.(*FdiskparamContext).GetV6().GetText()
 			}
-		}())}
+		}()), "\"")}
 
 	default:
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
