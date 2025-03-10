@@ -74,10 +74,6 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		})
 		return
 	}
-	/*
-		env.CommandLog = append(env.CommandLog, "----------------FDISK-------------------\n"+diskMBR.ToString()+"\n")
-		fmt.Println("----------------FDISK-------------------\n" + diskMBR.ToString() + "\n")
-	*/
 
 	// Validate Partitions in current MBR
 	// recalculate size of the partition
@@ -95,20 +91,25 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		return
 	}
 
-	var gap int32 = int32(binary.Size(diskMBR))
+	// calculating the next empty space
+	var gap int32 = int32(binary.Size(diskMBR)) // binary size of the MBR struct
+	// if there are at least 1 partition loaded calculate the next available space
 	if totalPartitions > 0 {
+		// adding the last partition start + the last partition size
 		gap = diskMBR.Partitions[totalPartitions-1].Start + diskMBR.Partitions[totalPartitions-1].Size
 	}
 
 	// Send to console
 	var consoleString string
 	consoleString = "=================FDISK=================\n"
+
+	// Create a primary or extended partition and store it in the MBR
 	for i := range diskMBR.Partitions {
-		// create a primary or extended partition
+		// If partition size == 0 means the partition is empty, the check if the partition to be created is Primary or Extended
 		if diskMBR.Partitions[i].Size == 0 && (f.getPartType() == 'P' || f.getPartType() == 'E') {
 			// create partition in MBR
 			diskMBR.Partitions[i] = Structs.Partition{
-				Start:       gap,
+				Start:       gap, // the start is placed at the next available space
 				Size:        int32(totalSize),
 				Correlative: int32(totalPartitions + 1),
 				Status:      [1]byte{'0'},
@@ -119,8 +120,8 @@ func (f *Fdisk) Exec(env *Env.Env) {
 			// If partition is an extended partition created his first EBR
 			if f.getPartType() == 'E' {
 				partitionEBR := Structs.EBR{
-					Fit:   f.getFit()[0],
-					Start: gap, // first EBR is placed at the start of the extended partition
+					Fit:   f.getFit()[0], // get fit from parameters
+					Start: gap,           // first EBR is placed at the start of the extended partition
 					Size:  0,
 					Next:  -1,
 				}
@@ -141,26 +142,34 @@ func (f *Fdisk) Exec(env *Env.Env) {
 		}
 	}
 
+	// if the partition is of logical type then
 	if f.getPartType() == 'L' {
+		// iterate over the array of partitions in the MBR
 		for i := range diskMBR.Partitions {
+			// Since there could be only 1 extended partition then the logical partition should be created here
 			if diskMBR.Partitions[i].Type == [1]byte{'E'} {
+				// The Ebr starting position is equal to this extended partition start
+				// Since the EBR is set at the beginning of an extended partition
 				ebrPosition := diskMBR.Partitions[i].Start
 				var ebr Structs.EBR
 
 				// Walk the ebr list until finding the last one
 				for {
 					Utils.ReadObject(file, &ebr, int64(ebrPosition))
-					if ebr.Next == -1 {
+					if ebr.Next == -1 { // We know this is the last EBR since the next parameter is set to -1
 						break
 					}
-					ebrPosition = ebr.Next
+					ebrPosition = ebr.Next // if is not the last partition get the position of the next EBR
 				}
 
-				// Calculate the start of the new EBR and the start of the new Logical Partition
+				// The position of the next EBR is set to the start of the last EBR + it's size
+				// Placing this new EBR at the end of the las logical partition
 				newEBRPosition := ebr.Start + ebr.Size
+				// The start of the new logical partition is set to the newEBR position + the size of the EBR struct
 				logicalPartitionStart := newEBRPosition + int32(binary.Size(ebr))
-				// Update last EBR
+				// Update the last EBR to set it's Next atribute to the new calculated EBR position
 				ebr.Next = newEBRPosition
+				// Writing the old EBR into the file at the EBRPosition
 				if err := Utils.WriteObject(file, ebr, int64(ebrPosition)); err != nil {
 					env.Errors = append(env.Errors, Env.RuntimeError{
 						Line:    f.Line,
@@ -171,7 +180,8 @@ func (f *Fdisk) Exec(env *Env.Env) {
 					return
 				}
 
-				// Create and write the new EBR
+				// Create and write the new EBR with the Next parameter to -1
+				// indicating that this is the last EBR at the partition
 				newEBR := Structs.EBR{
 					Fit:   f.getFit()[0],
 					Start: logicalPartitionStart,
@@ -179,6 +189,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 					Next:  -1,
 				}
 				copy(newEBR.Name[:], f.Params["name"])
+				// Writing the new EBR at the end of the last Partition
 				if err := Utils.WriteObject(file, newEBR, int64(newEBRPosition)); err != nil {
 					env.Errors = append(env.Errors, Env.RuntimeError{
 						Line:    f.Line,

@@ -8,7 +8,7 @@ interface OutputProps {
 
 function Output({synErrors, runErrors, commandLogs}: OutputProps) {
     return (
-        <div className="w-full h-[30vh] bg-[#282a36] text-[#f8f8f2] p-4 overflow-auto">
+        <div className="w-full h-[100%] bg-[#282a36] text-[#f8f8f2] p-4 overflow-auto">
             <pre className="whitespace-pre-wrap">
                 {/* Display syntax errors in yellow */}
                 { synErrors.length > 0 && (
@@ -16,7 +16,7 @@ function Output({synErrors, runErrors, commandLogs}: OutputProps) {
                         <strong>Syntax Errors:</strong>
                         {
                             synErrors.map((err, index) => (
-                                <div key={index}>
+                                <div key={index} className="mb-5">
                                     [Line {err.Line}, Col {err.Column}]: {err.Msg}
                                 </div>
                             ))
@@ -28,7 +28,7 @@ function Output({synErrors, runErrors, commandLogs}: OutputProps) {
                     <div className="text-red-400">
                         <strong>Runtime Errors:</strong>
                         {runErrors.map((err, index)=>(
-                            <div key={index}>
+                            <div key={index} className="mb-5">
                                 [Line {err.Line}, Col {err.Column}, Command {err.Command}]: {err.Msg}
                             </div>
                         ))}
@@ -39,7 +39,7 @@ function Output({synErrors, runErrors, commandLogs}: OutputProps) {
                     <div className="text-green-400">
                         <strong>Execution Logs:</strong>
                         {commandLogs.map((log, index)=>(
-                            <div key={index}>
+                            <div key={index} className="mb-5">
                                 $ {log}
                             </div>
                         ))}

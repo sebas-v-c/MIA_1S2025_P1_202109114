@@ -80,3 +80,21 @@ func (s *BaseParserListener) EnterFdiskparam(ctx *FdiskparamContext) {}
 
 // ExitFdiskparam is called when production fdiskparam is exited.
 func (s *BaseParserListener) ExitFdiskparam(ctx *FdiskparamContext) {}
+
+// EnterMount is called when production mount is entered.
+func (s *BaseParserListener) EnterMount(ctx *MountContext) {}
+
+// ExitMount is called when production mount is exited.
+func (s *BaseParserListener) ExitMount(ctx *MountContext) {}
+
+// EnterMountparams is called when production mountparams is entered.
+func (s *BaseParserListener) EnterMountparams(ctx *MountparamsContext) {}
+
+// ExitMountparams is called when production mountparams is exited.
+func (s *BaseParserListener) ExitMountparams(ctx *MountparamsContext) {}
+
+// EnterMountparam is called when production mountparam is entered.
+func (s *BaseParserListener) EnterMountparam(ctx *MountparamContext) {}
+
+// ExitMountparam is called when production mountparam is exited.
+func (s *BaseParserListener) ExitMountparam(ctx *MountparamContext) {}

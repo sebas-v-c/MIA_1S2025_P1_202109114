@@ -1,3 +1,4 @@
+// code inspired from @brandonT2002
 grammar Parser;
 
 @header {
@@ -29,6 +30,7 @@ command returns[interfaces.Command result]:
         c1 = mkdisk     {$result = $c1.result}
     |   c2 = rmdisk     {$result = $c2.result}
     |   c3 = fdisk      {$result = $c3.result}
+    |   c4 = mount      {$result = $c4.result}
     ;
 
 // =============== MKDISK ===============
@@ -73,4 +75,21 @@ fdiskparam returns[[]string result] :
     |   RW_type TK_equ v4 = TK_type     {$result = []string{"type", $v4.text}}
     |   RW_fit  TK_equ v5 = TK_fit      {$result = []string{"fit", $v5.text}}
     |   RW_name TK_equ v6 = TK_id       {$result = []string{"name", strings.Trim($v6.text, "\"")}}
+    ;
+
+// =============== MOUNT ===============
+// From now on I'm going make all parameteres uppercase for easier analyzis in the code
+mount returns[*commands.Mount result]:
+        m = RW_mount p = mountparams    {$result = commands.NewMount($m.line, $m.pos, $p.result)}
+    |   m = RW_mount                    {$result = commands.NewMount($m.line, $m.pos, map[string]string{})}
+    ;
+
+mountparams returns[map[string]string result]:
+        l = mountparams p = mountparam  {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = mountparam                  {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+mountparam returns[[]string result]:
+        RW_path TK_equ v1 = TK_path     {$result = []string{"path", strings.Trim($v1.text, "\"")}}
+    |   RW_name TK_equ v2 = TK_id       {$result = []string{"name", strings.Trim($v2.text, "\"")}}
     ;

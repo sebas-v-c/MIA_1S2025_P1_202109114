@@ -1,3 +1,5 @@
+// Code inspired from @brandonT2002
+
 lexer grammar Scanner;
 
 options {

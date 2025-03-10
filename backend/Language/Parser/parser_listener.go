@@ -38,6 +38,15 @@ type ParserListener interface {
 	// EnterFdiskparam is called when entering the fdiskparam production.
 	EnterFdiskparam(c *FdiskparamContext)
 
+	// EnterMount is called when entering the mount production.
+	EnterMount(c *MountContext)
+
+	// EnterMountparams is called when entering the mountparams production.
+	EnterMountparams(c *MountparamsContext)
+
+	// EnterMountparam is called when entering the mountparam production.
+	EnterMountparam(c *MountparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -67,4 +76,13 @@ type ParserListener interface {
 
 	// ExitFdiskparam is called when exiting the fdiskparam production.
 	ExitFdiskparam(c *FdiskparamContext)
+
+	// ExitMount is called when exiting the mount production.
+	ExitMount(c *MountContext)
+
+	// ExitMountparams is called when exiting the mountparams production.
+	ExitMountparams(c *MountparamsContext)
+
+	// ExitMountparam is called when exiting the mountparam production.
+	ExitMountparam(c *MountparamContext)
 }
