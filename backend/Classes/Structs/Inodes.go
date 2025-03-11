@@ -9,8 +9,8 @@ type Inode struct {
 	ATime [17]byte
 	CTime [17]byte
 	MTime [17]byte
-	Block int32
-	Type  byte
+	Block [15]int32
+	Type  [1]byte
 	Perm  [3]byte
 }
 

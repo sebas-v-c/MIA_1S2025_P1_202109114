@@ -8,7 +8,7 @@ interface ConsoleProps {
 function Console({code, onCodeChange}: ConsoleProps) {
 
     return (
-        <div className="w-full h-[50vh] bg-[#1e1e2e]">
+        <div className="w-full h-[100%] bg-[#1e1e2e]">
             <Editor
                 height="100%"
                 defaultLanguage="shell"
