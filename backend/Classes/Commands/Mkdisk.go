@@ -13,16 +13,17 @@ import (
 
 type Mkdisk struct {
 	Interfaces.CommandStruct
+	Params map[string]string
 }
 
 func NewMkdisk(line, column int, params map[string]string) *Mkdisk {
 	return &Mkdisk{
 		CommandStruct: Interfaces.CommandStruct{
 			Type:   Utils.MKDISK,
-			Params: params,
 			Line:   line,
 			Column: column,
 		},
+		Params: params,
 	}
 }
 

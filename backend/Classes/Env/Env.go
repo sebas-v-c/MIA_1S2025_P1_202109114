@@ -16,11 +16,3 @@ func CleanConsole() {
 	Errors = []RuntimeError{}
 	CommandLog = []string{}
 }
-
-func AddCommandLog(msg string) {
-	CommandLog = append(CommandLog, msg)
-}
-
-func AddError(err RuntimeError) {
-	Errors = append(Errors, err)
-}

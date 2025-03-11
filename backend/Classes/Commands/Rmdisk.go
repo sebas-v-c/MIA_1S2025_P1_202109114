@@ -12,6 +12,7 @@ import (
 
 type Rmdisk struct {
 	Interfaces.CommandStruct
+	Params map[string]string
 }
 
 func NewRmdisk(line, column int, params map[string]string) *Rmdisk {
@@ -20,8 +21,8 @@ func NewRmdisk(line, column int, params map[string]string) *Rmdisk {
 			Type:   Utils.RMDISK,
 			Line:   line,
 			Column: column,
-			Params: params,
 		},
+		Params: params,
 	}
 }
 

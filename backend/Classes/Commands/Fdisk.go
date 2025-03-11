@@ -14,16 +14,17 @@ import (
 
 type Fdisk struct {
 	Interfaces.CommandStruct
+	Params map[string]string
 }
 
 func NewFdisk(line, column int, params map[string]string) *Fdisk {
 	return &Fdisk{
 		CommandStruct: Interfaces.CommandStruct{
 			Type:   Utils.FDISK,
-			Params: params,
 			Line:   line,
 			Column: column,
 		},
+		Params: params,
 	}
 }
 
