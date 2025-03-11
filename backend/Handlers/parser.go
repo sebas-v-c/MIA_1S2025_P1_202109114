@@ -45,6 +45,8 @@ func ParseCodeHandler(c *gin.Context) {
 		synErrors = append(synErrors, listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
 	}
 
+	env.CleanConsole() // Clean all previous console prints
+
 	if synErrors != nil {
 		c.IndentedJSON(http.StatusAccepted, JSONResponse{
 			SynErrors:   synErrors,

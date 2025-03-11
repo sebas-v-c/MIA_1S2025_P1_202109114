@@ -36,7 +36,7 @@ func (m *Mount) GetType() Utils.Type {
 
 func (m *Mount) Exec() {
 	if err := m.validParams(); err != nil {
-		env.Errors = append(env.Errors, m.makeError(err.Error()))
+		env.AddError(m.makeError(err.Error()))
 		return
 	}
 }
