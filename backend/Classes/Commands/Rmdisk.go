@@ -1,7 +1,7 @@
 package Commands
 
 import (
-	"backend/Classes/Env"
+	env "backend/Classes/Env"
 	"backend/Classes/Utils"
 	"errors"
 	"os"
@@ -33,9 +33,9 @@ func (r *Rmdisk) GetType() Utils.Type {
 	return r.Type
 }
 
-func (r *Rmdisk) Exec(env *Env.Env) {
+func (r *Rmdisk) Exec() {
 	if err, ok := r.validParams(); !ok {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    r.Line,
 			Column:  r.Column,
 			Command: Utils.RMDISK,
@@ -46,7 +46,7 @@ func (r *Rmdisk) Exec(env *Env.Env) {
 
 	file := os.Remove(r.Params["path"])
 	if file != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    r.Line,
 			Column:  r.Column,
 			Command: Utils.RMDISK,

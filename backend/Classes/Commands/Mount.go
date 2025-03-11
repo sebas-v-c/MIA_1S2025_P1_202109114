@@ -1,7 +1,7 @@
 package Commands
 
 import (
-	"backend/Classes/Env"
+	env "backend/Classes/Env"
 	"backend/Classes/Utils"
 	"errors"
 	"path/filepath"
@@ -34,7 +34,7 @@ func (m *Mount) GetType() Utils.Type {
 
 // Using my last two digits of my ID ==> *******14 <==
 
-func (m *Mount) Exec(env *Env.Env) {
+func (m *Mount) Exec() {
 	if err := m.validParams(); err != nil {
 		env.Errors = append(env.Errors, m.makeError(err.Error()))
 		return
@@ -46,8 +46,8 @@ func (m *Mount) GetResult() string {
 	panic("implement me")
 }
 
-func (m *Mount) makeError(msg string) Env.RuntimeError {
-	return Env.RuntimeError{m.Line, m.Column, Utils.MOUNT, msg}
+func (m *Mount) makeError(msg string) env.RuntimeError {
+	return env.RuntimeError{m.Line, m.Column, Utils.MOUNT, msg}
 }
 
 func (m *Mount) validParams() error {

@@ -8,11 +8,6 @@ type RuntimeError struct {
 	Command Utils.Type
 	Msg     string
 }
-type Env struct {
-	Errors     []RuntimeError
-	CommandLog []string
-}
 
-func NewEnv() *Env {
-	return &Env{}
-}
+var Errors []RuntimeError
+var CommandLog []string

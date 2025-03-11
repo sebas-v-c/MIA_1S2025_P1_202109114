@@ -1,7 +1,7 @@
 package Commands
 
 import (
-	"backend/Classes/Env"
+	env "backend/Classes/Env"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
 	"encoding/binary"
@@ -40,9 +40,9 @@ func (f *Fdisk) GetType() Utils.Type {
 	return f.Type
 }
 
-func (f *Fdisk) Exec(env *Env.Env) {
+func (f *Fdisk) Exec() {
 	if err, ok := f.validParams(); !ok {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
@@ -54,7 +54,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	// open file
 	file, err := Utils.OpenFile(f.Params["path"])
 	if err != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
@@ -66,7 +66,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	// Read MBR from binary disk
 	var diskMBR Structs.MBR
 	if err := Utils.ReadObject(file, &diskMBR, 0); err != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
@@ -82,7 +82,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	totalSize := f.recalculateUnits() * size
 	err, totalPartitions := f.validatePartitions(diskMBR, totalSize)
 	if err != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
@@ -92,7 +92,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	}
 
 	// calculating the next empty space
-	var gap int32 = int32(binary.Size(diskMBR)) // binary size of the MBR struct
+	var gap = int32(binary.Size(diskMBR)) // binary size of the MBR struct
 	// if there are at least 1 partition loaded calculate the next available space
 	if totalPartitions > 0 {
 		// adding the last partition start + the last partition size
@@ -128,7 +128,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 				copy(partitionEBR.Name[:], "")
 				// Write object to disk
 				if err := Utils.WriteObject(file, partitionEBR, int64(gap)); err != nil {
-					env.Errors = append(env.Errors, Env.RuntimeError{
+					env.Errors = append(env.Errors, env.RuntimeError{
 						Line:    f.Line,
 						Column:  f.Column,
 						Command: Utils.FDISK,
@@ -171,7 +171,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 				ebr.Next = newEBRPosition
 				// Writing the old EBR into the file at the EBRPosition
 				if err := Utils.WriteObject(file, ebr, int64(ebrPosition)); err != nil {
-					env.Errors = append(env.Errors, Env.RuntimeError{
+					env.Errors = append(env.Errors, env.RuntimeError{
 						Line:    f.Line,
 						Column:  f.Column,
 						Command: Utils.FDISK,
@@ -191,7 +191,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 				copy(newEBR.Name[:], f.Params["name"])
 				// Writing the new EBR at the end of the last Partition
 				if err := Utils.WriteObject(file, newEBR, int64(newEBRPosition)); err != nil {
-					env.Errors = append(env.Errors, Env.RuntimeError{
+					env.Errors = append(env.Errors, env.RuntimeError{
 						Line:    f.Line,
 						Column:  f.Column,
 						Command: Utils.FDISK,
@@ -208,7 +208,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 				ebrPos := diskMBR.Partitions[i].Start
 				for {
 					if err := Utils.ReadObject(file, &ebr, int64(ebrPos)); err != nil {
-						env.Errors = append(env.Errors, Env.RuntimeError{
+						env.Errors = append(env.Errors, env.RuntimeError{
 							Line:    f.Line,
 							Column:  f.Column,
 							Command: Utils.FDISK,
@@ -228,7 +228,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 	}
 
 	if err := Utils.WriteObject(file, diskMBR, 0); err != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
@@ -239,7 +239,7 @@ func (f *Fdisk) Exec(env *Env.Env) {
 
 	var updatedMBR Structs.MBR
 	if err := Utils.ReadObject(file, &updatedMBR, 0); err != nil {
-		env.Errors = append(env.Errors, Env.RuntimeError{
+		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
 			Command: Utils.FDISK,
