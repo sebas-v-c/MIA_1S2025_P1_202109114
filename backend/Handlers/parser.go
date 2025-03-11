@@ -1,7 +1,7 @@
 package Handlers
 
 import (
-	"backend/Classes/Env"
+	env "backend/Classes/Env"
 	listener "backend/Language"
 	parser "backend/Language/Parser"
 	"github.com/antlr4-go/antlr/v4"
@@ -15,7 +15,7 @@ type CodeRequest struct {
 
 type JSONResponse struct {
 	SynErrors   []listener.CustomSyntaxError `json:"synErrors" binding:"required"`
-	RunErrors   []Env.RuntimeError           `json:"runErrors" binding:"required"`
+	RunErrors   []env.RuntimeError           `json:"runErrors" binding:"required"`
 	CommandLogs []string                     `json:"commandLogs" binding:"required"`
 }
 
@@ -54,9 +54,8 @@ func ParseCodeHandler(c *gin.Context) {
 		return
 	}
 
-	env := Env.NewEnv()
 	for _, cmd := range ext2Listener.Execute {
-		cmd.Exec(env)
+		cmd.Exec()
 	}
 
 	if len(env.Errors) > 0 {
