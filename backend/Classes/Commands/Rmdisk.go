@@ -2,6 +2,7 @@ package Commands
 
 import (
 	env "backend/Classes/Env"
+	"backend/Classes/Interfaces"
 	"backend/Classes/Utils"
 	"errors"
 	"os"
@@ -10,15 +11,18 @@ import (
 )
 
 type Rmdisk struct {
-	Result string
-	Type   Utils.Type
-	Params map[string]string
-	Line   int
-	Column int
+	Interfaces.CommandStruct
 }
 
 func NewRmdisk(line, column int, params map[string]string) *Rmdisk {
-	return &Rmdisk{Type: Utils.RMDISK, Line: line, Column: column, Params: params}
+	return &Rmdisk{
+		CommandStruct: Interfaces.CommandStruct{
+			Type:   Utils.RMDISK,
+			Line:   line,
+			Column: column,
+			Params: params,
+		},
+	}
 }
 
 func (r *Rmdisk) GetLine() int {
@@ -34,7 +38,7 @@ func (r *Rmdisk) GetType() Utils.Type {
 }
 
 func (r *Rmdisk) Exec() {
-	if err, ok := r.validParams(); !ok {
+	if err := r.validateParams(); err != nil {
 		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    r.Line,
 			Column:  r.Column,
@@ -58,15 +62,14 @@ func (r *Rmdisk) Exec() {
 	env.CommandLog = append(env.CommandLog, "=================RMDISK=================\n"+"File succesfully removed"+"\n=================END RMDISK=================\n")
 }
 
-func (r *Rmdisk) validParams() (error, bool) {
+func (r *Rmdisk) validateParams() error {
 	if _, ok := r.Params["path"]; ok {
-		if strings.EqualFold(filepath.Ext(r.Params["path"]), ".mia") {
-			return nil, true
+		if !strings.EqualFold(filepath.Ext(r.Params["path"]), ".mia") {
+			r.Params["path"] = r.Params["path"] + ".mia"
 		}
-		r.Params["path"] = r.Params["path"] + ".mia"
-		return nil, true
+		return nil
 	}
-	return errors.New("obligatory parameter not exist"), false
+	return errors.New("obligatory parameter not exist")
 }
 
 func (r *Rmdisk) GetResult() string {

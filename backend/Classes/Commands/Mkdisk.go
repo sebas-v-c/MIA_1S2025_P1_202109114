@@ -2,6 +2,7 @@ package Commands
 
 import (
 	env "backend/Classes/Env"
+	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
 	"errors"
@@ -11,37 +12,23 @@ import (
 )
 
 type Mkdisk struct {
-	Result string
-	Type   Utils.Type
-	Params map[string]string
-	Line   int
-	Column int
+	Interfaces.CommandStruct
 }
 
 func NewMkdisk(line, column int, params map[string]string) *Mkdisk {
 	return &Mkdisk{
-		Type:   Utils.MKDISK,
-		Params: params,
-		Line:   line,
-		Column: column,
+		CommandStruct: Interfaces.CommandStruct{
+			Type:   Utils.MKDISK,
+			Params: params,
+			Line:   line,
+			Column: column,
+		},
 	}
-}
-
-func (m *Mkdisk) GetLine() int {
-	return m.Line
-}
-
-func (m *Mkdisk) GetColumn() int {
-	return m.Column
-}
-
-func (m *Mkdisk) GetType() Utils.Type {
-	return m.Type
 }
 
 func (m *Mkdisk) Exec() {
 	// if the parameters are not valid
-	if err, ok := m.validParams(); !ok {
+	if err := m.validateParams(); err != nil {
 		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    m.Line,
 			Column:  m.Column,
@@ -106,11 +93,11 @@ func (m *Mkdisk) Exec() {
 	env.CommandLog = append(env.CommandLog, "=================MKDISK=================\n"+newMBR.ToString()+"\n=================END MKDISK=================\n")
 }
 
-func (m *Mkdisk) validParams() (error, bool) {
+func (m *Mkdisk) validateParams() error {
 	if _, ok := m.Params["size"]; !ok {
-		return errors.New("missing parameter -size"), false
+		return errors.New("missing parameter -size")
 	} else if _, ok := m.Params["path"]; !ok {
-		return errors.New("missing parameter -path"), false
+		return errors.New("missing parameter -path")
 	}
 
 	if _, ok := m.Params["fit"]; !ok {
@@ -121,19 +108,14 @@ func (m *Mkdisk) validParams() (error, bool) {
 	}
 
 	if val, _ := strconv.Atoi(m.Params["size"]); val <= 0 {
-		return errors.New("size must be greater than 0"), false
+		return errors.New("size must be greater than 0")
 	}
 	// check if file is a disk
 	if !strings.EqualFold(filepath.Ext(m.Params["path"]), ".mia") {
 		m.Params["path"] = m.Params["path"] + ".mia"
 	}
 
-	return nil, true
-}
-
-func (m *Mkdisk) GetResult() string {
-	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func (m *Mkdisk) recalculateUnits() int {

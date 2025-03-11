@@ -1,26 +1,26 @@
 # File for testing creation, removing and formating of discs
-mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/disk1.bin"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion1"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion2"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion3"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion4"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion5"
+mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/fdisk_disk.bin"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion1"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion2"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion3"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion4"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion5"
 
 
 # testing remove disk
-rmdisk -path="/home/zibas/Temp/MIA/disk1.bin"
+rmdisk -path="/home/zibas/Temp/MIA/fdisk_disk.bin"
 
 
-mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/disk1.bin"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion1"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=e -name="particion2"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=l -name="particion3"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=l -name="particion4"
+mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/fdisk_disk.bin"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion1"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=e -name="particion2"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=l -name="particion3"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=l -name="particion4"
 
 
 # Now just try overwriting the file
-mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/disk1.bin"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=p -name="particion1"
-fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=e -name="particion2"
-fdisk -size=20 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=l -name="particion3"
-fdisk -size=20 -unit=K -path="/home/zibas/Temp/MIA/disk1.bin" -type=l -name="particion4"
+mkdisk -size=500 -unit=K -fit=BF -path="/home/zibas/Temp/MIA/fdisk_disk.bin"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=p -name="particion1"
+fdisk -size=100 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=e -name="particion2"
+fdisk -size=20 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=l -name="particion3"
+fdisk -size=20 -unit=K -path="/home/zibas/Temp/MIA/fdisk_disk.bin" -type=l -name="particion4"

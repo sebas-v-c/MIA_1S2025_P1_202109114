@@ -2,6 +2,7 @@ package Commands
 
 import (
 	env "backend/Classes/Env"
+	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
 	"encoding/binary"
@@ -12,36 +13,22 @@ import (
 )
 
 type Fdisk struct {
-	Result string
-	Type   Utils.Type
-	Params map[string]string
-	Line   int
-	Column int
+	Interfaces.CommandStruct
 }
 
 func NewFdisk(line, column int, params map[string]string) *Fdisk {
 	return &Fdisk{
-		Type:   Utils.FDISK,
-		Params: params,
-		Line:   line,
-		Column: column,
+		CommandStruct: Interfaces.CommandStruct{
+			Type:   Utils.FDISK,
+			Params: params,
+			Line:   line,
+			Column: column,
+		},
 	}
 }
 
-func (f *Fdisk) GetLine() int {
-	return f.Line
-}
-
-func (f *Fdisk) GetColumn() int {
-	return f.Column
-}
-
-func (f *Fdisk) GetType() Utils.Type {
-	return f.Type
-}
-
 func (f *Fdisk) Exec() {
-	if err, ok := f.validParams(); !ok {
+	if err := f.validateParams(); err != nil {
 		env.Errors = append(env.Errors, env.RuntimeError{
 			Line:    f.Line,
 			Column:  f.Column,
@@ -254,14 +241,14 @@ func (f *Fdisk) Exec() {
 	defer file.Close()
 }
 
-func (f *Fdisk) validParams() (error, bool) {
+func (f *Fdisk) validateParams() error {
 	// obligatory parameters
 	if _, ok := f.Params["size"]; !ok {
-		return errors.New("missing parameter -size"), false
+		return errors.New("missing parameter -size")
 	} else if _, ok := f.Params["path"]; !ok {
-		return errors.New("missing parameter -path"), false
+		return errors.New("missing parameter -path")
 	} else if _, ok := f.Params["name"]; !ok {
-		return errors.New("missing parameter -name"), false
+		return errors.New("missing parameter -name")
 	}
 
 	// optional parameters
@@ -277,15 +264,14 @@ func (f *Fdisk) validParams() (error, bool) {
 
 	// check if size is greater than 0
 	if val, _ := strconv.Atoi(f.Params["size"]); val <= 0 {
-		return errors.New("size must be greater than 0"), false
+		return errors.New("size must be greater than 0")
 	}
 
 	// check if file is a disk
-	if strings.EqualFold(filepath.Ext(f.Params["path"]), ".mia") {
-		return nil, true
+	if !strings.EqualFold(filepath.Ext(f.Params["path"]), ".mia") {
+		f.Params["path"] = f.Params["path"] + ".mia"
 	}
-	f.Params["path"] = f.Params["path"] + ".mia"
-	return nil, true
+	return nil
 }
 
 func (f *Fdisk) GetResult() string {
