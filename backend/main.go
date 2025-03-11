@@ -16,7 +16,11 @@ func main() {
 	r.GET("/status", Handlers.StatusHandler)
 	r.POST("/parse", Handlers.ParseCodeHandler)
 
-	err := r.Run(":8080")
+	err := r.SetTrustedProxies(nil)
+	if err != nil {
+		return
+	}
+	err = r.Run(":8080")
 	if err != nil {
 		return
 	}

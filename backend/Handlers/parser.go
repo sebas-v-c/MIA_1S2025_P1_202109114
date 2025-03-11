@@ -14,9 +14,9 @@ type CodeRequest struct {
 }
 
 type JSONResponse struct {
-	SynErrors   []listener.CustomSyntaxError `json:"synErrors" binding:"required"`
-	RunErrors   []env.RuntimeError           `json:"runErrors" binding:"required"`
-	CommandLogs []string                     `json:"commandLogs" binding:"required"`
+	SynErrors   []*listener.CustomSyntaxError `json:"synErrors" binding:"required"`
+	RunErrors   []*env.RuntimeError           `json:"runErrors" binding:"required"`
+	CommandLogs []*string                     `json:"commandLogs" binding:"required"`
 }
 
 func ParseCodeHandler(c *gin.Context) {
@@ -40,9 +40,9 @@ func ParseCodeHandler(c *gin.Context) {
 	var ext2Listener = listener.NewEXT2Listener()
 	antlr.ParseTreeWalkerDefault.Walk(ext2Listener, tree)
 
-	var synErrors []listener.CustomSyntaxError
+	var synErrors []*listener.CustomSyntaxError
 	for _, fail := range parserErrors.Errors {
-		synErrors = append(synErrors, listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
+		synErrors = append(synErrors, &listener.CustomSyntaxError{Line: fail.Line, Column: fail.Column, Msg: fail.Msg})
 	}
 
 	env.CleanConsole() // Clean all previous console prints
@@ -61,9 +61,9 @@ func ParseCodeHandler(c *gin.Context) {
 	}
 
 	if len(env.Errors) > 0 {
-		c.IndentedJSON(http.StatusAccepted, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: env.CommandLog})
+		c.IndentedJSON(http.StatusAccepted, JSONResponse{SynErrors: synErrors, RunErrors: env.GetErrors(), CommandLogs: env.GetCommandLogs()})
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, JSONResponse{SynErrors: synErrors, RunErrors: env.Errors, CommandLogs: env.CommandLog})
+	c.IndentedJSON(http.StatusOK, JSONResponse{SynErrors: synErrors, RunErrors: env.GetErrors(), CommandLogs: env.GetCommandLogs()})
 }

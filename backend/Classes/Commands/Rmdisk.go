@@ -1,7 +1,6 @@
 package Commands
 
 import (
-	env "backend/Classes/Env"
 	"backend/Classes/Interfaces"
 	"backend/Classes/Utils"
 	"errors"
@@ -26,41 +25,19 @@ func NewRmdisk(line, column int, params map[string]string) *Rmdisk {
 	}
 }
 
-func (r *Rmdisk) GetLine() int {
-	return r.Line
-}
-
-func (r *Rmdisk) GetColumn() int {
-	return r.Column
-}
-
-func (r *Rmdisk) GetType() Utils.Type {
-	return r.Type
-}
-
 func (r *Rmdisk) Exec() {
 	if err := r.validateParams(); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    r.Line,
-			Column:  r.Column,
-			Command: Utils.RMDISK,
-			Msg:     err.Error(),
-		})
+		r.AppendError(err.Error())
 		return
 	}
 
 	file := os.Remove(r.Params["path"])
 	if file != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    r.Line,
-			Column:  r.Column,
-			Command: Utils.RMDISK,
-			Msg:     "Error removing file",
-		})
+		r.AppendError("Error deleting file: " + r.Params["path"])
 		return
 	}
 
-	env.CommandLog = append(env.CommandLog, "=================RMDISK=================\n"+"File succesfully removed"+"\n=================END RMDISK=================\n")
+	r.LogConsole("=================RMDISK=================\n" + "File succesfully removed" + "\n=================END RMDISK=================\n")
 }
 
 func (r *Rmdisk) validateParams() error {
@@ -71,9 +48,4 @@ func (r *Rmdisk) validateParams() error {
 		return nil
 	}
 	return errors.New("obligatory parameter not exist")
-}
-
-func (r *Rmdisk) GetResult() string {
-	//TODO implement me
-	panic("implement me")
 }

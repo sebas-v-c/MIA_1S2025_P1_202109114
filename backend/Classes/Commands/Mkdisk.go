@@ -1,7 +1,6 @@
 package Commands
 
 import (
-	env "backend/Classes/Env"
 	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
@@ -30,12 +29,7 @@ func NewMkdisk(line, column int, params map[string]string) *Mkdisk {
 func (m *Mkdisk) Exec() {
 	// if the parameters are not valid
 	if err := m.validateParams(); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    m.Line,
-			Column:  m.Column,
-			Command: Utils.MKDISK,
-			Msg:     err.Error(),
-		})
+		m.AppendError(err.Error())
 		return
 	}
 
@@ -43,23 +37,13 @@ func (m *Mkdisk) Exec() {
 
 	err := Utils.CreateFile(filePath)
 	if err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    m.Line,
-			Column:  m.Column,
-			Command: Utils.MKDISK,
-			Msg:     err.Error(),
-		})
+		m.AppendError(err.Error())
 		return
 	}
 
 	file, err := Utils.OpenFile(filePath)
 	if err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    m.Line,
-			Column:  m.Column,
-			Command: Utils.MKDISK,
-			Msg:     err.Error(),
-		})
+		m.AppendError(err.Error())
 		return
 	}
 
@@ -82,16 +66,11 @@ func (m *Mkdisk) Exec() {
 	// Write MBR to the file
 	newMBR := Structs.NewMBR(int32(totalSize), m.getFit())
 	if err := Utils.WriteObject(file, newMBR, 0); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    m.Line,
-			Column:  m.Column,
-			Command: Utils.MKDISK,
-			Msg:     err.Error(),
-		})
+		m.AppendError(err.Error())
 		return
 	}
 	defer file.Close()
-	env.CommandLog = append(env.CommandLog, "=================MKDISK=================\n"+newMBR.ToString()+"\n=================END MKDISK=================\n")
+	m.LogConsole("=================MKDISK=================\n" + newMBR.ToString() + "\n=================END MKDISK=================\n")
 }
 
 func (m *Mkdisk) validateParams() error {

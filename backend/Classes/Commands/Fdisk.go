@@ -30,36 +30,21 @@ func NewFdisk(line, column int, params map[string]string) *Fdisk {
 
 func (f *Fdisk) Exec() {
 	if err := f.validateParams(); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
 	// open file
 	file, err := Utils.OpenFile(f.Params["path"])
 	if err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
 	// Read MBR from binary disk
 	var diskMBR Structs.MBR
 	if err := Utils.ReadObject(file, &diskMBR, 0); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
@@ -70,12 +55,7 @@ func (f *Fdisk) Exec() {
 	totalSize := f.recalculateUnits() * size
 	err, totalPartitions := f.validatePartitions(diskMBR, totalSize)
 	if err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
@@ -116,12 +96,7 @@ func (f *Fdisk) Exec() {
 				copy(partitionEBR.Name[:], "")
 				// Write object to disk
 				if err := Utils.WriteObject(file, partitionEBR, int64(gap)); err != nil {
-					env.Errors = append(env.Errors, env.RuntimeError{
-						Line:    f.Line,
-						Column:  f.Column,
-						Command: Utils.FDISK,
-						Msg:     err.Error(),
-					})
+					f.AppendError(err.Error())
 					return
 				}
 				consoleString += "EBR Created:\n" + "\t" + partitionEBR.ToString() + "\n"
@@ -159,12 +134,7 @@ func (f *Fdisk) Exec() {
 				ebr.Next = newEBRPosition
 				// Writing the old EBR into the file at the EBRPosition
 				if err := Utils.WriteObject(file, ebr, int64(ebrPosition)); err != nil {
-					env.Errors = append(env.Errors, env.RuntimeError{
-						Line:    f.Line,
-						Column:  f.Column,
-						Command: Utils.FDISK,
-						Msg:     err.Error(),
-					})
+					f.AppendError(err.Error())
 					return
 				}
 
@@ -179,12 +149,7 @@ func (f *Fdisk) Exec() {
 				copy(newEBR.Name[:], f.Params["name"])
 				// Writing the new EBR at the end of the last Partition
 				if err := Utils.WriteObject(file, newEBR, int64(newEBRPosition)); err != nil {
-					env.Errors = append(env.Errors, env.RuntimeError{
-						Line:    f.Line,
-						Column:  f.Column,
-						Command: Utils.FDISK,
-						Msg:     err.Error(),
-					})
+					f.AppendError(err.Error())
 					return
 				}
 
@@ -196,12 +161,7 @@ func (f *Fdisk) Exec() {
 				ebrPos := diskMBR.Partitions[i].Start
 				for {
 					if err := Utils.ReadObject(file, &ebr, int64(ebrPos)); err != nil {
-						env.Errors = append(env.Errors, env.RuntimeError{
-							Line:    f.Line,
-							Column:  f.Column,
-							Command: Utils.FDISK,
-							Msg:     err.Error(),
-						})
+						f.AppendError(err.Error())
 						return
 					}
 					consoleString += "\t" + ebr.ToString() + "\n"
@@ -216,29 +176,19 @@ func (f *Fdisk) Exec() {
 	}
 
 	if err := Utils.WriteObject(file, diskMBR, 0); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
 	var updatedMBR Structs.MBR
 	if err := Utils.ReadObject(file, &updatedMBR, 0); err != nil {
-		env.Errors = append(env.Errors, env.RuntimeError{
-			Line:    f.Line,
-			Column:  f.Column,
-			Command: Utils.FDISK,
-			Msg:     err.Error(),
-		})
+		f.AppendError(err.Error())
 		return
 	}
 
 	// Send consoles
 	consoleString += "Updated MBR:\n" + updatedMBR.ToString() + "\n=================END FDISK================="
-	env.CommandLog = append(env.CommandLog, consoleString)
+	env.AddCommandLog(consoleString)
 	defer file.Close()
 }
 
@@ -273,11 +223,6 @@ func (f *Fdisk) validateParams() error {
 		f.Params["path"] = f.Params["path"] + ".mia"
 	}
 	return nil
-}
-
-func (f *Fdisk) GetResult() string {
-	//TODO implement me
-	panic("implement me")
 }
 
 func (f *Fdisk) recalculateUnits() int {

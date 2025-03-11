@@ -51,7 +51,7 @@ func (c *CommandStruct) Exec() {
 
 // AppendError logs a runtime error related to this command.
 func (c *CommandStruct) AppendError(msg string) {
-	env.Errors = append(env.Errors, env.RuntimeError{
+	env.AddError(env.RuntimeError{
 		Line:    c.GetLine(),
 		Column:  c.GetColumn(),
 		Command: c.GetType(),
@@ -60,5 +60,5 @@ func (c *CommandStruct) AppendError(msg string) {
 }
 
 func (c *CommandStruct) LogConsole(msg string) {
-	env.CommandLog = append(env.CommandLog, msg)
+	env.AddCommandLog(msg)
 }

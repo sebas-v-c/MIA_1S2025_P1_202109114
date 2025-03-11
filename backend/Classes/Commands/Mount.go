@@ -2,8 +2,11 @@ package Commands
 
 import (
 	"backend/Classes/Interfaces"
+	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"bytes"
 	"errors"
+	"fmt"
 	"path/filepath"
 	"strings"
 )
@@ -34,7 +37,45 @@ func (m *Mount) Exec() {
 		return
 	}
 
-	// TODO: Implement actual mount logic.
+	file, err := Utils.OpenFile(m.Params["path"])
+	if err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+	defer file.Close()
+
+	// read the MBR of the disc file
+	var discMBR Structs.MBR
+	if err := Utils.ReadObject(file, &discMBR, 0); err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+
+	m.LogConsole("=================MOUNT=================")
+	m.LogConsole(fmt.Sprintf("\tSearching for partition '%s'", m.Params["name"]))
+
+	nameBytes := [16]byte{}
+	copy(nameBytes[:], m.Params["name"])
+
+	partitionIndex := -1
+	for i, part := range discMBR.Partitions {
+		if part.Type[0] == 'P' && bytes.Equal(part.Name[:], nameBytes[:]) {
+			partitionIndex = i
+			break
+		}
+	}
+
+	if partitionIndex == -1 {
+		m.AppendError("Partition not found or partition is not a primary partition")
+		return
+	}
+
+	// Here we are checking in the MBR of the disc if the partition is already mounted
+	partition := &discMBR.Partitions[partitionIndex]
+	if partition.Status[0] == '1' {
+		m.AppendError("Partition is already mounted")
+	}
+
 }
 
 // validateParams checks if the required parameters for the MOUNT command are provided.
