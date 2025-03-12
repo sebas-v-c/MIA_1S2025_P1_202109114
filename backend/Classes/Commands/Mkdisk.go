@@ -65,6 +65,7 @@ func (m *Mkdisk) Exec() {
 	}
 	// Write MBR to the file
 	newMBR := Structs.NewMBR(int32(totalSize), m.getFit())
+	//fmt.Println("MKDISK signature ", newMBR.Signature)
 	if err := Utils.WriteObject(file, newMBR, 0); err != nil {
 		m.AppendError(err.Error())
 		return

@@ -52,6 +52,7 @@ func (m *Mount) Exec() {
 		return
 	}
 
+	//fmt.Println("MOUNT reading MBR signature: ", discMBR.Signature)
 	nameBytes := [16]byte{}
 	copy(nameBytes[:], m.Params["name"])
 
@@ -63,8 +64,8 @@ func (m *Mount) Exec() {
 		}
 	}
 
-	m.LogConsole("=================MOUNT=================")
-	m.LogConsole(fmt.Sprintf("\tMounting partition '%s' at '%s'...", m.Params["name"], m.Params["path"]))
+	consoleString := "=================MOUNT=================\n"
+	consoleString += fmt.Sprintf("Mounting partition '%s' at '%s'...\n", m.Params["name"], m.Params["path"])
 	if partitionIndex == -1 {
 		m.AppendError("Partition not found or partition is not a primary partition")
 		return
@@ -89,15 +90,16 @@ func (m *Mount) Exec() {
 		DiscTag:       rune(partitionId[3]),
 	})
 
-	if err := Utils.WriteObject(file, &mbrPartition, 0); err != nil {
+	if err := Utils.WriteObject(file, discMBR, 0); err != nil {
 		m.AppendError(err.Error())
 		return
 	}
 
-	m.LogConsole(fmt.Sprintf("\tPartition '%s' has been mounted with ID: '%s'", mbrPartition.Name, mbrPartition.Id))
-	m.LogConsole("\tUpdated MBR:\n" + mbrPartition.ToString())
-	m.LogConsole(m.printMountedPartitions())
-	m.LogConsole("=================END MOUNT=================")
+	consoleString += fmt.Sprintf("Partition '%s' has been mounted with ID: '%s'\n", mbrPartition.Name, mbrPartition.Id)
+	consoleString += "Updated MBR:\n\t" + mbrPartition.ToString() + "\n"
+	consoleString += m.printMountedPartitions() + "\n"
+	consoleString += "=================END MOUNT================="
+	m.LogConsole(consoleString)
 }
 
 // validateParams checks if the required parameters for the MOUNT command are provided.
@@ -131,7 +133,8 @@ func (m *Mount) generatePartitionId(signature int32) [4]byte {
 	var id [4]byte
 	copy(id[:], "14")
 
-	discPartitionCount := 1
+	//fmt.Println("MOUNT Operating MBR signature: ", signature)
+	discPartitionCount := '0'
 	lastDiscTag := 'A'
 	partitionDiscTag := 'A'
 	for _, part := range env.GetPartitions() {
@@ -145,7 +148,7 @@ func (m *Mount) generatePartitionId(signature int32) [4]byte {
 	}
 	id[2] = byte(discPartitionCount + 1)
 	id[3] = byte(partitionDiscTag)
-	if discPartitionCount == 1 {
+	if discPartitionCount == '0' && len(env.GetPartitions()) != 0 {
 		id[3] = byte(lastDiscTag + 1)
 	}
 	return id

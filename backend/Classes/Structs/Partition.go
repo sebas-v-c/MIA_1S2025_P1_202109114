@@ -26,7 +26,7 @@ func NewPartition(status, type_, fit [1]byte, start, size int32, name [16]byte, 
 }
 
 func (p *Partition) ToString() string {
-	return fmt.Sprintf("Start: %d, Status: %c, Size: %d, Name: %s", p.Start, p.Status, p.Size, p.Name)
+	return fmt.Sprintf("Start: %d, Status: %c, Size: %d, Name: %s, Type: %s, Fit: %s, ID: %s, Correlative: %d", p.Start, p.Status[:], p.Size, p.Name, p.Type, p.Fit, p.Id[:], p.Correlative)
 }
 
 type MountedPartition struct {
@@ -36,5 +36,5 @@ type MountedPartition struct {
 }
 
 func (m *MountedPartition) ToString() string {
-	return fmt.Sprintf("\tPartition:\n\t%s\n\tDisc Signature: %d, Disc Tag: %s", m.Partition.ToString(), m.DiscSignature, m.DiscTag)
+	return fmt.Sprintf("\tPartition:\n\t\t%s\n\t\tDisc Signature: %d, Disc Tag: %c", m.Partition.ToString(), m.DiscSignature, m.DiscTag)
 }

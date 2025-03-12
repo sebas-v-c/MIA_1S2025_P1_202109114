@@ -187,6 +187,7 @@ func (f *Fdisk) Exec() {
 	}
 
 	// Send consoles
+	//fmt.Println("FDISK Signature: ", updatedMBR.Signature)
 	consoleString += "Updated MBR:\n" + updatedMBR.ToString() + "\n=================END FDISK================="
 	env.AddCommandLog(consoleString)
 	defer file.Close()
