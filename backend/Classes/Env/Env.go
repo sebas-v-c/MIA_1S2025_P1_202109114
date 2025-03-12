@@ -18,7 +18,7 @@ type RuntimeError struct {
 var (
 	Errors            []*RuntimeError
 	CommandLogs       []*string
-	MountedPartitions []*Structs.Partition
+	MountedPartitions []*Structs.MountedPartition
 	mu                sync.Mutex // Mutex for thread safety
 )
 
@@ -51,17 +51,17 @@ func GetCommandLogs() []*string {
 }
 
 // AddPartition safely adds a partition to the MountedPartitions list.
-func AddPartition(p *Structs.Partition) {
+func AddPartition(p *Structs.MountedPartition) {
 	mu.Lock()
 	defer mu.Unlock()
 	MountedPartitions = append(MountedPartitions, p)
 }
 
 // GetPartitions returns a copy of the MountedPartitions list (to prevent race conditions).
-func GetPartitions() []*Structs.Partition {
+func GetPartitions() []*Structs.MountedPartition {
 	mu.Lock()
 	defer mu.Unlock()
-	return append([]*Structs.Partition{}, MountedPartitions...)
+	return append([]*Structs.MountedPartition{}, MountedPartitions...)
 }
 
 // CleanConsole resets the global state safely.

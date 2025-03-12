@@ -1,6 +1,7 @@
 package Commands
 
 import (
+	env "backend/Classes/Env"
 	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
@@ -51,9 +52,6 @@ func (m *Mount) Exec() {
 		return
 	}
 
-	m.LogConsole("=================MOUNT=================")
-	m.LogConsole(fmt.Sprintf("\tSearching for partition '%s'", m.Params["name"]))
-
 	nameBytes := [16]byte{}
 	copy(nameBytes[:], m.Params["name"])
 
@@ -65,17 +63,41 @@ func (m *Mount) Exec() {
 		}
 	}
 
+	m.LogConsole("=================MOUNT=================")
+	m.LogConsole(fmt.Sprintf("\tMounting partition '%s' at '%s'...", m.Params["name"], m.Params["path"]))
 	if partitionIndex == -1 {
 		m.AppendError("Partition not found or partition is not a primary partition")
 		return
 	}
 
 	// Here we are checking in the MBR of the disc if the partition is already mounted
-	partition := &discMBR.Partitions[partitionIndex]
-	if partition.Status[0] == '1' {
+	// also checking if the partition is mounted in RAM
+	mbrPartition := &discMBR.Partitions[partitionIndex]
+	if mbrPartition.Status[0] == '1' || m.isPartitionRAMMounted(nameBytes, discMBR.Signature) {
 		m.AppendError("Partition is already mounted")
+		return
 	}
 
+	partitionId := m.generatePartitionId(discMBR.Signature)
+	// change status of the partition from unmounted (0) to mounted (1) and change the value of the id
+	mbrPartition.Status = [1]byte{'1'}
+	mbrPartition.Id = partitionId
+	// Add the partition to the loaded in ram partitions
+	env.AddPartition(&Structs.MountedPartition{
+		Partition:     *mbrPartition,
+		DiscSignature: discMBR.Signature,
+		DiscTag:       rune(partitionId[3]),
+	})
+
+	if err := Utils.WriteObject(file, &mbrPartition, 0); err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+
+	m.LogConsole(fmt.Sprintf("\tPartition '%s' has been mounted with ID: '%s'", mbrPartition.Name, mbrPartition.Id))
+	m.LogConsole("\tUpdated MBR:\n" + mbrPartition.ToString())
+	m.LogConsole(m.printMountedPartitions())
+	m.LogConsole("=================END MOUNT=================")
 }
 
 // validateParams checks if the required parameters for the MOUNT command are provided.
@@ -93,4 +115,47 @@ func (m *Mount) validateParams() error {
 	}
 
 	return nil
+}
+
+func (m *Mount) isPartitionRAMMounted(name [16]byte, mbrSignature int32) bool {
+	for _, part := range env.GetPartitions() {
+		if part.DiscSignature == mbrSignature && bytes.Equal(part.Name[:], name[:]) {
+			return true
+		}
+	}
+	return false
+}
+
+// generateDiscId generates a new disc ID based on the last two digits of my student ID -->202109114<--
+func (m *Mount) generatePartitionId(signature int32) [4]byte {
+	var id [4]byte
+	copy(id[:], "14")
+
+	discPartitionCount := 1
+	lastDiscTag := 'A'
+	partitionDiscTag := 'A'
+	for _, part := range env.GetPartitions() {
+		if lastDiscTag < part.DiscTag {
+			lastDiscTag = part.DiscTag
+		}
+		if part.DiscSignature == signature {
+			discPartitionCount++
+			partitionDiscTag = part.DiscTag
+		}
+	}
+	id[2] = byte(discPartitionCount + 1)
+	id[3] = byte(partitionDiscTag)
+	if discPartitionCount == 1 {
+		id[3] = byte(lastDiscTag + 1)
+	}
+	return id
+}
+
+func (m *Mount) printMountedPartitions() string {
+	var mountedParts = "Mounted Partitions:\n"
+
+	for _, part := range env.GetPartitions() {
+		mountedParts += part.ToString() + "\n"
+	}
+	return mountedParts
 }

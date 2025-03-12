@@ -1,6 +1,15 @@
-mkdisk -size=500 -unit=K -fit=BF -path=/home/zibas/Temp/MIA/mount_disk.bin
-fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk.bin" -type=p -name="Particion1"
-fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk.bin" -type=p -name="Particion2"
-mount -path=/home/zibas/Temp/MIA/mount_disk.bin -name="particion1"
-mount -path=/home/zibas/Temp/MIA/mount_disk.bin -name="particion2"
-unmount -id=""
+# Testing mounting the file correctly
+mkdisk -size=500 -unit=K -fit=BF -path=/home/zibas/Temp/MIA/mount_disk1.bin
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk1.bin" -type=p -name="Particion1"
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk1.bin" -type=p -name="Particion2"
+mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="particion1"
+mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="particion2"
+
+#unmount -id=""
+
+# Testing mounting partitions from a second disc correctly
+mkdisk -size=500 -unit=K -fit=BF -path=/home/zibas/Temp/MIA/mount_disk2.bin
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk2.bin" -type=p -name="Particion1"
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk2.bin" -type=p -name="Particion2"
+mount -path=/home/zibas/Temp/MIA/mount_disk2.bin -name="particion1"
+mount -path=/home/zibas/Temp/MIA/mount_disk2.bin -name="particion2"
