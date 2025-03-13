@@ -47,6 +47,9 @@ type ParserListener interface {
 	// EnterMountparam is called when entering the mountparam production.
 	EnterMountparam(c *MountparamContext)
 
+	// EnterMounted is called when entering the mounted production.
+	EnterMounted(c *MountedContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -85,4 +88,7 @@ type ParserListener interface {
 
 	// ExitMountparam is called when exiting the mountparam production.
 	ExitMountparam(c *MountparamContext)
+
+	// ExitMounted is called when exiting the mounted production.
+	ExitMounted(c *MountedContext)
 }

@@ -56,3 +56,45 @@ func (s *BaseParserListener) EnterMkdiskparam(ctx *MkdiskparamContext) {}
 
 // ExitMkdiskparam is called when production mkdiskparam is exited.
 func (s *BaseParserListener) ExitMkdiskparam(ctx *MkdiskparamContext) {}
+
+// EnterRmdisk is called when production rmdisk is entered.
+func (s *BaseParserListener) EnterRmdisk(ctx *RmdiskContext) {}
+
+// ExitRmdisk is called when production rmdisk is exited.
+func (s *BaseParserListener) ExitRmdisk(ctx *RmdiskContext) {}
+
+// EnterFdisk is called when production fdisk is entered.
+func (s *BaseParserListener) EnterFdisk(ctx *FdiskContext) {}
+
+// ExitFdisk is called when production fdisk is exited.
+func (s *BaseParserListener) ExitFdisk(ctx *FdiskContext) {}
+
+// EnterFdiskparams is called when production fdiskparams is entered.
+func (s *BaseParserListener) EnterFdiskparams(ctx *FdiskparamsContext) {}
+
+// ExitFdiskparams is called when production fdiskparams is exited.
+func (s *BaseParserListener) ExitFdiskparams(ctx *FdiskparamsContext) {}
+
+// EnterFdiskparam is called when production fdiskparam is entered.
+func (s *BaseParserListener) EnterFdiskparam(ctx *FdiskparamContext) {}
+
+// ExitFdiskparam is called when production fdiskparam is exited.
+func (s *BaseParserListener) ExitFdiskparam(ctx *FdiskparamContext) {}
+
+// EnterMount is called when production mount is entered.
+func (s *BaseParserListener) EnterMount(ctx *MountContext) {}
+
+// ExitMount is called when production mount is exited.
+func (s *BaseParserListener) ExitMount(ctx *MountContext) {}
+
+// EnterMountparams is called when production mountparams is entered.
+func (s *BaseParserListener) EnterMountparams(ctx *MountparamsContext) {}
+
+// ExitMountparams is called when production mountparams is exited.
+func (s *BaseParserListener) ExitMountparams(ctx *MountparamsContext) {}
+
+// EnterMountparam is called when production mountparam is entered.
+func (s *BaseParserListener) EnterMountparam(ctx *MountparamContext) {}
+
+// ExitMountparam is called when production mountparam is exited.
+func (s *BaseParserListener) ExitMountparam(ctx *MountparamContext) {}

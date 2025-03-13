@@ -31,6 +31,7 @@ command returns[interfaces.Command result]:
     |   c2 = rmdisk     {$result = $c2.result}
     |   c3 = fdisk      {$result = $c3.result}
     |   c4 = mount      {$result = $c4.result}
+    |   c5 = mounted    {$result = $c5.result}
     ;
 
 // =============== MKDISK ===============
@@ -92,4 +93,24 @@ mountparams returns[map[string]string result]:
 mountparam returns[[]string result]:
         RW_path TK_equ v1 = TK_path     {$result = []string{"path", strings.Trim($v1.text, "\"")}}
     |   RW_name TK_equ v2 = TK_id       {$result = []string{"name", strings.Trim($v2.text, "\"")}}
+    ;
+
+// =============== MOUNTED ===============
+mounted returns[*commands.Mounted result]:
+        m = RW_mounted  {$result = commands.NewMounted($m.line, $m.pos)}
+        ;
+// =============== MKFS ===============
+mkfs returns[*commands.Mkfs result]:
+        m = RW_mkfs p = mkfsparams      {$result = commands.NewMkfs($m.line, $m.pos, $p.result)}
+    |   m = RW_mkfs                     {$result = commands.NewMkfs($m.line, $m.pos, map[string]string{})}
+    ;
+
+mkfsparams returns[map[string]string result]:
+        l = mkfsparams p = mkfsparam    {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = mkfsparam                   {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+mkfsparam returns[[]string result]:
+        RW_type TK_equ v1 = TK_ftype    {$result = []string{"type", $v1.text}}
+    |   RW_id TK_equ v2 = TK_ext        {$result = []string{"id", $v2.text}}
     ;

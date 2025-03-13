@@ -98,3 +98,9 @@ func (s *BaseParserListener) EnterMountparam(ctx *MountparamContext) {}
 
 // ExitMountparam is called when production mountparam is exited.
 func (s *BaseParserListener) ExitMountparam(ctx *MountparamContext) {}
+
+// EnterMounted is called when production mounted is entered.
+func (s *BaseParserListener) EnterMounted(ctx *MountedContext) {}
+
+// ExitMounted is called when production mounted is exited.
+func (s *BaseParserListener) ExitMounted(ctx *MountedContext) {}

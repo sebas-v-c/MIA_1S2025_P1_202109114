@@ -97,7 +97,7 @@ func (m *Mount) Exec() {
 
 	consoleString += fmt.Sprintf("Partition '%s' has been mounted with ID: '%s'\n", mbrPartition.Name, mbrPartition.Id)
 	consoleString += "Updated MBR:\n\t" + mbrPartition.ToString() + "\n"
-	consoleString += m.printMountedPartitions() + "\n"
+	//consoleString += m.printMountedPartitions() + "\n"
 	consoleString += "=================END MOUNT================="
 	m.LogConsole(consoleString)
 }

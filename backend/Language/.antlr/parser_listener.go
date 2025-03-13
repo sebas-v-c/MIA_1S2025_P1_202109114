@@ -4,6 +4,7 @@ package parser // Parser
 
 import "github.com/antlr4-go/antlr/v4"
 
+
 // ParserListener is a complete listener for a parse tree produced by ParserParser.
 type ParserListener interface {
 	antlr.ParseTreeListener
@@ -26,6 +27,27 @@ type ParserListener interface {
 	// EnterMkdiskparam is called when entering the mkdiskparam production.
 	EnterMkdiskparam(c *MkdiskparamContext)
 
+	// EnterRmdisk is called when entering the rmdisk production.
+	EnterRmdisk(c *RmdiskContext)
+
+	// EnterFdisk is called when entering the fdisk production.
+	EnterFdisk(c *FdiskContext)
+
+	// EnterFdiskparams is called when entering the fdiskparams production.
+	EnterFdiskparams(c *FdiskparamsContext)
+
+	// EnterFdiskparam is called when entering the fdiskparam production.
+	EnterFdiskparam(c *FdiskparamContext)
+
+	// EnterMount is called when entering the mount production.
+	EnterMount(c *MountContext)
+
+	// EnterMountparams is called when entering the mountparams production.
+	EnterMountparams(c *MountparamsContext)
+
+	// EnterMountparam is called when entering the mountparam production.
+	EnterMountparam(c *MountparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -43,4 +65,25 @@ type ParserListener interface {
 
 	// ExitMkdiskparam is called when exiting the mkdiskparam production.
 	ExitMkdiskparam(c *MkdiskparamContext)
+
+	// ExitRmdisk is called when exiting the rmdisk production.
+	ExitRmdisk(c *RmdiskContext)
+
+	// ExitFdisk is called when exiting the fdisk production.
+	ExitFdisk(c *FdiskContext)
+
+	// ExitFdiskparams is called when exiting the fdiskparams production.
+	ExitFdiskparams(c *FdiskparamsContext)
+
+	// ExitFdiskparam is called when exiting the fdiskparam production.
+	ExitFdiskparam(c *FdiskparamContext)
+
+	// ExitMount is called when exiting the mount production.
+	ExitMount(c *MountContext)
+
+	// ExitMountparams is called when exiting the mountparams production.
+	ExitMountparams(c *MountparamsContext)
+
+	// ExitMountparam is called when exiting the mountparam production.
+	ExitMountparam(c *MountparamContext)
 }

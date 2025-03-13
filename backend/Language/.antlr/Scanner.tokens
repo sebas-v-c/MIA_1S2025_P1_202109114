@@ -41,12 +41,13 @@ TK_type=40
 TK_fs=41
 TK_number=42
 TK_id=43
-TK_path=44
-TK_equ=45
-TK_sym=46
-COMMENTARY=47
-NEWLINE=48
-UNUSED_=49
+TK_ext=44
+TK_path=45
+TK_equ=46
+TK_sym=47
+COMMENTARY=48
+NEWLINE=49
+UNUSED_=50
 'mkdisk'=1
 'rmdisk'=2
 'fdisk'=3
@@ -64,5 +65,5 @@ UNUSED_=49
 'mkfile'=15
 'mkdir'=16
 'rep'=17
-'='=45
-'\n'=48
+'='=46
+'\n'=49

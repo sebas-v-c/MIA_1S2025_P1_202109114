@@ -62,6 +62,7 @@ TK_fit         : 'BF' | 'FF' | 'WF'       ;
 TK_unit        : 'B' | 'K' | 'M'          ;
 TK_type        : 'P' | 'E' | 'L'          ;
 TK_fs          : '2fs' | '3fs'            ;
+TK_ftype       : 'full'                   ;
 TK_number      : INTEGER                  ;
 TK_id          : ID1 | '"'ID1'"'          ;
 TK_ext         : EXT                      ;
