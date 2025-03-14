@@ -8,5 +8,5 @@ type Content struct {
 }
 
 func (c *Content) ToString() string {
-	return fmt.Sprintf(`Name`)
+	return fmt.Sprintf(`Name: %s, Inode: %d`, string(c.Name[:]), c.Inode)
 }
