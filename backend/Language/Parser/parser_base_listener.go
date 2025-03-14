@@ -104,3 +104,21 @@ func (s *BaseParserListener) EnterMounted(ctx *MountedContext) {}
 
 // ExitMounted is called when production mounted is exited.
 func (s *BaseParserListener) ExitMounted(ctx *MountedContext) {}
+
+// EnterMkfs is called when production mkfs is entered.
+func (s *BaseParserListener) EnterMkfs(ctx *MkfsContext) {}
+
+// ExitMkfs is called when production mkfs is exited.
+func (s *BaseParserListener) ExitMkfs(ctx *MkfsContext) {}
+
+// EnterMkfsparams is called when production mkfsparams is entered.
+func (s *BaseParserListener) EnterMkfsparams(ctx *MkfsparamsContext) {}
+
+// ExitMkfsparams is called when production mkfsparams is exited.
+func (s *BaseParserListener) ExitMkfsparams(ctx *MkfsparamsContext) {}
+
+// EnterMkfsparam is called when production mkfsparam is entered.
+func (s *BaseParserListener) EnterMkfsparam(ctx *MkfsparamContext) {}
+
+// ExitMkfsparam is called when production mkfsparam is exited.
+func (s *BaseParserListener) ExitMkfsparam(ctx *MkfsparamContext) {}

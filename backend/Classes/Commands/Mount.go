@@ -88,6 +88,7 @@ func (m *Mount) Exec() {
 		Partition:     *mbrPartition,
 		DiscSignature: discMBR.Signature,
 		DiscTag:       rune(partitionId[3]),
+		Path:          m.Params["path"],
 	})
 
 	if err := Utils.WriteObject(file, discMBR, 0); err != nil {

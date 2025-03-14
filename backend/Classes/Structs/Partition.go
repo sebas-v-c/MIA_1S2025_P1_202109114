@@ -33,6 +33,7 @@ type MountedPartition struct {
 	Partition
 	DiscSignature int32
 	DiscTag       rune
+	Path          string
 }
 
 func (m *MountedPartition) ToString() string {

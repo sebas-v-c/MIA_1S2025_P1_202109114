@@ -50,6 +50,15 @@ type ParserListener interface {
 	// EnterMounted is called when entering the mounted production.
 	EnterMounted(c *MountedContext)
 
+	// EnterMkfs is called when entering the mkfs production.
+	EnterMkfs(c *MkfsContext)
+
+	// EnterMkfsparams is called when entering the mkfsparams production.
+	EnterMkfsparams(c *MkfsparamsContext)
+
+	// EnterMkfsparam is called when entering the mkfsparam production.
+	EnterMkfsparam(c *MkfsparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -91,4 +100,13 @@ type ParserListener interface {
 
 	// ExitMounted is called when exiting the mounted production.
 	ExitMounted(c *MountedContext)
+
+	// ExitMkfs is called when exiting the mkfs production.
+	ExitMkfs(c *MkfsContext)
+
+	// ExitMkfsparams is called when exiting the mkfsparams production.
+	ExitMkfsparams(c *MkfsparamsContext)
+
+	// ExitMkfsparam is called when exiting the mkfsparam production.
+	ExitMkfsparam(c *MkfsparamContext)
 }

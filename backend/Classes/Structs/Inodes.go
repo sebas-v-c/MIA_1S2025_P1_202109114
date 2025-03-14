@@ -3,15 +3,15 @@ package Structs
 import "fmt"
 
 type Inode struct {
-	UID   int32
-	GID   int32
-	Size  int32
-	ATime [17]byte
-	CTime [17]byte
-	MTime [17]byte
-	Block [15]int32
-	Type  [1]byte
-	Perm  [3]byte
+	UID    int32
+	GID    int32
+	Size   int32
+	ATime  [17]byte
+	CTime  [17]byte
+	MTime  [17]byte
+	IBlock [15]int32
+	Type   [1]byte
+	Perm   [3]byte
 }
 
 func (i *Inode) ToString() string {
@@ -30,7 +30,7 @@ i_Perm %v`,
 		i.ATime,
 		i.CTime,
 		i.MTime,
-		i.Block,
+		i.IBlock,
 		i.Type,
 		i.Perm)
 }
