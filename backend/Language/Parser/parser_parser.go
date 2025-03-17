@@ -43,7 +43,7 @@ func parserParserInit() {
 		"'cat'", "'login'", "'logout'", "'mkgrp'", "'rmgrp'", "'mkusr'", "'rmusr'",
 		"'chgrp'", "'mkfile'", "'mkdir'", "'rep'", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"'full'", "", "", "", "", "'='", "", "", "'\\n'",
+		"'full'", "", "", "", "", "", "'='", "", "", "'\\n'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "RW_mkdisk", "RW_rmdisk", "RW_fdisk", "RW_mount", "RW_mounted",
@@ -53,114 +53,135 @@ func parserParserInit() {
 		"RW_delete", "RW_add", "RW_id", "RW_fs", "RW_user", "RW_pass", "RW_grp",
 		"RW_path", "RW_r", "RW_cont", "RW_fileN", "RW_destino", "RW_ugo", "RW_ruta",
 		"TK_fit", "TK_unit", "TK_type", "TK_fs", "TK_ftype", "TK_number", "TK_id",
-		"TK_ext", "TK_path", "TK_equ", "TK_sym", "COMMENTARY", "NEWLINE", "UNUSED_",
+		"TK_qid", "TK_ext", "TK_path", "TK_equ", "TK_sym", "COMMENTARY", "NEWLINE",
+		"UNUSED_",
 	}
 	staticData.RuleNames = []string{
 		"init", "commands", "command", "mkdisk", "mkdiskparams", "mkdiskparam",
 		"rmdisk", "fdisk", "fdiskparams", "fdiskparam", "mount", "mountparams",
-		"mountparam", "mounted", "mkfs", "mkfsparams", "mkfsparam",
+		"mountparam", "mounted", "mkfs", "mkfsparams", "mkfsparam", "login",
+		"loginparams", "loginparam",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 51, 236, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 52, 280, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
-		2, 16, 7, 16, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 0, 41, 8, 0, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 51, 8, 1, 10, 1, 12, 1,
-		54, 9, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1,
-		2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 74, 8, 2, 1, 3, 1, 3,
-		1, 3, 1, 3, 1, 3, 1, 3, 3, 3, 82, 8, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
-		4, 1, 4, 1, 4, 5, 4, 92, 8, 4, 10, 4, 12, 4, 95, 9, 4, 1, 5, 1, 5, 1, 5,
-		1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5,
-		1, 5, 3, 5, 113, 8, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 3, 6,
-		122, 8, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7, 130, 8, 7, 1, 8, 1,
-		8, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 5, 8, 140, 8, 8, 10, 8, 12, 8, 143,
-		9, 8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9,
+		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 1, 0, 1, 0, 1,
+		0, 1, 0, 1, 0, 1, 0, 3, 0, 47, 8, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 5, 1, 57, 8, 1, 10, 1, 12, 1, 60, 9, 1, 1, 2, 1, 2, 1, 2, 1,
+		2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1,
+		2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 83, 8, 2, 1, 3, 1, 3, 1, 3, 1, 3,
+		1, 3, 1, 3, 3, 3, 91, 8, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 5, 4, 101, 8, 4, 10, 4, 12, 4, 104, 9, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1,
+		5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3,
+		5, 122, 8, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 3, 6, 131, 8, 6,
+		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7, 139, 8, 7, 1, 8, 1, 8, 1, 8,
+		1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 5, 8, 149, 8, 8, 10, 8, 12, 8, 152, 9, 8,
 		1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9,
-		1, 9, 3, 9, 169, 8, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 3, 10,
-		177, 8, 10, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 5,
-		11, 187, 8, 11, 10, 11, 12, 11, 190, 9, 11, 1, 12, 1, 12, 1, 12, 1, 12,
-		1, 12, 1, 12, 1, 12, 1, 12, 3, 12, 200, 8, 12, 1, 13, 1, 13, 1, 13, 1,
-		14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 3, 14, 211, 8, 14, 1, 15, 1, 15,
-		1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 5, 15, 221, 8, 15, 10, 15, 12,
-		15, 224, 9, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16,
-		3, 16, 234, 8, 16, 1, 16, 0, 5, 2, 8, 16, 22, 30, 17, 0, 2, 4, 6, 8, 10,
-		12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 0, 0, 244, 0, 40, 1, 0, 0,
-		0, 2, 42, 1, 0, 0, 0, 4, 73, 1, 0, 0, 0, 6, 81, 1, 0, 0, 0, 8, 83, 1, 0,
-		0, 0, 10, 112, 1, 0, 0, 0, 12, 121, 1, 0, 0, 0, 14, 129, 1, 0, 0, 0, 16,
-		131, 1, 0, 0, 0, 18, 168, 1, 0, 0, 0, 20, 176, 1, 0, 0, 0, 22, 178, 1,
-		0, 0, 0, 24, 199, 1, 0, 0, 0, 26, 201, 1, 0, 0, 0, 28, 210, 1, 0, 0, 0,
-		30, 212, 1, 0, 0, 0, 32, 233, 1, 0, 0, 0, 34, 35, 3, 2, 1, 0, 35, 36, 5,
-		0, 0, 1, 36, 37, 6, 0, -1, 0, 37, 41, 1, 0, 0, 0, 38, 39, 5, 0, 0, 1, 39,
-		41, 6, 0, -1, 0, 40, 34, 1, 0, 0, 0, 40, 38, 1, 0, 0, 0, 41, 1, 1, 0, 0,
-		0, 42, 43, 6, 1, -1, 0, 43, 44, 3, 4, 2, 0, 44, 45, 6, 1, -1, 0, 45, 52,
-		1, 0, 0, 0, 46, 47, 10, 2, 0, 0, 47, 48, 3, 4, 2, 0, 48, 49, 6, 1, -1,
-		0, 49, 51, 1, 0, 0, 0, 50, 46, 1, 0, 0, 0, 51, 54, 1, 0, 0, 0, 52, 50,
-		1, 0, 0, 0, 52, 53, 1, 0, 0, 0, 53, 3, 1, 0, 0, 0, 54, 52, 1, 0, 0, 0,
-		55, 56, 3, 6, 3, 0, 56, 57, 6, 2, -1, 0, 57, 74, 1, 0, 0, 0, 58, 59, 3,
-		12, 6, 0, 59, 60, 6, 2, -1, 0, 60, 74, 1, 0, 0, 0, 61, 62, 3, 14, 7, 0,
-		62, 63, 6, 2, -1, 0, 63, 74, 1, 0, 0, 0, 64, 65, 3, 20, 10, 0, 65, 66,
-		6, 2, -1, 0, 66, 74, 1, 0, 0, 0, 67, 68, 3, 26, 13, 0, 68, 69, 6, 2, -1,
-		0, 69, 74, 1, 0, 0, 0, 70, 71, 3, 28, 14, 0, 71, 72, 6, 2, -1, 0, 72, 74,
-		1, 0, 0, 0, 73, 55, 1, 0, 0, 0, 73, 58, 1, 0, 0, 0, 73, 61, 1, 0, 0, 0,
-		73, 64, 1, 0, 0, 0, 73, 67, 1, 0, 0, 0, 73, 70, 1, 0, 0, 0, 74, 5, 1, 0,
-		0, 0, 75, 76, 5, 1, 0, 0, 76, 77, 3, 8, 4, 0, 77, 78, 6, 3, -1, 0, 78,
-		82, 1, 0, 0, 0, 79, 80, 5, 1, 0, 0, 80, 82, 6, 3, -1, 0, 81, 75, 1, 0,
-		0, 0, 81, 79, 1, 0, 0, 0, 82, 7, 1, 0, 0, 0, 83, 84, 6, 4, -1, 0, 84, 85,
-		3, 10, 5, 0, 85, 86, 6, 4, -1, 0, 86, 93, 1, 0, 0, 0, 87, 88, 10, 2, 0,
-		0, 88, 89, 3, 10, 5, 0, 89, 90, 6, 4, -1, 0, 90, 92, 1, 0, 0, 0, 91, 87,
-		1, 0, 0, 0, 92, 95, 1, 0, 0, 0, 93, 91, 1, 0, 0, 0, 93, 94, 1, 0, 0, 0,
-		94, 9, 1, 0, 0, 0, 95, 93, 1, 0, 0, 0, 96, 97, 5, 18, 0, 0, 97, 98, 5,
-		47, 0, 0, 98, 99, 5, 43, 0, 0, 99, 113, 6, 5, -1, 0, 100, 101, 5, 19, 0,
-		0, 101, 102, 5, 47, 0, 0, 102, 103, 5, 38, 0, 0, 103, 113, 6, 5, -1, 0,
-		104, 105, 5, 20, 0, 0, 105, 106, 5, 47, 0, 0, 106, 107, 5, 39, 0, 0, 107,
-		113, 6, 5, -1, 0, 108, 109, 5, 31, 0, 0, 109, 110, 5, 47, 0, 0, 110, 111,
-		5, 46, 0, 0, 111, 113, 6, 5, -1, 0, 112, 96, 1, 0, 0, 0, 112, 100, 1, 0,
-		0, 0, 112, 104, 1, 0, 0, 0, 112, 108, 1, 0, 0, 0, 113, 11, 1, 0, 0, 0,
-		114, 115, 5, 2, 0, 0, 115, 116, 5, 31, 0, 0, 116, 117, 5, 47, 0, 0, 117,
-		118, 5, 46, 0, 0, 118, 122, 6, 6, -1, 0, 119, 120, 5, 2, 0, 0, 120, 122,
-		6, 6, -1, 0, 121, 114, 1, 0, 0, 0, 121, 119, 1, 0, 0, 0, 122, 13, 1, 0,
-		0, 0, 123, 124, 5, 3, 0, 0, 124, 125, 3, 16, 8, 0, 125, 126, 6, 7, -1,
-		0, 126, 130, 1, 0, 0, 0, 127, 128, 5, 3, 0, 0, 128, 130, 6, 7, -1, 0, 129,
-		123, 1, 0, 0, 0, 129, 127, 1, 0, 0, 0, 130, 15, 1, 0, 0, 0, 131, 132, 6,
-		8, -1, 0, 132, 133, 3, 18, 9, 0, 133, 134, 6, 8, -1, 0, 134, 141, 1, 0,
-		0, 0, 135, 136, 10, 2, 0, 0, 136, 137, 3, 18, 9, 0, 137, 138, 6, 8, -1,
-		0, 138, 140, 1, 0, 0, 0, 139, 135, 1, 0, 0, 0, 140, 143, 1, 0, 0, 0, 141,
-		139, 1, 0, 0, 0, 141, 142, 1, 0, 0, 0, 142, 17, 1, 0, 0, 0, 143, 141, 1,
-		0, 0, 0, 144, 145, 5, 18, 0, 0, 145, 146, 5, 47, 0, 0, 146, 147, 5, 43,
-		0, 0, 147, 169, 6, 9, -1, 0, 148, 149, 5, 20, 0, 0, 149, 150, 5, 47, 0,
-		0, 150, 151, 5, 39, 0, 0, 151, 169, 6, 9, -1, 0, 152, 153, 5, 31, 0, 0,
-		153, 154, 5, 47, 0, 0, 154, 155, 5, 46, 0, 0, 155, 169, 6, 9, -1, 0, 156,
-		157, 5, 23, 0, 0, 157, 158, 5, 47, 0, 0, 158, 159, 5, 40, 0, 0, 159, 169,
-		6, 9, -1, 0, 160, 161, 5, 19, 0, 0, 161, 162, 5, 47, 0, 0, 162, 163, 5,
-		38, 0, 0, 163, 169, 6, 9, -1, 0, 164, 165, 5, 22, 0, 0, 165, 166, 5, 47,
-		0, 0, 166, 167, 5, 44, 0, 0, 167, 169, 6, 9, -1, 0, 168, 144, 1, 0, 0,
-		0, 168, 148, 1, 0, 0, 0, 168, 152, 1, 0, 0, 0, 168, 156, 1, 0, 0, 0, 168,
-		160, 1, 0, 0, 0, 168, 164, 1, 0, 0, 0, 169, 19, 1, 0, 0, 0, 170, 171, 5,
-		4, 0, 0, 171, 172, 3, 22, 11, 0, 172, 173, 6, 10, -1, 0, 173, 177, 1, 0,
-		0, 0, 174, 175, 5, 4, 0, 0, 175, 177, 6, 10, -1, 0, 176, 170, 1, 0, 0,
-		0, 176, 174, 1, 0, 0, 0, 177, 21, 1, 0, 0, 0, 178, 179, 6, 11, -1, 0, 179,
-		180, 3, 24, 12, 0, 180, 181, 6, 11, -1, 0, 181, 188, 1, 0, 0, 0, 182, 183,
-		10, 2, 0, 0, 183, 184, 3, 24, 12, 0, 184, 185, 6, 11, -1, 0, 185, 187,
-		1, 0, 0, 0, 186, 182, 1, 0, 0, 0, 187, 190, 1, 0, 0, 0, 188, 186, 1, 0,
-		0, 0, 188, 189, 1, 0, 0, 0, 189, 23, 1, 0, 0, 0, 190, 188, 1, 0, 0, 0,
-		191, 192, 5, 31, 0, 0, 192, 193, 5, 47, 0, 0, 193, 194, 5, 46, 0, 0, 194,
-		200, 6, 12, -1, 0, 195, 196, 5, 22, 0, 0, 196, 197, 5, 47, 0, 0, 197, 198,
-		5, 44, 0, 0, 198, 200, 6, 12, -1, 0, 199, 191, 1, 0, 0, 0, 199, 195, 1,
-		0, 0, 0, 200, 25, 1, 0, 0, 0, 201, 202, 5, 5, 0, 0, 202, 203, 6, 13, -1,
-		0, 203, 27, 1, 0, 0, 0, 204, 205, 5, 6, 0, 0, 205, 206, 3, 30, 15, 0, 206,
-		207, 6, 14, -1, 0, 207, 211, 1, 0, 0, 0, 208, 209, 5, 6, 0, 0, 209, 211,
-		6, 14, -1, 0, 210, 204, 1, 0, 0, 0, 210, 208, 1, 0, 0, 0, 211, 29, 1, 0,
-		0, 0, 212, 213, 6, 15, -1, 0, 213, 214, 3, 32, 16, 0, 214, 215, 6, 15,
-		-1, 0, 215, 222, 1, 0, 0, 0, 216, 217, 10, 2, 0, 0, 217, 218, 3, 32, 16,
-		0, 218, 219, 6, 15, -1, 0, 219, 221, 1, 0, 0, 0, 220, 216, 1, 0, 0, 0,
-		221, 224, 1, 0, 0, 0, 222, 220, 1, 0, 0, 0, 222, 223, 1, 0, 0, 0, 223,
-		31, 1, 0, 0, 0, 224, 222, 1, 0, 0, 0, 225, 226, 5, 23, 0, 0, 226, 227,
-		5, 47, 0, 0, 227, 228, 5, 42, 0, 0, 228, 234, 6, 16, -1, 0, 229, 230, 5,
-		26, 0, 0, 230, 231, 5, 47, 0, 0, 231, 232, 5, 44, 0, 0, 232, 234, 6, 16,
-		-1, 0, 233, 225, 1, 0, 0, 0, 233, 229, 1, 0, 0, 0, 234, 33, 1, 0, 0, 0,
-		16, 40, 52, 73, 81, 93, 112, 121, 129, 141, 168, 176, 188, 199, 210, 222,
-		233,
+		1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9,
+		3, 9, 178, 8, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 3, 10, 186,
+		8, 10, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 5, 11, 196,
+		8, 11, 10, 11, 12, 11, 199, 9, 11, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1,
+		12, 1, 12, 1, 12, 3, 12, 209, 8, 12, 1, 13, 1, 13, 1, 13, 1, 14, 1, 14,
+		1, 14, 1, 14, 1, 14, 1, 14, 3, 14, 220, 8, 14, 1, 15, 1, 15, 1, 15, 1,
+		15, 1, 15, 1, 15, 1, 15, 1, 15, 5, 15, 230, 8, 15, 10, 15, 12, 15, 233,
+		9, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 243,
+		8, 16, 1, 17, 1, 17, 1, 17, 1, 17, 1, 17, 1, 17, 3, 17, 251, 8, 17, 1,
+		18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 5, 18, 261, 8, 18,
+		10, 18, 12, 18, 264, 9, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1,
+		19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 3, 19, 278, 8, 19, 1, 19, 0, 6,
+		2, 8, 16, 22, 30, 36, 20, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24,
+		26, 28, 30, 32, 34, 36, 38, 0, 0, 290, 0, 46, 1, 0, 0, 0, 2, 48, 1, 0,
+		0, 0, 4, 82, 1, 0, 0, 0, 6, 90, 1, 0, 0, 0, 8, 92, 1, 0, 0, 0, 10, 121,
+		1, 0, 0, 0, 12, 130, 1, 0, 0, 0, 14, 138, 1, 0, 0, 0, 16, 140, 1, 0, 0,
+		0, 18, 177, 1, 0, 0, 0, 20, 185, 1, 0, 0, 0, 22, 187, 1, 0, 0, 0, 24, 208,
+		1, 0, 0, 0, 26, 210, 1, 0, 0, 0, 28, 219, 1, 0, 0, 0, 30, 221, 1, 0, 0,
+		0, 32, 242, 1, 0, 0, 0, 34, 250, 1, 0, 0, 0, 36, 252, 1, 0, 0, 0, 38, 277,
+		1, 0, 0, 0, 40, 41, 3, 2, 1, 0, 41, 42, 5, 0, 0, 1, 42, 43, 6, 0, -1, 0,
+		43, 47, 1, 0, 0, 0, 44, 45, 5, 0, 0, 1, 45, 47, 6, 0, -1, 0, 46, 40, 1,
+		0, 0, 0, 46, 44, 1, 0, 0, 0, 47, 1, 1, 0, 0, 0, 48, 49, 6, 1, -1, 0, 49,
+		50, 3, 4, 2, 0, 50, 51, 6, 1, -1, 0, 51, 58, 1, 0, 0, 0, 52, 53, 10, 2,
+		0, 0, 53, 54, 3, 4, 2, 0, 54, 55, 6, 1, -1, 0, 55, 57, 1, 0, 0, 0, 56,
+		52, 1, 0, 0, 0, 57, 60, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0,
+		0, 59, 3, 1, 0, 0, 0, 60, 58, 1, 0, 0, 0, 61, 62, 3, 6, 3, 0, 62, 63, 6,
+		2, -1, 0, 63, 83, 1, 0, 0, 0, 64, 65, 3, 12, 6, 0, 65, 66, 6, 2, -1, 0,
+		66, 83, 1, 0, 0, 0, 67, 68, 3, 14, 7, 0, 68, 69, 6, 2, -1, 0, 69, 83, 1,
+		0, 0, 0, 70, 71, 3, 20, 10, 0, 71, 72, 6, 2, -1, 0, 72, 83, 1, 0, 0, 0,
+		73, 74, 3, 26, 13, 0, 74, 75, 6, 2, -1, 0, 75, 83, 1, 0, 0, 0, 76, 77,
+		3, 28, 14, 0, 77, 78, 6, 2, -1, 0, 78, 83, 1, 0, 0, 0, 79, 80, 3, 34, 17,
+		0, 80, 81, 6, 2, -1, 0, 81, 83, 1, 0, 0, 0, 82, 61, 1, 0, 0, 0, 82, 64,
+		1, 0, 0, 0, 82, 67, 1, 0, 0, 0, 82, 70, 1, 0, 0, 0, 82, 73, 1, 0, 0, 0,
+		82, 76, 1, 0, 0, 0, 82, 79, 1, 0, 0, 0, 83, 5, 1, 0, 0, 0, 84, 85, 5, 1,
+		0, 0, 85, 86, 3, 8, 4, 0, 86, 87, 6, 3, -1, 0, 87, 91, 1, 0, 0, 0, 88,
+		89, 5, 1, 0, 0, 89, 91, 6, 3, -1, 0, 90, 84, 1, 0, 0, 0, 90, 88, 1, 0,
+		0, 0, 91, 7, 1, 0, 0, 0, 92, 93, 6, 4, -1, 0, 93, 94, 3, 10, 5, 0, 94,
+		95, 6, 4, -1, 0, 95, 102, 1, 0, 0, 0, 96, 97, 10, 2, 0, 0, 97, 98, 3, 10,
+		5, 0, 98, 99, 6, 4, -1, 0, 99, 101, 1, 0, 0, 0, 100, 96, 1, 0, 0, 0, 101,
+		104, 1, 0, 0, 0, 102, 100, 1, 0, 0, 0, 102, 103, 1, 0, 0, 0, 103, 9, 1,
+		0, 0, 0, 104, 102, 1, 0, 0, 0, 105, 106, 5, 18, 0, 0, 106, 107, 5, 48,
+		0, 0, 107, 108, 5, 43, 0, 0, 108, 122, 6, 5, -1, 0, 109, 110, 5, 19, 0,
+		0, 110, 111, 5, 48, 0, 0, 111, 112, 5, 38, 0, 0, 112, 122, 6, 5, -1, 0,
+		113, 114, 5, 20, 0, 0, 114, 115, 5, 48, 0, 0, 115, 116, 5, 39, 0, 0, 116,
+		122, 6, 5, -1, 0, 117, 118, 5, 31, 0, 0, 118, 119, 5, 48, 0, 0, 119, 120,
+		5, 47, 0, 0, 120, 122, 6, 5, -1, 0, 121, 105, 1, 0, 0, 0, 121, 109, 1,
+		0, 0, 0, 121, 113, 1, 0, 0, 0, 121, 117, 1, 0, 0, 0, 122, 11, 1, 0, 0,
+		0, 123, 124, 5, 2, 0, 0, 124, 125, 5, 31, 0, 0, 125, 126, 5, 48, 0, 0,
+		126, 127, 5, 47, 0, 0, 127, 131, 6, 6, -1, 0, 128, 129, 5, 2, 0, 0, 129,
+		131, 6, 6, -1, 0, 130, 123, 1, 0, 0, 0, 130, 128, 1, 0, 0, 0, 131, 13,
+		1, 0, 0, 0, 132, 133, 5, 3, 0, 0, 133, 134, 3, 16, 8, 0, 134, 135, 6, 7,
+		-1, 0, 135, 139, 1, 0, 0, 0, 136, 137, 5, 3, 0, 0, 137, 139, 6, 7, -1,
+		0, 138, 132, 1, 0, 0, 0, 138, 136, 1, 0, 0, 0, 139, 15, 1, 0, 0, 0, 140,
+		141, 6, 8, -1, 0, 141, 142, 3, 18, 9, 0, 142, 143, 6, 8, -1, 0, 143, 150,
+		1, 0, 0, 0, 144, 145, 10, 2, 0, 0, 145, 146, 3, 18, 9, 0, 146, 147, 6,
+		8, -1, 0, 147, 149, 1, 0, 0, 0, 148, 144, 1, 0, 0, 0, 149, 152, 1, 0, 0,
+		0, 150, 148, 1, 0, 0, 0, 150, 151, 1, 0, 0, 0, 151, 17, 1, 0, 0, 0, 152,
+		150, 1, 0, 0, 0, 153, 154, 5, 18, 0, 0, 154, 155, 5, 48, 0, 0, 155, 156,
+		5, 43, 0, 0, 156, 178, 6, 9, -1, 0, 157, 158, 5, 20, 0, 0, 158, 159, 5,
+		48, 0, 0, 159, 160, 5, 39, 0, 0, 160, 178, 6, 9, -1, 0, 161, 162, 5, 31,
+		0, 0, 162, 163, 5, 48, 0, 0, 163, 164, 5, 47, 0, 0, 164, 178, 6, 9, -1,
+		0, 165, 166, 5, 23, 0, 0, 166, 167, 5, 48, 0, 0, 167, 168, 5, 40, 0, 0,
+		168, 178, 6, 9, -1, 0, 169, 170, 5, 19, 0, 0, 170, 171, 5, 48, 0, 0, 171,
+		172, 5, 38, 0, 0, 172, 178, 6, 9, -1, 0, 173, 174, 5, 22, 0, 0, 174, 175,
+		5, 48, 0, 0, 175, 176, 5, 44, 0, 0, 176, 178, 6, 9, -1, 0, 177, 153, 1,
+		0, 0, 0, 177, 157, 1, 0, 0, 0, 177, 161, 1, 0, 0, 0, 177, 165, 1, 0, 0,
+		0, 177, 169, 1, 0, 0, 0, 177, 173, 1, 0, 0, 0, 178, 19, 1, 0, 0, 0, 179,
+		180, 5, 4, 0, 0, 180, 181, 3, 22, 11, 0, 181, 182, 6, 10, -1, 0, 182, 186,
+		1, 0, 0, 0, 183, 184, 5, 4, 0, 0, 184, 186, 6, 10, -1, 0, 185, 179, 1,
+		0, 0, 0, 185, 183, 1, 0, 0, 0, 186, 21, 1, 0, 0, 0, 187, 188, 6, 11, -1,
+		0, 188, 189, 3, 24, 12, 0, 189, 190, 6, 11, -1, 0, 190, 197, 1, 0, 0, 0,
+		191, 192, 10, 2, 0, 0, 192, 193, 3, 24, 12, 0, 193, 194, 6, 11, -1, 0,
+		194, 196, 1, 0, 0, 0, 195, 191, 1, 0, 0, 0, 196, 199, 1, 0, 0, 0, 197,
+		195, 1, 0, 0, 0, 197, 198, 1, 0, 0, 0, 198, 23, 1, 0, 0, 0, 199, 197, 1,
+		0, 0, 0, 200, 201, 5, 31, 0, 0, 201, 202, 5, 48, 0, 0, 202, 203, 5, 47,
+		0, 0, 203, 209, 6, 12, -1, 0, 204, 205, 5, 22, 0, 0, 205, 206, 5, 48, 0,
+		0, 206, 207, 5, 44, 0, 0, 207, 209, 6, 12, -1, 0, 208, 200, 1, 0, 0, 0,
+		208, 204, 1, 0, 0, 0, 209, 25, 1, 0, 0, 0, 210, 211, 5, 5, 0, 0, 211, 212,
+		6, 13, -1, 0, 212, 27, 1, 0, 0, 0, 213, 214, 5, 6, 0, 0, 214, 215, 3, 30,
+		15, 0, 215, 216, 6, 14, -1, 0, 216, 220, 1, 0, 0, 0, 217, 218, 5, 6, 0,
+		0, 218, 220, 6, 14, -1, 0, 219, 213, 1, 0, 0, 0, 219, 217, 1, 0, 0, 0,
+		220, 29, 1, 0, 0, 0, 221, 222, 6, 15, -1, 0, 222, 223, 3, 32, 16, 0, 223,
+		224, 6, 15, -1, 0, 224, 231, 1, 0, 0, 0, 225, 226, 10, 2, 0, 0, 226, 227,
+		3, 32, 16, 0, 227, 228, 6, 15, -1, 0, 228, 230, 1, 0, 0, 0, 229, 225, 1,
+		0, 0, 0, 230, 233, 1, 0, 0, 0, 231, 229, 1, 0, 0, 0, 231, 232, 1, 0, 0,
+		0, 232, 31, 1, 0, 0, 0, 233, 231, 1, 0, 0, 0, 234, 235, 5, 23, 0, 0, 235,
+		236, 5, 48, 0, 0, 236, 237, 5, 42, 0, 0, 237, 243, 6, 16, -1, 0, 238, 239,
+		5, 26, 0, 0, 239, 240, 5, 48, 0, 0, 240, 241, 5, 44, 0, 0, 241, 243, 6,
+		16, -1, 0, 242, 234, 1, 0, 0, 0, 242, 238, 1, 0, 0, 0, 243, 33, 1, 0, 0,
+		0, 244, 245, 5, 8, 0, 0, 245, 246, 3, 36, 18, 0, 246, 247, 6, 17, -1, 0,
+		247, 251, 1, 0, 0, 0, 248, 249, 5, 8, 0, 0, 249, 251, 6, 17, -1, 0, 250,
+		244, 1, 0, 0, 0, 250, 248, 1, 0, 0, 0, 251, 35, 1, 0, 0, 0, 252, 253, 6,
+		18, -1, 0, 253, 254, 3, 38, 19, 0, 254, 255, 6, 18, -1, 0, 255, 262, 1,
+		0, 0, 0, 256, 257, 10, 2, 0, 0, 257, 258, 3, 38, 19, 0, 258, 259, 6, 18,
+		-1, 0, 259, 261, 1, 0, 0, 0, 260, 256, 1, 0, 0, 0, 261, 264, 1, 0, 0, 0,
+		262, 260, 1, 0, 0, 0, 262, 263, 1, 0, 0, 0, 263, 37, 1, 0, 0, 0, 264, 262,
+		1, 0, 0, 0, 265, 266, 5, 28, 0, 0, 266, 267, 5, 48, 0, 0, 267, 268, 5,
+		45, 0, 0, 268, 278, 6, 19, -1, 0, 269, 270, 5, 29, 0, 0, 270, 271, 5, 48,
+		0, 0, 271, 272, 5, 45, 0, 0, 272, 278, 6, 19, -1, 0, 273, 274, 5, 26, 0,
+		0, 274, 275, 5, 48, 0, 0, 275, 276, 5, 45, 0, 0, 276, 278, 6, 19, -1, 0,
+		277, 265, 1, 0, 0, 0, 277, 269, 1, 0, 0, 0, 277, 273, 1, 0, 0, 0, 278,
+		39, 1, 0, 0, 0, 19, 46, 58, 82, 90, 102, 121, 130, 138, 150, 177, 185,
+		197, 208, 219, 231, 242, 250, 262, 277,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -243,13 +264,14 @@ const (
 	ParserParserTK_ftype       = 42
 	ParserParserTK_number      = 43
 	ParserParserTK_id          = 44
-	ParserParserTK_ext         = 45
-	ParserParserTK_path        = 46
-	ParserParserTK_equ         = 47
-	ParserParserTK_sym         = 48
-	ParserParserCOMMENTARY     = 49
-	ParserParserNEWLINE        = 50
-	ParserParserUNUSED_        = 51
+	ParserParserTK_qid         = 45
+	ParserParserTK_ext         = 46
+	ParserParserTK_path        = 47
+	ParserParserTK_equ         = 48
+	ParserParserTK_sym         = 49
+	ParserParserCOMMENTARY     = 50
+	ParserParserNEWLINE        = 51
+	ParserParserUNUSED_        = 52
 )
 
 // ParserParser rules.
@@ -271,6 +293,9 @@ const (
 	ParserParserRULE_mkfs         = 14
 	ParserParserRULE_mkfsparams   = 15
 	ParserParserRULE_mkfsparam    = 16
+	ParserParserRULE_login        = 17
+	ParserParserRULE_loginparams  = 18
+	ParserParserRULE_loginparam   = 19
 )
 
 // IInitContext is an interface to support dynamic dispatch.
@@ -385,24 +410,24 @@ func (s *InitContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Init() (localctx IInitContext) {
 	localctx = NewInitContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, ParserParserRULE_init)
-	p.SetState(40)
+	p.SetState(46)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
 	switch p.GetTokenStream().LA(1) {
-	case ParserParserRW_mkdisk, ParserParserRW_rmdisk, ParserParserRW_fdisk, ParserParserRW_mount, ParserParserRW_mounted, ParserParserRW_mkfs:
+	case ParserParserRW_mkdisk, ParserParserRW_rmdisk, ParserParserRW_fdisk, ParserParserRW_mount, ParserParserRW_mounted, ParserParserRW_mkfs, ParserParserRW_login:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(34)
+			p.SetState(40)
 
 			var _x = p.commands(0)
 
 			localctx.(*InitContext).c = _x
 		}
 		{
-			p.SetState(35)
+			p.SetState(41)
 			p.Match(ParserParserEOF)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -414,7 +439,7 @@ func (p *ParserParser) Init() (localctx IInitContext) {
 	case ParserParserEOF:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(38)
+			p.SetState(44)
 			p.Match(ParserParserEOF)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -590,7 +615,7 @@ func (p *ParserParser) commands(_p int) (localctx ICommandsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(43)
+		p.SetState(49)
 
 		var _x = p.Command()
 
@@ -599,7 +624,7 @@ func (p *ParserParser) commands(_p int) (localctx ICommandsContext) {
 	localctx.(*CommandsContext).result = []interfaces.Command{localctx.(*CommandsContext).GetC().GetResult()}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(52)
+	p.SetState(58)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -617,14 +642,14 @@ func (p *ParserParser) commands(_p int) (localctx ICommandsContext) {
 			localctx = NewCommandsContext(p, _parentctx, _parentState)
 			localctx.(*CommandsContext).l = _prevctx
 			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_commands)
-			p.SetState(46)
+			p.SetState(52)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				goto errorExit
 			}
 			{
-				p.SetState(47)
+				p.SetState(53)
 
 				var _x = p.Command()
 
@@ -634,7 +659,7 @@ func (p *ParserParser) commands(_p int) (localctx ICommandsContext) {
 			localctx.(*CommandsContext).result = append(localctx.(*CommandsContext).result, localctx.(*CommandsContext).GetC().GetResult())
 
 		}
-		p.SetState(54)
+		p.SetState(60)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -683,6 +708,9 @@ type ICommandContext interface {
 	// GetC6 returns the c6 rule contexts.
 	GetC6() IMkfsContext
 
+	// GetC8 returns the c8 rule contexts.
+	GetC8() ILoginContext
+
 	// SetC1 sets the c1 rule contexts.
 	SetC1(IMkdiskContext)
 
@@ -701,6 +729,9 @@ type ICommandContext interface {
 	// SetC6 sets the c6 rule contexts.
 	SetC6(IMkfsContext)
 
+	// SetC8 sets the c8 rule contexts.
+	SetC8(ILoginContext)
+
 	// GetResult returns the result attribute.
 	GetResult() interfaces.Command
 
@@ -714,6 +745,7 @@ type ICommandContext interface {
 	Mount() IMountContext
 	Mounted() IMountedContext
 	Mkfs() IMkfsContext
+	Login() ILoginContext
 
 	// IsCommandContext differentiates from other interfaces.
 	IsCommandContext()
@@ -729,6 +761,7 @@ type CommandContext struct {
 	c4     IMountContext
 	c5     IMountedContext
 	c6     IMkfsContext
+	c8     ILoginContext
 }
 
 func NewEmptyCommandContext() *CommandContext {
@@ -770,6 +803,8 @@ func (s *CommandContext) GetC5() IMountedContext { return s.c5 }
 
 func (s *CommandContext) GetC6() IMkfsContext { return s.c6 }
 
+func (s *CommandContext) GetC8() ILoginContext { return s.c8 }
+
 func (s *CommandContext) SetC1(v IMkdiskContext) { s.c1 = v }
 
 func (s *CommandContext) SetC2(v IRmdiskContext) { s.c2 = v }
@@ -781,6 +816,8 @@ func (s *CommandContext) SetC4(v IMountContext) { s.c4 = v }
 func (s *CommandContext) SetC5(v IMountedContext) { s.c5 = v }
 
 func (s *CommandContext) SetC6(v IMkfsContext) { s.c6 = v }
+
+func (s *CommandContext) SetC8(v ILoginContext) { s.c8 = v }
 
 func (s *CommandContext) GetResult() interfaces.Command { return s.result }
 
@@ -882,6 +919,22 @@ func (s *CommandContext) Mkfs() IMkfsContext {
 	return t.(IMkfsContext)
 }
 
+func (s *CommandContext) Login() ILoginContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILoginContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILoginContext)
+}
+
 func (s *CommandContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -905,7 +958,7 @@ func (s *CommandContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Command() (localctx ICommandContext) {
 	localctx = NewCommandContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, ParserParserRULE_command)
-	p.SetState(73)
+	p.SetState(82)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -915,7 +968,7 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_mkdisk:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(55)
+			p.SetState(61)
 
 			var _x = p.Mkdisk()
 
@@ -926,7 +979,7 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_rmdisk:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(58)
+			p.SetState(64)
 
 			var _x = p.Rmdisk()
 
@@ -937,7 +990,7 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_fdisk:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(61)
+			p.SetState(67)
 
 			var _x = p.Fdisk()
 
@@ -948,7 +1001,7 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_mount:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(64)
+			p.SetState(70)
 
 			var _x = p.Mount()
 
@@ -959,7 +1012,7 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_mounted:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(67)
+			p.SetState(73)
 
 			var _x = p.Mounted()
 
@@ -970,13 +1023,24 @@ func (p *ParserParser) Command() (localctx ICommandContext) {
 	case ParserParserRW_mkfs:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(70)
+			p.SetState(76)
 
 			var _x = p.Mkfs()
 
 			localctx.(*CommandContext).c6 = _x
 		}
 		localctx.(*CommandContext).result = localctx.(*CommandContext).GetC6().GetResult()
+
+	case ParserParserRW_login:
+		p.EnterOuterAlt(localctx, 7)
+		{
+			p.SetState(79)
+
+			var _x = p.Login()
+
+			localctx.(*CommandContext).c8 = _x
+		}
+		localctx.(*CommandContext).result = localctx.(*CommandContext).GetC8().GetResult()
 
 	default:
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
@@ -1119,7 +1183,7 @@ func (s *MkdiskContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mkdisk() (localctx IMkdiskContext) {
 	localctx = NewMkdiskContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, ParserParserRULE_mkdisk)
-	p.SetState(81)
+	p.SetState(90)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1129,7 +1193,7 @@ func (p *ParserParser) Mkdisk() (localctx IMkdiskContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(75)
+			p.SetState(84)
 
 			var _m = p.Match(ParserParserRW_mkdisk)
 
@@ -1140,7 +1204,7 @@ func (p *ParserParser) Mkdisk() (localctx IMkdiskContext) {
 			}
 		}
 		{
-			p.SetState(76)
+			p.SetState(85)
 
 			var _x = p.mkdiskparams(0)
 
@@ -1163,7 +1227,7 @@ func (p *ParserParser) Mkdisk() (localctx IMkdiskContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(79)
+			p.SetState(88)
 
 			var _m = p.Match(ParserParserRW_mkdisk)
 
@@ -1353,7 +1417,7 @@ func (p *ParserParser) mkdiskparams(_p int) (localctx IMkdiskparamsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(84)
+		p.SetState(93)
 
 		var _x = p.Mkdiskparam()
 
@@ -1362,7 +1426,7 @@ func (p *ParserParser) mkdiskparams(_p int) (localctx IMkdiskparamsContext) {
 	localctx.(*MkdiskparamsContext).result = map[string]string{localctx.(*MkdiskparamsContext).GetP().GetResult()[0]: localctx.(*MkdiskparamsContext).GetP().GetResult()[1]}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(93)
+	p.SetState(102)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1380,14 +1444,14 @@ func (p *ParserParser) mkdiskparams(_p int) (localctx IMkdiskparamsContext) {
 			localctx = NewMkdiskparamsContext(p, _parentctx, _parentState)
 			localctx.(*MkdiskparamsContext).l = _prevctx
 			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_mkdiskparams)
-			p.SetState(87)
+			p.SetState(96)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				goto errorExit
 			}
 			{
-				p.SetState(88)
+				p.SetState(97)
 
 				var _x = p.Mkdiskparam()
 
@@ -1397,7 +1461,7 @@ func (p *ParserParser) mkdiskparams(_p int) (localctx IMkdiskparamsContext) {
 			localctx.(*MkdiskparamsContext).result[localctx.(*MkdiskparamsContext).GetP().GetResult()[0]] = localctx.(*MkdiskparamsContext).GetP().GetResult()[1]
 
 		}
-		p.SetState(95)
+		p.SetState(104)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1589,7 +1653,7 @@ func (s *MkdiskparamContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 	localctx = NewMkdiskparamContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 10, ParserParserRULE_mkdiskparam)
-	p.SetState(112)
+	p.SetState(121)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1599,7 +1663,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 	case ParserParserRW_size:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(96)
+			p.SetState(105)
 			p.Match(ParserParserRW_size)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1607,7 +1671,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(97)
+			p.SetState(106)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1615,7 +1679,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(98)
+			p.SetState(107)
 
 			var _m = p.Match(ParserParserTK_number)
 
@@ -1636,7 +1700,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 	case ParserParserRW_fit:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(100)
+			p.SetState(109)
 			p.Match(ParserParserRW_fit)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1644,7 +1708,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(101)
+			p.SetState(110)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1652,7 +1716,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(102)
+			p.SetState(111)
 
 			var _m = p.Match(ParserParserTK_fit)
 
@@ -1673,7 +1737,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 	case ParserParserRW_unit:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(104)
+			p.SetState(113)
 			p.Match(ParserParserRW_unit)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1681,7 +1745,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(105)
+			p.SetState(114)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1689,7 +1753,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(106)
+			p.SetState(115)
 
 			var _m = p.Match(ParserParserTK_unit)
 
@@ -1710,7 +1774,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 	case ParserParserRW_path:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(108)
+			p.SetState(117)
 			p.Match(ParserParserRW_path)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1718,7 +1782,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(109)
+			p.SetState(118)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1726,7 +1790,7 @@ func (p *ParserParser) Mkdiskparam() (localctx IMkdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(110)
+			p.SetState(119)
 
 			var _m = p.Match(ParserParserTK_path)
 
@@ -1883,7 +1947,7 @@ func (s *RmdiskContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 	localctx = NewRmdiskContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 12, ParserParserRULE_rmdisk)
-	p.SetState(121)
+	p.SetState(130)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1893,7 +1957,7 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(114)
+			p.SetState(123)
 
 			var _m = p.Match(ParserParserRW_rmdisk)
 
@@ -1904,7 +1968,7 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 			}
 		}
 		{
-			p.SetState(115)
+			p.SetState(124)
 			p.Match(ParserParserRW_path)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1912,7 +1976,7 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 			}
 		}
 		{
-			p.SetState(116)
+			p.SetState(125)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1920,7 +1984,7 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 			}
 		}
 		{
-			p.SetState(117)
+			p.SetState(126)
 
 			var _m = p.Match(ParserParserTK_path)
 
@@ -1953,7 +2017,7 @@ func (p *ParserParser) Rmdisk() (localctx IRmdiskContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(119)
+			p.SetState(128)
 
 			var _m = p.Match(ParserParserRW_rmdisk)
 
@@ -2117,7 +2181,7 @@ func (s *FdiskContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Fdisk() (localctx IFdiskContext) {
 	localctx = NewFdiskContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 14, ParserParserRULE_fdisk)
-	p.SetState(129)
+	p.SetState(138)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2127,7 +2191,7 @@ func (p *ParserParser) Fdisk() (localctx IFdiskContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(123)
+			p.SetState(132)
 
 			var _m = p.Match(ParserParserRW_fdisk)
 
@@ -2138,7 +2202,7 @@ func (p *ParserParser) Fdisk() (localctx IFdiskContext) {
 			}
 		}
 		{
-			p.SetState(124)
+			p.SetState(133)
 
 			var _x = p.fdiskparams(0)
 
@@ -2161,7 +2225,7 @@ func (p *ParserParser) Fdisk() (localctx IFdiskContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(127)
+			p.SetState(136)
 
 			var _m = p.Match(ParserParserRW_fdisk)
 
@@ -2351,7 +2415,7 @@ func (p *ParserParser) fdiskparams(_p int) (localctx IFdiskparamsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(132)
+		p.SetState(141)
 
 		var _x = p.Fdiskparam()
 
@@ -2360,7 +2424,7 @@ func (p *ParserParser) fdiskparams(_p int) (localctx IFdiskparamsContext) {
 	localctx.(*FdiskparamsContext).result = map[string]string{localctx.(*FdiskparamsContext).GetP().GetResult()[0]: localctx.(*FdiskparamsContext).GetP().GetResult()[1]}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(141)
+	p.SetState(150)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2378,14 +2442,14 @@ func (p *ParserParser) fdiskparams(_p int) (localctx IFdiskparamsContext) {
 			localctx = NewFdiskparamsContext(p, _parentctx, _parentState)
 			localctx.(*FdiskparamsContext).l = _prevctx
 			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_fdiskparams)
-			p.SetState(135)
+			p.SetState(144)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				goto errorExit
 			}
 			{
-				p.SetState(136)
+				p.SetState(145)
 
 				var _x = p.Fdiskparam()
 
@@ -2395,7 +2459,7 @@ func (p *ParserParser) fdiskparams(_p int) (localctx IFdiskparamsContext) {
 			localctx.(*FdiskparamsContext).result[localctx.(*FdiskparamsContext).GetP().GetResult()[0]] = localctx.(*FdiskparamsContext).GetP().GetResult()[1]
 
 		}
-		p.SetState(143)
+		p.SetState(152)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -2629,7 +2693,7 @@ func (s *FdiskparamContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	localctx = NewFdiskparamContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 18, ParserParserRULE_fdiskparam)
-	p.SetState(168)
+	p.SetState(177)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2639,7 +2703,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_size:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(144)
+			p.SetState(153)
 			p.Match(ParserParserRW_size)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2647,7 +2711,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(145)
+			p.SetState(154)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2655,7 +2719,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(146)
+			p.SetState(155)
 
 			var _m = p.Match(ParserParserTK_number)
 
@@ -2676,7 +2740,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_unit:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(148)
+			p.SetState(157)
 			p.Match(ParserParserRW_unit)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2684,7 +2748,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(149)
+			p.SetState(158)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2692,7 +2756,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(150)
+			p.SetState(159)
 
 			var _m = p.Match(ParserParserTK_unit)
 
@@ -2713,7 +2777,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_path:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(152)
+			p.SetState(161)
 			p.Match(ParserParserRW_path)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2721,7 +2785,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(153)
+			p.SetState(162)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2729,7 +2793,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(154)
+			p.SetState(163)
 
 			var _m = p.Match(ParserParserTK_path)
 
@@ -2750,7 +2814,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_type:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(156)
+			p.SetState(165)
 			p.Match(ParserParserRW_type)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2758,7 +2822,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(157)
+			p.SetState(166)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2766,7 +2830,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(158)
+			p.SetState(167)
 
 			var _m = p.Match(ParserParserTK_type)
 
@@ -2787,7 +2851,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_fit:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(160)
+			p.SetState(169)
 			p.Match(ParserParserRW_fit)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2795,7 +2859,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(161)
+			p.SetState(170)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2803,7 +2867,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(162)
+			p.SetState(171)
 
 			var _m = p.Match(ParserParserTK_fit)
 
@@ -2824,7 +2888,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 	case ParserParserRW_name:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(164)
+			p.SetState(173)
 			p.Match(ParserParserRW_name)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2832,7 +2896,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(165)
+			p.SetState(174)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2840,7 +2904,7 @@ func (p *ParserParser) Fdiskparam() (localctx IFdiskparamContext) {
 			}
 		}
 		{
-			p.SetState(166)
+			p.SetState(175)
 
 			var _m = p.Match(ParserParserTK_id)
 
@@ -2999,7 +3063,7 @@ func (s *MountContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mount() (localctx IMountContext) {
 	localctx = NewMountContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 20, ParserParserRULE_mount)
-	p.SetState(176)
+	p.SetState(185)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3009,7 +3073,7 @@ func (p *ParserParser) Mount() (localctx IMountContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(170)
+			p.SetState(179)
 
 			var _m = p.Match(ParserParserRW_mount)
 
@@ -3020,7 +3084,7 @@ func (p *ParserParser) Mount() (localctx IMountContext) {
 			}
 		}
 		{
-			p.SetState(171)
+			p.SetState(180)
 
 			var _x = p.mountparams(0)
 
@@ -3043,7 +3107,7 @@ func (p *ParserParser) Mount() (localctx IMountContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(174)
+			p.SetState(183)
 
 			var _m = p.Match(ParserParserRW_mount)
 
@@ -3233,7 +3297,7 @@ func (p *ParserParser) mountparams(_p int) (localctx IMountparamsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(179)
+		p.SetState(188)
 
 		var _x = p.Mountparam()
 
@@ -3242,7 +3306,7 @@ func (p *ParserParser) mountparams(_p int) (localctx IMountparamsContext) {
 	localctx.(*MountparamsContext).result = map[string]string{localctx.(*MountparamsContext).GetP().GetResult()[0]: localctx.(*MountparamsContext).GetP().GetResult()[1]}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(188)
+	p.SetState(197)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3260,14 +3324,14 @@ func (p *ParserParser) mountparams(_p int) (localctx IMountparamsContext) {
 			localctx = NewMountparamsContext(p, _parentctx, _parentState)
 			localctx.(*MountparamsContext).l = _prevctx
 			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_mountparams)
-			p.SetState(182)
+			p.SetState(191)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				goto errorExit
 			}
 			{
-				p.SetState(183)
+				p.SetState(192)
 
 				var _x = p.Mountparam()
 
@@ -3277,7 +3341,7 @@ func (p *ParserParser) mountparams(_p int) (localctx IMountparamsContext) {
 			localctx.(*MountparamsContext).result[localctx.(*MountparamsContext).GetP().GetResult()[0]] = localctx.(*MountparamsContext).GetP().GetResult()[1]
 
 		}
-		p.SetState(190)
+		p.SetState(199)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3427,7 +3491,7 @@ func (s *MountparamContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 	localctx = NewMountparamContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 24, ParserParserRULE_mountparam)
-	p.SetState(199)
+	p.SetState(208)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3437,7 +3501,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 	case ParserParserRW_path:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(191)
+			p.SetState(200)
 			p.Match(ParserParserRW_path)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3445,7 +3509,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 			}
 		}
 		{
-			p.SetState(192)
+			p.SetState(201)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3453,7 +3517,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 			}
 		}
 		{
-			p.SetState(193)
+			p.SetState(202)
 
 			var _m = p.Match(ParserParserTK_path)
 
@@ -3474,7 +3538,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 	case ParserParserRW_name:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(195)
+			p.SetState(204)
 			p.Match(ParserParserRW_name)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3482,7 +3546,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 			}
 		}
 		{
-			p.SetState(196)
+			p.SetState(205)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3490,7 +3554,7 @@ func (p *ParserParser) Mountparam() (localctx IMountparamContext) {
 			}
 		}
 		{
-			p.SetState(197)
+			p.SetState(206)
 
 			var _m = p.Match(ParserParserTK_id)
 
@@ -3623,7 +3687,7 @@ func (p *ParserParser) Mounted() (localctx IMountedContext) {
 	p.EnterRule(localctx, 26, ParserParserRULE_mounted)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(201)
+		p.SetState(210)
 
 		var _m = p.Match(ParserParserRW_mounted)
 
@@ -3783,7 +3847,7 @@ func (s *MkfsContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mkfs() (localctx IMkfsContext) {
 	localctx = NewMkfsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 28, ParserParserRULE_mkfs)
-	p.SetState(210)
+	p.SetState(219)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3793,7 +3857,7 @@ func (p *ParserParser) Mkfs() (localctx IMkfsContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(204)
+			p.SetState(213)
 
 			var _m = p.Match(ParserParserRW_mkfs)
 
@@ -3804,7 +3868,7 @@ func (p *ParserParser) Mkfs() (localctx IMkfsContext) {
 			}
 		}
 		{
-			p.SetState(205)
+			p.SetState(214)
 
 			var _x = p.mkfsparams(0)
 
@@ -3827,7 +3891,7 @@ func (p *ParserParser) Mkfs() (localctx IMkfsContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(208)
+			p.SetState(217)
 
 			var _m = p.Match(ParserParserRW_mkfs)
 
@@ -4017,7 +4081,7 @@ func (p *ParserParser) mkfsparams(_p int) (localctx IMkfsparamsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(213)
+		p.SetState(222)
 
 		var _x = p.Mkfsparam()
 
@@ -4026,7 +4090,7 @@ func (p *ParserParser) mkfsparams(_p int) (localctx IMkfsparamsContext) {
 	localctx.(*MkfsparamsContext).result = map[string]string{localctx.(*MkfsparamsContext).GetP().GetResult()[0]: localctx.(*MkfsparamsContext).GetP().GetResult()[1]}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(222)
+	p.SetState(231)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4044,14 +4108,14 @@ func (p *ParserParser) mkfsparams(_p int) (localctx IMkfsparamsContext) {
 			localctx = NewMkfsparamsContext(p, _parentctx, _parentState)
 			localctx.(*MkfsparamsContext).l = _prevctx
 			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_mkfsparams)
-			p.SetState(216)
+			p.SetState(225)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				goto errorExit
 			}
 			{
-				p.SetState(217)
+				p.SetState(226)
 
 				var _x = p.Mkfsparam()
 
@@ -4061,7 +4125,7 @@ func (p *ParserParser) mkfsparams(_p int) (localctx IMkfsparamsContext) {
 			localctx.(*MkfsparamsContext).result[localctx.(*MkfsparamsContext).GetP().GetResult()[0]] = localctx.(*MkfsparamsContext).GetP().GetResult()[1]
 
 		}
-		p.SetState(224)
+		p.SetState(233)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -4211,7 +4275,7 @@ func (s *MkfsparamContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 	localctx = NewMkfsparamContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 32, ParserParserRULE_mkfsparam)
-	p.SetState(233)
+	p.SetState(242)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4221,7 +4285,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 	case ParserParserRW_type:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(225)
+			p.SetState(234)
 			p.Match(ParserParserRW_type)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4229,7 +4293,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 			}
 		}
 		{
-			p.SetState(226)
+			p.SetState(235)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4237,7 +4301,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 			}
 		}
 		{
-			p.SetState(227)
+			p.SetState(236)
 
 			var _m = p.Match(ParserParserTK_ftype)
 
@@ -4247,7 +4311,6 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 				goto errorExit
 			}
 		}
-		fmt.Println("hola")
 		localctx.(*MkfsparamContext).result = []string{"type", (func() string {
 			if localctx.(*MkfsparamContext).GetV1() == nil {
 				return ""
@@ -4259,7 +4322,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 	case ParserParserRW_id:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(229)
+			p.SetState(238)
 			p.Match(ParserParserRW_id)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4267,7 +4330,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 			}
 		}
 		{
-			p.SetState(230)
+			p.SetState(239)
 			p.Match(ParserParserTK_equ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4275,7 +4338,7 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 			}
 		}
 		{
-			p.SetState(231)
+			p.SetState(240)
 
 			var _m = p.Match(ParserParserTK_id)
 
@@ -4292,6 +4355,704 @@ func (p *ParserParser) Mkfsparam() (localctx IMkfsparamContext) {
 				return localctx.(*MkfsparamContext).GetV2().GetText()
 			}
 		}()), "\"")}
+
+	default:
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// ILoginContext is an interface to support dynamic dispatch.
+type ILoginContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// GetL returns the l token.
+	GetL() antlr.Token
+
+	// SetL sets the l token.
+	SetL(antlr.Token)
+
+	// GetP returns the p rule contexts.
+	GetP() ILoginparamsContext
+
+	// SetP sets the p rule contexts.
+	SetP(ILoginparamsContext)
+
+	// GetResult returns the result attribute.
+	GetResult() *commands.Login
+
+	// SetResult sets the result attribute.
+	SetResult(*commands.Login)
+
+	// Getter signatures
+	RW_login() antlr.TerminalNode
+	Loginparams() ILoginparamsContext
+
+	// IsLoginContext differentiates from other interfaces.
+	IsLoginContext()
+}
+
+type LoginContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+	result *commands.Login
+	l      antlr.Token
+	p      ILoginparamsContext
+}
+
+func NewEmptyLoginContext() *LoginContext {
+	var p = new(LoginContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_login
+	return p
+}
+
+func InitEmptyLoginContext(p *LoginContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_login
+}
+
+func (*LoginContext) IsLoginContext() {}
+
+func NewLoginContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LoginContext {
+	var p = new(LoginContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = ParserParserRULE_login
+
+	return p
+}
+
+func (s *LoginContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *LoginContext) GetL() antlr.Token { return s.l }
+
+func (s *LoginContext) SetL(v antlr.Token) { s.l = v }
+
+func (s *LoginContext) GetP() ILoginparamsContext { return s.p }
+
+func (s *LoginContext) SetP(v ILoginparamsContext) { s.p = v }
+
+func (s *LoginContext) GetResult() *commands.Login { return s.result }
+
+func (s *LoginContext) SetResult(v *commands.Login) { s.result = v }
+
+func (s *LoginContext) RW_login() antlr.TerminalNode {
+	return s.GetToken(ParserParserRW_login, 0)
+}
+
+func (s *LoginContext) Loginparams() ILoginparamsContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILoginparamsContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILoginparamsContext)
+}
+
+func (s *LoginContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LoginContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *LoginContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.EnterLogin(s)
+	}
+}
+
+func (s *LoginContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.ExitLogin(s)
+	}
+}
+
+func (p *ParserParser) Login() (localctx ILoginContext) {
+	localctx = NewLoginContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 34, ParserParserRULE_login)
+	p.SetState(250)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 16, p.GetParserRuleContext()) {
+	case 1:
+		p.EnterOuterAlt(localctx, 1)
+		{
+			p.SetState(244)
+
+			var _m = p.Match(ParserParserRW_login)
+
+			localctx.(*LoginContext).l = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(245)
+
+			var _x = p.loginparams(0)
+
+			localctx.(*LoginContext).p = _x
+		}
+		localctx.(*LoginContext).result = commands.NewLogin((func() int {
+			if localctx.(*LoginContext).GetL() == nil {
+				return 0
+			} else {
+				return localctx.(*LoginContext).GetL().GetLine()
+			}
+		}()), (func() int {
+			if localctx.(*LoginContext).GetL() == nil {
+				return 0
+			} else {
+				return localctx.(*LoginContext).GetL().GetColumn()
+			}
+		}()), localctx.(*LoginContext).GetP().GetResult())
+
+	case 2:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(248)
+
+			var _m = p.Match(ParserParserRW_login)
+
+			localctx.(*LoginContext).l = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*LoginContext).result = commands.NewLogin((func() int {
+			if localctx.(*LoginContext).GetL() == nil {
+				return 0
+			} else {
+				return localctx.(*LoginContext).GetL().GetLine()
+			}
+		}()), (func() int {
+			if localctx.(*LoginContext).GetL() == nil {
+				return 0
+			} else {
+				return localctx.(*LoginContext).GetL().GetColumn()
+			}
+		}()), map[string]string{})
+
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// ILoginparamsContext is an interface to support dynamic dispatch.
+type ILoginparamsContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// GetL returns the l rule contexts.
+	GetL() ILoginparamsContext
+
+	// GetP returns the p rule contexts.
+	GetP() ILoginparamContext
+
+	// SetL sets the l rule contexts.
+	SetL(ILoginparamsContext)
+
+	// SetP sets the p rule contexts.
+	SetP(ILoginparamContext)
+
+	// GetResult returns the result attribute.
+	GetResult() map[string]string
+
+	// SetResult sets the result attribute.
+	SetResult(map[string]string)
+
+	// Getter signatures
+	Loginparam() ILoginparamContext
+	Loginparams() ILoginparamsContext
+
+	// IsLoginparamsContext differentiates from other interfaces.
+	IsLoginparamsContext()
+}
+
+type LoginparamsContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+	result map[string]string
+	l      ILoginparamsContext
+	p      ILoginparamContext
+}
+
+func NewEmptyLoginparamsContext() *LoginparamsContext {
+	var p = new(LoginparamsContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_loginparams
+	return p
+}
+
+func InitEmptyLoginparamsContext(p *LoginparamsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_loginparams
+}
+
+func (*LoginparamsContext) IsLoginparamsContext() {}
+
+func NewLoginparamsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LoginparamsContext {
+	var p = new(LoginparamsContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = ParserParserRULE_loginparams
+
+	return p
+}
+
+func (s *LoginparamsContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *LoginparamsContext) GetL() ILoginparamsContext { return s.l }
+
+func (s *LoginparamsContext) GetP() ILoginparamContext { return s.p }
+
+func (s *LoginparamsContext) SetL(v ILoginparamsContext) { s.l = v }
+
+func (s *LoginparamsContext) SetP(v ILoginparamContext) { s.p = v }
+
+func (s *LoginparamsContext) GetResult() map[string]string { return s.result }
+
+func (s *LoginparamsContext) SetResult(v map[string]string) { s.result = v }
+
+func (s *LoginparamsContext) Loginparam() ILoginparamContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILoginparamContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILoginparamContext)
+}
+
+func (s *LoginparamsContext) Loginparams() ILoginparamsContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILoginparamsContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILoginparamsContext)
+}
+
+func (s *LoginparamsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LoginparamsContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *LoginparamsContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.EnterLoginparams(s)
+	}
+}
+
+func (s *LoginparamsContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.ExitLoginparams(s)
+	}
+}
+
+func (p *ParserParser) Loginparams() (localctx ILoginparamsContext) {
+	return p.loginparams(0)
+}
+
+func (p *ParserParser) loginparams(_p int) (localctx ILoginparamsContext) {
+	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+
+	_parentState := p.GetState()
+	localctx = NewLoginparamsContext(p, p.GetParserRuleContext(), _parentState)
+	var _prevctx ILoginparamsContext = localctx
+	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
+	_startState := 36
+	p.EnterRecursionRule(localctx, 36, ParserParserRULE_loginparams, _p)
+	var _alt int
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(253)
+
+		var _x = p.Loginparam()
+
+		localctx.(*LoginparamsContext).p = _x
+	}
+	localctx.(*LoginparamsContext).result = map[string]string{localctx.(*LoginparamsContext).GetP().GetResult()[0]: localctx.(*LoginparamsContext).GetP().GetResult()[1]}
+
+	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
+	p.SetState(262)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 17, p.GetParserRuleContext())
+	if p.HasError() {
+		goto errorExit
+	}
+	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
+		if _alt == 1 {
+			if p.GetParseListeners() != nil {
+				p.TriggerExitRuleEvent()
+			}
+			_prevctx = localctx
+			localctx = NewLoginparamsContext(p, _parentctx, _parentState)
+			localctx.(*LoginparamsContext).l = _prevctx
+			p.PushNewRecursionContext(localctx, _startState, ParserParserRULE_loginparams)
+			p.SetState(256)
+
+			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
+				p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
+				goto errorExit
+			}
+			{
+				p.SetState(257)
+
+				var _x = p.Loginparam()
+
+				localctx.(*LoginparamsContext).p = _x
+			}
+			localctx.(*LoginparamsContext).SetResult(localctx.(*LoginparamsContext).GetL().GetResult())
+			localctx.(*LoginparamsContext).result[localctx.(*LoginparamsContext).GetP().GetResult()[0]] = localctx.(*LoginparamsContext).GetP().GetResult()[1]
+
+		}
+		p.SetState(264)
+		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 17, p.GetParserRuleContext())
+		if p.HasError() {
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.UnrollRecursionContexts(_parentctx)
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// ILoginparamContext is an interface to support dynamic dispatch.
+type ILoginparamContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// GetV1 returns the v1 token.
+	GetV1() antlr.Token
+
+	// GetV2 returns the v2 token.
+	GetV2() antlr.Token
+
+	// GetV3 returns the v3 token.
+	GetV3() antlr.Token
+
+	// SetV1 sets the v1 token.
+	SetV1(antlr.Token)
+
+	// SetV2 sets the v2 token.
+	SetV2(antlr.Token)
+
+	// SetV3 sets the v3 token.
+	SetV3(antlr.Token)
+
+	// GetResult returns the result attribute.
+	GetResult() []string
+
+	// SetResult sets the result attribute.
+	SetResult([]string)
+
+	// Getter signatures
+	RW_user() antlr.TerminalNode
+	TK_equ() antlr.TerminalNode
+	TK_qid() antlr.TerminalNode
+	RW_pass() antlr.TerminalNode
+	RW_id() antlr.TerminalNode
+
+	// IsLoginparamContext differentiates from other interfaces.
+	IsLoginparamContext()
+}
+
+type LoginparamContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+	result []string
+	v1     antlr.Token
+	v2     antlr.Token
+	v3     antlr.Token
+}
+
+func NewEmptyLoginparamContext() *LoginparamContext {
+	var p = new(LoginparamContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_loginparam
+	return p
+}
+
+func InitEmptyLoginparamContext(p *LoginparamContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = ParserParserRULE_loginparam
+}
+
+func (*LoginparamContext) IsLoginparamContext() {}
+
+func NewLoginparamContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LoginparamContext {
+	var p = new(LoginparamContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = ParserParserRULE_loginparam
+
+	return p
+}
+
+func (s *LoginparamContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *LoginparamContext) GetV1() antlr.Token { return s.v1 }
+
+func (s *LoginparamContext) GetV2() antlr.Token { return s.v2 }
+
+func (s *LoginparamContext) GetV3() antlr.Token { return s.v3 }
+
+func (s *LoginparamContext) SetV1(v antlr.Token) { s.v1 = v }
+
+func (s *LoginparamContext) SetV2(v antlr.Token) { s.v2 = v }
+
+func (s *LoginparamContext) SetV3(v antlr.Token) { s.v3 = v }
+
+func (s *LoginparamContext) GetResult() []string { return s.result }
+
+func (s *LoginparamContext) SetResult(v []string) { s.result = v }
+
+func (s *LoginparamContext) RW_user() antlr.TerminalNode {
+	return s.GetToken(ParserParserRW_user, 0)
+}
+
+func (s *LoginparamContext) TK_equ() antlr.TerminalNode {
+	return s.GetToken(ParserParserTK_equ, 0)
+}
+
+func (s *LoginparamContext) TK_qid() antlr.TerminalNode {
+	return s.GetToken(ParserParserTK_qid, 0)
+}
+
+func (s *LoginparamContext) RW_pass() antlr.TerminalNode {
+	return s.GetToken(ParserParserRW_pass, 0)
+}
+
+func (s *LoginparamContext) RW_id() antlr.TerminalNode {
+	return s.GetToken(ParserParserRW_id, 0)
+}
+
+func (s *LoginparamContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LoginparamContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *LoginparamContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.EnterLoginparam(s)
+	}
+}
+
+func (s *LoginparamContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(ParserListener); ok {
+		listenerT.ExitLoginparam(s)
+	}
+}
+
+func (p *ParserParser) Loginparam() (localctx ILoginparamContext) {
+	localctx = NewLoginparamContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 38, ParserParserRULE_loginparam)
+	p.SetState(277)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetTokenStream().LA(1) {
+	case ParserParserRW_user:
+		p.EnterOuterAlt(localctx, 1)
+		{
+			p.SetState(265)
+			p.Match(ParserParserRW_user)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(266)
+			p.Match(ParserParserTK_equ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(267)
+
+			var _m = p.Match(ParserParserTK_qid)
+
+			localctx.(*LoginparamContext).v1 = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*LoginparamContext).result = []string{"user", strings.Trim((func() string {
+			if localctx.(*LoginparamContext).GetV1() == nil {
+				return ""
+			} else {
+				return localctx.(*LoginparamContext).GetV1().GetText()
+			}
+		}()), "\"")}
+
+	case ParserParserRW_pass:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(269)
+			p.Match(ParserParserRW_pass)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(270)
+			p.Match(ParserParserTK_equ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(271)
+
+			var _m = p.Match(ParserParserTK_qid)
+
+			localctx.(*LoginparamContext).v2 = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*LoginparamContext).result = []string{"pass", strings.Trim((func() string {
+			if localctx.(*LoginparamContext).GetV2() == nil {
+				return ""
+			} else {
+				return localctx.(*LoginparamContext).GetV2().GetText()
+			}
+		}()), "\"")}
+
+	case ParserParserRW_id:
+		p.EnterOuterAlt(localctx, 3)
+		{
+			p.SetState(273)
+			p.Match(ParserParserRW_id)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(274)
+			p.Match(ParserParserTK_equ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(275)
+
+			var _m = p.Match(ParserParserTK_qid)
+
+			localctx.(*LoginparamContext).v3 = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*LoginparamContext).result = []string{"id", strings.ToUpper(strings.Trim((func() string {
+			if localctx.(*LoginparamContext).GetV3() == nil {
+				return ""
+			} else {
+				return localctx.(*LoginparamContext).GetV3().GetText()
+			}
+		}()), "\""))}
 
 	default:
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
@@ -4348,6 +5109,13 @@ func (p *ParserParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex 
 		}
 		return p.Mkfsparams_Sempred(t, predIndex)
 
+	case 18:
+		var t *LoginparamsContext = nil
+		if localctx != nil {
+			t = localctx.(*LoginparamsContext)
+		}
+		return p.Loginparams_Sempred(t, predIndex)
+
 	default:
 		panic("No predicate with index: " + fmt.Sprint(ruleIndex))
 	}
@@ -4396,6 +5164,16 @@ func (p *ParserParser) Mountparams_Sempred(localctx antlr.RuleContext, predIndex
 func (p *ParserParser) Mkfsparams_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 4:
+		return p.Precpred(p.GetParserRuleContext(), 2)
+
+	default:
+		panic("No predicate with index: " + fmt.Sprint(predIndex))
+	}
+}
+
+func (p *ParserParser) Loginparams_Sempred(localctx antlr.RuleContext, predIndex int) bool {
+	switch predIndex {
+	case 5:
 		return p.Precpred(p.GetParserRuleContext(), 2)
 
 	default:

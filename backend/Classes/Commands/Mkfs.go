@@ -55,7 +55,7 @@ func (m *Mkfs) Exec() {
 	// Checking if the mounted partition is the same as the partition in disc
 	mbrPartition := m.checkMountedPartitionHealth(mountedPartition, consoleString)
 	if mbrPartition == nil {
-		m.AppendError("Partition does not exist in MBR")
+		m.AppendError("Mounted partition does not exist at disc MBR")
 		return
 	}
 

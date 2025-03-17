@@ -122,3 +122,21 @@ func (s *BaseParserListener) EnterMkfsparam(ctx *MkfsparamContext) {}
 
 // ExitMkfsparam is called when production mkfsparam is exited.
 func (s *BaseParserListener) ExitMkfsparam(ctx *MkfsparamContext) {}
+
+// EnterLogin is called when production login is entered.
+func (s *BaseParserListener) EnterLogin(ctx *LoginContext) {}
+
+// ExitLogin is called when production login is exited.
+func (s *BaseParserListener) ExitLogin(ctx *LoginContext) {}
+
+// EnterLoginparams is called when production loginparams is entered.
+func (s *BaseParserListener) EnterLoginparams(ctx *LoginparamsContext) {}
+
+// ExitLoginparams is called when production loginparams is exited.
+func (s *BaseParserListener) ExitLoginparams(ctx *LoginparamsContext) {}
+
+// EnterLoginparam is called when production loginparam is entered.
+func (s *BaseParserListener) EnterLoginparam(ctx *LoginparamContext) {}
+
+// ExitLoginparam is called when production loginparam is exited.
+func (s *BaseParserListener) ExitLoginparam(ctx *LoginparamContext) {}

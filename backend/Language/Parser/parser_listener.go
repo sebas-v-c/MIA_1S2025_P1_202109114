@@ -59,6 +59,15 @@ type ParserListener interface {
 	// EnterMkfsparam is called when entering the mkfsparam production.
 	EnterMkfsparam(c *MkfsparamContext)
 
+	// EnterLogin is called when entering the login production.
+	EnterLogin(c *LoginContext)
+
+	// EnterLoginparams is called when entering the loginparams production.
+	EnterLoginparams(c *LoginparamsContext)
+
+	// EnterLoginparam is called when entering the loginparam production.
+	EnterLoginparam(c *LoginparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -109,4 +118,13 @@ type ParserListener interface {
 
 	// ExitMkfsparam is called when exiting the mkfsparam production.
 	ExitMkfsparam(c *MkfsparamContext)
+
+	// ExitLogin is called when exiting the login production.
+	ExitLogin(c *LoginContext)
+
+	// ExitLoginparams is called when exiting the loginparams production.
+	ExitLoginparams(c *LoginparamsContext)
+
+	// ExitLoginparam is called when exiting the loginparam production.
+	ExitLoginparam(c *LoginparamContext)
 }

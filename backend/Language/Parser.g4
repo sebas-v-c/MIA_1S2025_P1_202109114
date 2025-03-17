@@ -33,6 +33,8 @@ command returns[interfaces.Command result]:
     |   c4 = mount      {$result = $c4.result}
     |   c5 = mounted    {$result = $c5.result}
     |   c6 = mkfs       {$result = $c6.result}
+//    |   c7 = cat      {$result = $c7.result}
+    |   c8 = login      {$result = $c8.result}
     ;
 
 // =============== MKDISK ===============
@@ -76,7 +78,7 @@ fdiskparam returns[[]string result] :
     |   RW_path TK_equ v3 = TK_path     {$result = []string{"path", strings.Trim($v3.text, "\"")}}
     |   RW_type TK_equ v4 = TK_type     {$result = []string{"type", $v4.text}}
     |   RW_fit  TK_equ v5 = TK_fit      {$result = []string{"fit", $v5.text}}
-    |   RW_name TK_equ v6 = TK_id       {$result = []string{"name", strings.Trim($v6.text, "\"")}}
+    |   RW_name TK_equ v6 = TK_id      {$result = []string{"name", strings.Trim($v6.text, "\"")}}
     ;
 
 // =============== MOUNT ===============
@@ -93,7 +95,7 @@ mountparams returns[map[string]string result]:
 
 mountparam returns[[]string result]:
         RW_path TK_equ v1 = TK_path     {$result = []string{"path", strings.Trim($v1.text, "\"")}}
-    |   RW_name TK_equ v2 = TK_id       {$result = []string{"name", strings.Trim($v2.text, "\"")}}
+    |   RW_name TK_equ v2 = TK_id      {$result = []string{"name", strings.Trim($v2.text, "\"")}}
     ;
 
 // =============== MOUNTED ===============
@@ -112,6 +114,26 @@ mkfsparams returns[map[string]string result]:
     ;
 
 mkfsparam returns[[]string result]:
-        RW_type TK_equ v1 = TK_ftype    {fmt.Println("hola"); $result = []string{"type", $v1.text}}
-    |   RW_id TK_equ v2 = TK_id         {$result = []string{"id", strings.Trim($v2.text, "\"")}}
+        RW_type TK_equ v1 = TK_ftype    {$result = []string{"type", $v1.text}}
+    |   RW_id TK_equ v2 = TK_id        {$result = []string{"id", strings.Trim($v2.text, "\"")}}
+    ;
+
+// =============== CAT ===============
+// TODO
+
+// =============== LOGIN ===============
+login returns[*commands.Login result]:
+        l = RW_login p = loginparams    {$result = commands.NewLogin($l.line, $l.pos, $p.result)}
+    |   l = RW_login                    {$result = commands.NewLogin($l.line, $l.pos, map[string]string{})}
+    ;
+
+loginparams returns[map[string]string result]:
+        l = loginparams p = loginparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = loginparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+loginparam returns[[]string result]:
+        RW_user TK_equ v1 = TK_qid  {$result = []string{"user", strings.Trim($v1.text, "\"")}}
+    |   RW_pass TK_equ v2 = TK_qid  {$result = []string{"pass", strings.Trim($v2.text, "\"")}}
+    |   RW_id TK_equ v3 = TK_qid    {$result = []string{"id", strings.ToUpper(strings.Trim($v3.text, "\""))}}
     ;

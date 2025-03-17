@@ -14,10 +14,16 @@ type RuntimeError struct {
 	Msg     string
 }
 
+type LoggedUser struct {
+	User             Structs.User
+	MountedPartition Structs.MountedPartition
+}
+
 // Global variables (shared across requests)
 var (
 	Errors            []*RuntimeError
 	CommandLogs       []*string
+	CurrentUser       *LoggedUser
 	MountedPartitions []*Structs.MountedPartition
 	mu                sync.Mutex // Mutex for thread safety
 )
