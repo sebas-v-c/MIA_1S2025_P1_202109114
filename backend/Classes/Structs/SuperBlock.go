@@ -8,7 +8,7 @@ type SuperBlock struct {
 	BlocksCount     int32
 	FreeBlocksCount int32
 	FreeInodesCount int32
-	MTime           [17]byte
+	MTime           [17]byte // 2025-09-20 12:00:00
 	UMTime          [17]byte
 	MntCount        int32
 	Magic           int32
@@ -23,13 +23,14 @@ type SuperBlock struct {
 }
 
 func (sb *SuperBlock) ToString() string {
-	return fmt.Sprintf(`filesystem_type %v
+	return fmt.Sprintf(`Super Block:
+filesystem_type %v
 inodes_count %v
 blocks_count %v
 free_inodes_count %v
 free_blocks_count %v
-mtime %v
-umtime %v
+mtime %s
+umtime %s
 mnt_count %v
 magic %v
 inode_size %v
@@ -45,8 +46,8 @@ block_start %v`,
 		sb.BlocksCount,
 		sb.FreeInodesCount,
 		sb.FreeBlocksCount,
-		sb.MTime,
-		sb.UMTime,
+		string(sb.MTime[:]),
+		string(sb.UMTime[:]),
 		sb.MntCount,
 		sb.Magic,
 		sb.InodeSize,

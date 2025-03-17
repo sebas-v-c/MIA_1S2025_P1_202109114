@@ -1,0 +1,9 @@
+mkdisk -size=500 -unit=K -fit=BF -path=/home/zibas/Temp/MIA/mount_disk1.bin
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk1.bin" -type=p -name="Particion1"
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk1.bin" -type=p -name="Particion2"
+mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="Particion1"
+mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="Particion2"
+
+mounted
+
+mkfs -id=141A

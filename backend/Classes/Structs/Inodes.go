@@ -1,6 +1,9 @@
 package Structs
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Inode struct {
 	UID    int32
@@ -14,23 +17,55 @@ type Inode struct {
 	Perm   [3]byte
 }
 
+// NewInode creates a new inode with some default parameters, inodeType must be '0' = for folder and '1' = for file
+func NewInode(inodeType [1]byte) *Inode {
+	var date [17]byte
+	var perm [3]byte
+	copy(date[:], time.Now().Format("2006-01-02 15:04"))
+	copy(perm[:], "644")
+	var blocks [15]int32
+	for i := 0; i < 15; i++ {
+		blocks[i] = -1
+	}
+
+	return &Inode{
+		UID:    1,
+		GID:    1,
+		Size:   0,
+		ATime:  date,
+		CTime:  date,
+		MTime:  date,
+		IBlock: blocks,
+		Type:   inodeType,
+		Perm:   perm,
+	}
+}
+
 func (i *Inode) ToString() string {
-	return fmt.Sprintf(`i_UID %v
-i_GID %v
-i_Size %v
-i_Atime %v
-i_CTime %v
-i_MTime %v
-i_Block %v
-i_Type %v
-i_Perm %v`,
+	iblockList := make([]string, len(i.IBlock))
+	for index := int32(0); index < 15; index++ {
+		if i.IBlock[index] == -1 {
+			iblockList[index] = "-1"
+		} else {
+			iblockList[index] = string(i.IBlock[index])
+		}
+	}
+	return fmt.Sprintf(`        i_UID %v
+        i_GID %v
+        i_Size %v
+        i_Atime %s
+        i_CTime %s
+        i_MTime %s
+        i_Block %v
+        i_Type %v
+        i_Perm %v`,
 		i.UID,
 		i.GID,
 		i.Size,
-		i.ATime,
-		i.CTime,
-		i.MTime,
-		i.IBlock,
-		i.Type,
-		i.Perm)
+		string(i.ATime[:]),
+		string(i.CTime[:]),
+		string(i.MTime[:]),
+		iblockList,
+		string(i.Type[:]),
+		string(i.Perm[:]))
 }

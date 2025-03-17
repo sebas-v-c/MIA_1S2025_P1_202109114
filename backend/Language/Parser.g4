@@ -32,6 +32,7 @@ command returns[interfaces.Command result]:
     |   c3 = fdisk      {$result = $c3.result}
     |   c4 = mount      {$result = $c4.result}
     |   c5 = mounted    {$result = $c5.result}
+    |   c6 = mkfs       {$result = $c6.result}
     ;
 
 // =============== MKDISK ===============
@@ -111,6 +112,6 @@ mkfsparams returns[map[string]string result]:
     ;
 
 mkfsparam returns[[]string result]:
-        RW_type TK_equ v1 = TK_ftype    {$result = []string{"type", $v1.text}}
-    |   RW_id TK_equ v2 = TK_ext        {$result = []string{"id", $v2.text}}
+        RW_type TK_equ v1 = TK_ftype    {fmt.Println("hola"); $result = []string{"type", $v1.text}}
+    |   RW_id TK_equ v2 = TK_id         {$result = []string{"id", strings.Trim($v2.text, "\"")}}
     ;

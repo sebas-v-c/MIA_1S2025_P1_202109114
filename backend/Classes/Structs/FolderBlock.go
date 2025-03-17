@@ -5,9 +5,9 @@ type FolderBlock struct {
 }
 
 func (fb *FolderBlock) ToString() string {
-	str := "FolderBlock Content:"
+	str := "\t\tFolderBlock Content:"
 	for _, content := range fb.Content {
-		str += "\n" + content.ToString()
+		str += "\n\t\t\t" + content.ToString()
 	}
 	return str
 }
