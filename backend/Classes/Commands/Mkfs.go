@@ -203,13 +203,13 @@ func markUsedInodesAndNodes(file *os.File, superBlock Structs.SuperBlock) error 
 }
 
 func createRootAndUsersFile(superBlock Structs.SuperBlock, file *os.File) error {
-	rootInode := Structs.NewInode([1]byte{'0'})
-	usersInode := Structs.NewInode([1]byte{'1'})
+	rootInode := Structs.NewInode([1]byte{0})
+	usersInode := Structs.NewInode([1]byte{1})
 
 	// this is set to 0 because we are using the first folder Block available
-	rootInode.IBlock[0] = '0'
+	rootInode.IBlock[0] = 0
 	// This is set to 1 because here we are pointing to the next file block
-	usersInode.IBlock[0] = '1'
+	usersInode.IBlock[0] = 1
 
 	// Assign the size of the content of the file into the users Inode
 	data := "1,G,root\n1,U,root,root,123\n"

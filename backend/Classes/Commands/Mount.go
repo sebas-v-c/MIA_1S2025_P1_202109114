@@ -129,7 +129,7 @@ func (m *Mount) isPartitionRAMMounted(name [16]byte, mbrSignature int32) bool {
 	return false
 }
 
-// generateDiscId generates a new disc ID based on the last two digits of my student ID -->202109114<--
+// generatePartitionId generates a new disc ID based on the last two digits of my student ID -->202109114<--
 func (m *Mount) generatePartitionId(signature int32) [4]byte {
 	var id [4]byte
 	copy(id[:], "14")

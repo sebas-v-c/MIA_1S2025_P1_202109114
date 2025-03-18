@@ -3,12 +3,12 @@ package Structs
 import "fmt"
 
 type User struct {
-	Id       string
+	Id       int
 	Group    string
 	Name     string
 	Password string
 }
 
 func (u *User) ToString() string {
-	return fmt.Sprintf("%s,U,%s,%s,%s", u.Id, u.Group, u.Name, u.Password)
+	return fmt.Sprintf("%d,U,%s,%s,%s", u.Id, u.Group, u.Name, u.Password)
 }

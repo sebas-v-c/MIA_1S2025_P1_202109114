@@ -43,7 +43,7 @@ func parserParserInit() {
 		"'cat'", "'login'", "'logout'", "'mkgrp'", "'rmgrp'", "'mkusr'", "'rmusr'",
 		"'chgrp'", "'mkfile'", "'mkdir'", "'rep'", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"'full'", "", "", "", "", "", "'='", "", "", "'\\n'",
+		"'full'", "", "", "", "", "'='", "", "", "'\\n'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "RW_mkdisk", "RW_rmdisk", "RW_fdisk", "RW_mount", "RW_mounted",
@@ -53,8 +53,7 @@ func parserParserInit() {
 		"RW_delete", "RW_add", "RW_id", "RW_fs", "RW_user", "RW_pass", "RW_grp",
 		"RW_path", "RW_r", "RW_cont", "RW_fileN", "RW_destino", "RW_ugo", "RW_ruta",
 		"TK_fit", "TK_unit", "TK_type", "TK_fs", "TK_ftype", "TK_number", "TK_id",
-		"TK_qid", "TK_ext", "TK_path", "TK_equ", "TK_sym", "COMMENTARY", "NEWLINE",
-		"UNUSED_",
+		"TK_ext", "TK_path", "TK_equ", "TK_sym", "COMMENTARY", "NEWLINE", "UNUSED_",
 	}
 	staticData.RuleNames = []string{
 		"init", "commands", "command", "mkdisk", "mkdiskparams", "mkdiskparam",
@@ -64,7 +63,7 @@ func parserParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 52, 280, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 51, 284, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 1, 0, 1, 0, 1,
@@ -90,98 +89,100 @@ func parserParserInit() {
 		8, 16, 1, 17, 1, 17, 1, 17, 1, 17, 1, 17, 1, 17, 3, 17, 251, 8, 17, 1,
 		18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 5, 18, 261, 8, 18,
 		10, 18, 12, 18, 264, 9, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1,
-		19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 3, 19, 278, 8, 19, 1, 19, 0, 6,
-		2, 8, 16, 22, 30, 36, 20, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24,
-		26, 28, 30, 32, 34, 36, 38, 0, 0, 290, 0, 46, 1, 0, 0, 0, 2, 48, 1, 0,
-		0, 0, 4, 82, 1, 0, 0, 0, 6, 90, 1, 0, 0, 0, 8, 92, 1, 0, 0, 0, 10, 121,
-		1, 0, 0, 0, 12, 130, 1, 0, 0, 0, 14, 138, 1, 0, 0, 0, 16, 140, 1, 0, 0,
-		0, 18, 177, 1, 0, 0, 0, 20, 185, 1, 0, 0, 0, 22, 187, 1, 0, 0, 0, 24, 208,
-		1, 0, 0, 0, 26, 210, 1, 0, 0, 0, 28, 219, 1, 0, 0, 0, 30, 221, 1, 0, 0,
-		0, 32, 242, 1, 0, 0, 0, 34, 250, 1, 0, 0, 0, 36, 252, 1, 0, 0, 0, 38, 277,
-		1, 0, 0, 0, 40, 41, 3, 2, 1, 0, 41, 42, 5, 0, 0, 1, 42, 43, 6, 0, -1, 0,
-		43, 47, 1, 0, 0, 0, 44, 45, 5, 0, 0, 1, 45, 47, 6, 0, -1, 0, 46, 40, 1,
-		0, 0, 0, 46, 44, 1, 0, 0, 0, 47, 1, 1, 0, 0, 0, 48, 49, 6, 1, -1, 0, 49,
-		50, 3, 4, 2, 0, 50, 51, 6, 1, -1, 0, 51, 58, 1, 0, 0, 0, 52, 53, 10, 2,
-		0, 0, 53, 54, 3, 4, 2, 0, 54, 55, 6, 1, -1, 0, 55, 57, 1, 0, 0, 0, 56,
-		52, 1, 0, 0, 0, 57, 60, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0,
-		0, 59, 3, 1, 0, 0, 0, 60, 58, 1, 0, 0, 0, 61, 62, 3, 6, 3, 0, 62, 63, 6,
-		2, -1, 0, 63, 83, 1, 0, 0, 0, 64, 65, 3, 12, 6, 0, 65, 66, 6, 2, -1, 0,
-		66, 83, 1, 0, 0, 0, 67, 68, 3, 14, 7, 0, 68, 69, 6, 2, -1, 0, 69, 83, 1,
-		0, 0, 0, 70, 71, 3, 20, 10, 0, 71, 72, 6, 2, -1, 0, 72, 83, 1, 0, 0, 0,
-		73, 74, 3, 26, 13, 0, 74, 75, 6, 2, -1, 0, 75, 83, 1, 0, 0, 0, 76, 77,
-		3, 28, 14, 0, 77, 78, 6, 2, -1, 0, 78, 83, 1, 0, 0, 0, 79, 80, 3, 34, 17,
-		0, 80, 81, 6, 2, -1, 0, 81, 83, 1, 0, 0, 0, 82, 61, 1, 0, 0, 0, 82, 64,
-		1, 0, 0, 0, 82, 67, 1, 0, 0, 0, 82, 70, 1, 0, 0, 0, 82, 73, 1, 0, 0, 0,
-		82, 76, 1, 0, 0, 0, 82, 79, 1, 0, 0, 0, 83, 5, 1, 0, 0, 0, 84, 85, 5, 1,
-		0, 0, 85, 86, 3, 8, 4, 0, 86, 87, 6, 3, -1, 0, 87, 91, 1, 0, 0, 0, 88,
-		89, 5, 1, 0, 0, 89, 91, 6, 3, -1, 0, 90, 84, 1, 0, 0, 0, 90, 88, 1, 0,
-		0, 0, 91, 7, 1, 0, 0, 0, 92, 93, 6, 4, -1, 0, 93, 94, 3, 10, 5, 0, 94,
-		95, 6, 4, -1, 0, 95, 102, 1, 0, 0, 0, 96, 97, 10, 2, 0, 0, 97, 98, 3, 10,
-		5, 0, 98, 99, 6, 4, -1, 0, 99, 101, 1, 0, 0, 0, 100, 96, 1, 0, 0, 0, 101,
-		104, 1, 0, 0, 0, 102, 100, 1, 0, 0, 0, 102, 103, 1, 0, 0, 0, 103, 9, 1,
-		0, 0, 0, 104, 102, 1, 0, 0, 0, 105, 106, 5, 18, 0, 0, 106, 107, 5, 48,
-		0, 0, 107, 108, 5, 43, 0, 0, 108, 122, 6, 5, -1, 0, 109, 110, 5, 19, 0,
-		0, 110, 111, 5, 48, 0, 0, 111, 112, 5, 38, 0, 0, 112, 122, 6, 5, -1, 0,
-		113, 114, 5, 20, 0, 0, 114, 115, 5, 48, 0, 0, 115, 116, 5, 39, 0, 0, 116,
-		122, 6, 5, -1, 0, 117, 118, 5, 31, 0, 0, 118, 119, 5, 48, 0, 0, 119, 120,
-		5, 47, 0, 0, 120, 122, 6, 5, -1, 0, 121, 105, 1, 0, 0, 0, 121, 109, 1,
-		0, 0, 0, 121, 113, 1, 0, 0, 0, 121, 117, 1, 0, 0, 0, 122, 11, 1, 0, 0,
-		0, 123, 124, 5, 2, 0, 0, 124, 125, 5, 31, 0, 0, 125, 126, 5, 48, 0, 0,
-		126, 127, 5, 47, 0, 0, 127, 131, 6, 6, -1, 0, 128, 129, 5, 2, 0, 0, 129,
-		131, 6, 6, -1, 0, 130, 123, 1, 0, 0, 0, 130, 128, 1, 0, 0, 0, 131, 13,
-		1, 0, 0, 0, 132, 133, 5, 3, 0, 0, 133, 134, 3, 16, 8, 0, 134, 135, 6, 7,
-		-1, 0, 135, 139, 1, 0, 0, 0, 136, 137, 5, 3, 0, 0, 137, 139, 6, 7, -1,
-		0, 138, 132, 1, 0, 0, 0, 138, 136, 1, 0, 0, 0, 139, 15, 1, 0, 0, 0, 140,
-		141, 6, 8, -1, 0, 141, 142, 3, 18, 9, 0, 142, 143, 6, 8, -1, 0, 143, 150,
-		1, 0, 0, 0, 144, 145, 10, 2, 0, 0, 145, 146, 3, 18, 9, 0, 146, 147, 6,
-		8, -1, 0, 147, 149, 1, 0, 0, 0, 148, 144, 1, 0, 0, 0, 149, 152, 1, 0, 0,
-		0, 150, 148, 1, 0, 0, 0, 150, 151, 1, 0, 0, 0, 151, 17, 1, 0, 0, 0, 152,
-		150, 1, 0, 0, 0, 153, 154, 5, 18, 0, 0, 154, 155, 5, 48, 0, 0, 155, 156,
-		5, 43, 0, 0, 156, 178, 6, 9, -1, 0, 157, 158, 5, 20, 0, 0, 158, 159, 5,
-		48, 0, 0, 159, 160, 5, 39, 0, 0, 160, 178, 6, 9, -1, 0, 161, 162, 5, 31,
-		0, 0, 162, 163, 5, 48, 0, 0, 163, 164, 5, 47, 0, 0, 164, 178, 6, 9, -1,
-		0, 165, 166, 5, 23, 0, 0, 166, 167, 5, 48, 0, 0, 167, 168, 5, 40, 0, 0,
-		168, 178, 6, 9, -1, 0, 169, 170, 5, 19, 0, 0, 170, 171, 5, 48, 0, 0, 171,
-		172, 5, 38, 0, 0, 172, 178, 6, 9, -1, 0, 173, 174, 5, 22, 0, 0, 174, 175,
-		5, 48, 0, 0, 175, 176, 5, 44, 0, 0, 176, 178, 6, 9, -1, 0, 177, 153, 1,
-		0, 0, 0, 177, 157, 1, 0, 0, 0, 177, 161, 1, 0, 0, 0, 177, 165, 1, 0, 0,
-		0, 177, 169, 1, 0, 0, 0, 177, 173, 1, 0, 0, 0, 178, 19, 1, 0, 0, 0, 179,
-		180, 5, 4, 0, 0, 180, 181, 3, 22, 11, 0, 181, 182, 6, 10, -1, 0, 182, 186,
-		1, 0, 0, 0, 183, 184, 5, 4, 0, 0, 184, 186, 6, 10, -1, 0, 185, 179, 1,
-		0, 0, 0, 185, 183, 1, 0, 0, 0, 186, 21, 1, 0, 0, 0, 187, 188, 6, 11, -1,
-		0, 188, 189, 3, 24, 12, 0, 189, 190, 6, 11, -1, 0, 190, 197, 1, 0, 0, 0,
-		191, 192, 10, 2, 0, 0, 192, 193, 3, 24, 12, 0, 193, 194, 6, 11, -1, 0,
-		194, 196, 1, 0, 0, 0, 195, 191, 1, 0, 0, 0, 196, 199, 1, 0, 0, 0, 197,
-		195, 1, 0, 0, 0, 197, 198, 1, 0, 0, 0, 198, 23, 1, 0, 0, 0, 199, 197, 1,
-		0, 0, 0, 200, 201, 5, 31, 0, 0, 201, 202, 5, 48, 0, 0, 202, 203, 5, 47,
-		0, 0, 203, 209, 6, 12, -1, 0, 204, 205, 5, 22, 0, 0, 205, 206, 5, 48, 0,
-		0, 206, 207, 5, 44, 0, 0, 207, 209, 6, 12, -1, 0, 208, 200, 1, 0, 0, 0,
-		208, 204, 1, 0, 0, 0, 209, 25, 1, 0, 0, 0, 210, 211, 5, 5, 0, 0, 211, 212,
-		6, 13, -1, 0, 212, 27, 1, 0, 0, 0, 213, 214, 5, 6, 0, 0, 214, 215, 3, 30,
-		15, 0, 215, 216, 6, 14, -1, 0, 216, 220, 1, 0, 0, 0, 217, 218, 5, 6, 0,
-		0, 218, 220, 6, 14, -1, 0, 219, 213, 1, 0, 0, 0, 219, 217, 1, 0, 0, 0,
-		220, 29, 1, 0, 0, 0, 221, 222, 6, 15, -1, 0, 222, 223, 3, 32, 16, 0, 223,
-		224, 6, 15, -1, 0, 224, 231, 1, 0, 0, 0, 225, 226, 10, 2, 0, 0, 226, 227,
-		3, 32, 16, 0, 227, 228, 6, 15, -1, 0, 228, 230, 1, 0, 0, 0, 229, 225, 1,
-		0, 0, 0, 230, 233, 1, 0, 0, 0, 231, 229, 1, 0, 0, 0, 231, 232, 1, 0, 0,
-		0, 232, 31, 1, 0, 0, 0, 233, 231, 1, 0, 0, 0, 234, 235, 5, 23, 0, 0, 235,
-		236, 5, 48, 0, 0, 236, 237, 5, 42, 0, 0, 237, 243, 6, 16, -1, 0, 238, 239,
-		5, 26, 0, 0, 239, 240, 5, 48, 0, 0, 240, 241, 5, 44, 0, 0, 241, 243, 6,
-		16, -1, 0, 242, 234, 1, 0, 0, 0, 242, 238, 1, 0, 0, 0, 243, 33, 1, 0, 0,
-		0, 244, 245, 5, 8, 0, 0, 245, 246, 3, 36, 18, 0, 246, 247, 6, 17, -1, 0,
-		247, 251, 1, 0, 0, 0, 248, 249, 5, 8, 0, 0, 249, 251, 6, 17, -1, 0, 250,
-		244, 1, 0, 0, 0, 250, 248, 1, 0, 0, 0, 251, 35, 1, 0, 0, 0, 252, 253, 6,
-		18, -1, 0, 253, 254, 3, 38, 19, 0, 254, 255, 6, 18, -1, 0, 255, 262, 1,
-		0, 0, 0, 256, 257, 10, 2, 0, 0, 257, 258, 3, 38, 19, 0, 258, 259, 6, 18,
-		-1, 0, 259, 261, 1, 0, 0, 0, 260, 256, 1, 0, 0, 0, 261, 264, 1, 0, 0, 0,
-		262, 260, 1, 0, 0, 0, 262, 263, 1, 0, 0, 0, 263, 37, 1, 0, 0, 0, 264, 262,
-		1, 0, 0, 0, 265, 266, 5, 28, 0, 0, 266, 267, 5, 48, 0, 0, 267, 268, 5,
-		45, 0, 0, 268, 278, 6, 19, -1, 0, 269, 270, 5, 29, 0, 0, 270, 271, 5, 48,
-		0, 0, 271, 272, 5, 45, 0, 0, 272, 278, 6, 19, -1, 0, 273, 274, 5, 26, 0,
-		0, 274, 275, 5, 48, 0, 0, 275, 276, 5, 45, 0, 0, 276, 278, 6, 19, -1, 0,
-		277, 265, 1, 0, 0, 0, 277, 269, 1, 0, 0, 0, 277, 273, 1, 0, 0, 0, 278,
+		19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 3, 19,
+		282, 8, 19, 1, 19, 0, 6, 2, 8, 16, 22, 30, 36, 20, 0, 2, 4, 6, 8, 10, 12,
+		14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 0, 0, 295, 0, 46, 1,
+		0, 0, 0, 2, 48, 1, 0, 0, 0, 4, 82, 1, 0, 0, 0, 6, 90, 1, 0, 0, 0, 8, 92,
+		1, 0, 0, 0, 10, 121, 1, 0, 0, 0, 12, 130, 1, 0, 0, 0, 14, 138, 1, 0, 0,
+		0, 16, 140, 1, 0, 0, 0, 18, 177, 1, 0, 0, 0, 20, 185, 1, 0, 0, 0, 22, 187,
+		1, 0, 0, 0, 24, 208, 1, 0, 0, 0, 26, 210, 1, 0, 0, 0, 28, 219, 1, 0, 0,
+		0, 30, 221, 1, 0, 0, 0, 32, 242, 1, 0, 0, 0, 34, 250, 1, 0, 0, 0, 36, 252,
+		1, 0, 0, 0, 38, 281, 1, 0, 0, 0, 40, 41, 3, 2, 1, 0, 41, 42, 5, 0, 0, 1,
+		42, 43, 6, 0, -1, 0, 43, 47, 1, 0, 0, 0, 44, 45, 5, 0, 0, 1, 45, 47, 6,
+		0, -1, 0, 46, 40, 1, 0, 0, 0, 46, 44, 1, 0, 0, 0, 47, 1, 1, 0, 0, 0, 48,
+		49, 6, 1, -1, 0, 49, 50, 3, 4, 2, 0, 50, 51, 6, 1, -1, 0, 51, 58, 1, 0,
+		0, 0, 52, 53, 10, 2, 0, 0, 53, 54, 3, 4, 2, 0, 54, 55, 6, 1, -1, 0, 55,
+		57, 1, 0, 0, 0, 56, 52, 1, 0, 0, 0, 57, 60, 1, 0, 0, 0, 58, 56, 1, 0, 0,
+		0, 58, 59, 1, 0, 0, 0, 59, 3, 1, 0, 0, 0, 60, 58, 1, 0, 0, 0, 61, 62, 3,
+		6, 3, 0, 62, 63, 6, 2, -1, 0, 63, 83, 1, 0, 0, 0, 64, 65, 3, 12, 6, 0,
+		65, 66, 6, 2, -1, 0, 66, 83, 1, 0, 0, 0, 67, 68, 3, 14, 7, 0, 68, 69, 6,
+		2, -1, 0, 69, 83, 1, 0, 0, 0, 70, 71, 3, 20, 10, 0, 71, 72, 6, 2, -1, 0,
+		72, 83, 1, 0, 0, 0, 73, 74, 3, 26, 13, 0, 74, 75, 6, 2, -1, 0, 75, 83,
+		1, 0, 0, 0, 76, 77, 3, 28, 14, 0, 77, 78, 6, 2, -1, 0, 78, 83, 1, 0, 0,
+		0, 79, 80, 3, 34, 17, 0, 80, 81, 6, 2, -1, 0, 81, 83, 1, 0, 0, 0, 82, 61,
+		1, 0, 0, 0, 82, 64, 1, 0, 0, 0, 82, 67, 1, 0, 0, 0, 82, 70, 1, 0, 0, 0,
+		82, 73, 1, 0, 0, 0, 82, 76, 1, 0, 0, 0, 82, 79, 1, 0, 0, 0, 83, 5, 1, 0,
+		0, 0, 84, 85, 5, 1, 0, 0, 85, 86, 3, 8, 4, 0, 86, 87, 6, 3, -1, 0, 87,
+		91, 1, 0, 0, 0, 88, 89, 5, 1, 0, 0, 89, 91, 6, 3, -1, 0, 90, 84, 1, 0,
+		0, 0, 90, 88, 1, 0, 0, 0, 91, 7, 1, 0, 0, 0, 92, 93, 6, 4, -1, 0, 93, 94,
+		3, 10, 5, 0, 94, 95, 6, 4, -1, 0, 95, 102, 1, 0, 0, 0, 96, 97, 10, 2, 0,
+		0, 97, 98, 3, 10, 5, 0, 98, 99, 6, 4, -1, 0, 99, 101, 1, 0, 0, 0, 100,
+		96, 1, 0, 0, 0, 101, 104, 1, 0, 0, 0, 102, 100, 1, 0, 0, 0, 102, 103, 1,
+		0, 0, 0, 103, 9, 1, 0, 0, 0, 104, 102, 1, 0, 0, 0, 105, 106, 5, 18, 0,
+		0, 106, 107, 5, 47, 0, 0, 107, 108, 5, 43, 0, 0, 108, 122, 6, 5, -1, 0,
+		109, 110, 5, 19, 0, 0, 110, 111, 5, 47, 0, 0, 111, 112, 5, 38, 0, 0, 112,
+		122, 6, 5, -1, 0, 113, 114, 5, 20, 0, 0, 114, 115, 5, 47, 0, 0, 115, 116,
+		5, 39, 0, 0, 116, 122, 6, 5, -1, 0, 117, 118, 5, 31, 0, 0, 118, 119, 5,
+		47, 0, 0, 119, 120, 5, 46, 0, 0, 120, 122, 6, 5, -1, 0, 121, 105, 1, 0,
+		0, 0, 121, 109, 1, 0, 0, 0, 121, 113, 1, 0, 0, 0, 121, 117, 1, 0, 0, 0,
+		122, 11, 1, 0, 0, 0, 123, 124, 5, 2, 0, 0, 124, 125, 5, 31, 0, 0, 125,
+		126, 5, 47, 0, 0, 126, 127, 5, 46, 0, 0, 127, 131, 6, 6, -1, 0, 128, 129,
+		5, 2, 0, 0, 129, 131, 6, 6, -1, 0, 130, 123, 1, 0, 0, 0, 130, 128, 1, 0,
+		0, 0, 131, 13, 1, 0, 0, 0, 132, 133, 5, 3, 0, 0, 133, 134, 3, 16, 8, 0,
+		134, 135, 6, 7, -1, 0, 135, 139, 1, 0, 0, 0, 136, 137, 5, 3, 0, 0, 137,
+		139, 6, 7, -1, 0, 138, 132, 1, 0, 0, 0, 138, 136, 1, 0, 0, 0, 139, 15,
+		1, 0, 0, 0, 140, 141, 6, 8, -1, 0, 141, 142, 3, 18, 9, 0, 142, 143, 6,
+		8, -1, 0, 143, 150, 1, 0, 0, 0, 144, 145, 10, 2, 0, 0, 145, 146, 3, 18,
+		9, 0, 146, 147, 6, 8, -1, 0, 147, 149, 1, 0, 0, 0, 148, 144, 1, 0, 0, 0,
+		149, 152, 1, 0, 0, 0, 150, 148, 1, 0, 0, 0, 150, 151, 1, 0, 0, 0, 151,
+		17, 1, 0, 0, 0, 152, 150, 1, 0, 0, 0, 153, 154, 5, 18, 0, 0, 154, 155,
+		5, 47, 0, 0, 155, 156, 5, 43, 0, 0, 156, 178, 6, 9, -1, 0, 157, 158, 5,
+		20, 0, 0, 158, 159, 5, 47, 0, 0, 159, 160, 5, 39, 0, 0, 160, 178, 6, 9,
+		-1, 0, 161, 162, 5, 31, 0, 0, 162, 163, 5, 47, 0, 0, 163, 164, 5, 46, 0,
+		0, 164, 178, 6, 9, -1, 0, 165, 166, 5, 23, 0, 0, 166, 167, 5, 47, 0, 0,
+		167, 168, 5, 40, 0, 0, 168, 178, 6, 9, -1, 0, 169, 170, 5, 19, 0, 0, 170,
+		171, 5, 47, 0, 0, 171, 172, 5, 38, 0, 0, 172, 178, 6, 9, -1, 0, 173, 174,
+		5, 22, 0, 0, 174, 175, 5, 47, 0, 0, 175, 176, 5, 44, 0, 0, 176, 178, 6,
+		9, -1, 0, 177, 153, 1, 0, 0, 0, 177, 157, 1, 0, 0, 0, 177, 161, 1, 0, 0,
+		0, 177, 165, 1, 0, 0, 0, 177, 169, 1, 0, 0, 0, 177, 173, 1, 0, 0, 0, 178,
+		19, 1, 0, 0, 0, 179, 180, 5, 4, 0, 0, 180, 181, 3, 22, 11, 0, 181, 182,
+		6, 10, -1, 0, 182, 186, 1, 0, 0, 0, 183, 184, 5, 4, 0, 0, 184, 186, 6,
+		10, -1, 0, 185, 179, 1, 0, 0, 0, 185, 183, 1, 0, 0, 0, 186, 21, 1, 0, 0,
+		0, 187, 188, 6, 11, -1, 0, 188, 189, 3, 24, 12, 0, 189, 190, 6, 11, -1,
+		0, 190, 197, 1, 0, 0, 0, 191, 192, 10, 2, 0, 0, 192, 193, 3, 24, 12, 0,
+		193, 194, 6, 11, -1, 0, 194, 196, 1, 0, 0, 0, 195, 191, 1, 0, 0, 0, 196,
+		199, 1, 0, 0, 0, 197, 195, 1, 0, 0, 0, 197, 198, 1, 0, 0, 0, 198, 23, 1,
+		0, 0, 0, 199, 197, 1, 0, 0, 0, 200, 201, 5, 31, 0, 0, 201, 202, 5, 47,
+		0, 0, 202, 203, 5, 46, 0, 0, 203, 209, 6, 12, -1, 0, 204, 205, 5, 22, 0,
+		0, 205, 206, 5, 47, 0, 0, 206, 207, 5, 44, 0, 0, 207, 209, 6, 12, -1, 0,
+		208, 200, 1, 0, 0, 0, 208, 204, 1, 0, 0, 0, 209, 25, 1, 0, 0, 0, 210, 211,
+		5, 5, 0, 0, 211, 212, 6, 13, -1, 0, 212, 27, 1, 0, 0, 0, 213, 214, 5, 6,
+		0, 0, 214, 215, 3, 30, 15, 0, 215, 216, 6, 14, -1, 0, 216, 220, 1, 0, 0,
+		0, 217, 218, 5, 6, 0, 0, 218, 220, 6, 14, -1, 0, 219, 213, 1, 0, 0, 0,
+		219, 217, 1, 0, 0, 0, 220, 29, 1, 0, 0, 0, 221, 222, 6, 15, -1, 0, 222,
+		223, 3, 32, 16, 0, 223, 224, 6, 15, -1, 0, 224, 231, 1, 0, 0, 0, 225, 226,
+		10, 2, 0, 0, 226, 227, 3, 32, 16, 0, 227, 228, 6, 15, -1, 0, 228, 230,
+		1, 0, 0, 0, 229, 225, 1, 0, 0, 0, 230, 233, 1, 0, 0, 0, 231, 229, 1, 0,
+		0, 0, 231, 232, 1, 0, 0, 0, 232, 31, 1, 0, 0, 0, 233, 231, 1, 0, 0, 0,
+		234, 235, 5, 23, 0, 0, 235, 236, 5, 47, 0, 0, 236, 237, 5, 42, 0, 0, 237,
+		243, 6, 16, -1, 0, 238, 239, 5, 26, 0, 0, 239, 240, 5, 47, 0, 0, 240, 241,
+		5, 44, 0, 0, 241, 243, 6, 16, -1, 0, 242, 234, 1, 0, 0, 0, 242, 238, 1,
+		0, 0, 0, 243, 33, 1, 0, 0, 0, 244, 245, 5, 8, 0, 0, 245, 246, 3, 36, 18,
+		0, 246, 247, 6, 17, -1, 0, 247, 251, 1, 0, 0, 0, 248, 249, 5, 8, 0, 0,
+		249, 251, 6, 17, -1, 0, 250, 244, 1, 0, 0, 0, 250, 248, 1, 0, 0, 0, 251,
+		35, 1, 0, 0, 0, 252, 253, 6, 18, -1, 0, 253, 254, 3, 38, 19, 0, 254, 255,
+		6, 18, -1, 0, 255, 262, 1, 0, 0, 0, 256, 257, 10, 2, 0, 0, 257, 258, 3,
+		38, 19, 0, 258, 259, 6, 18, -1, 0, 259, 261, 1, 0, 0, 0, 260, 256, 1, 0,
+		0, 0, 261, 264, 1, 0, 0, 0, 262, 260, 1, 0, 0, 0, 262, 263, 1, 0, 0, 0,
+		263, 37, 1, 0, 0, 0, 264, 262, 1, 0, 0, 0, 265, 266, 5, 28, 0, 0, 266,
+		267, 5, 47, 0, 0, 267, 268, 5, 44, 0, 0, 268, 282, 6, 19, -1, 0, 269, 270,
+		5, 29, 0, 0, 270, 271, 5, 47, 0, 0, 271, 272, 5, 44, 0, 0, 272, 282, 6,
+		19, -1, 0, 273, 274, 5, 29, 0, 0, 274, 275, 5, 47, 0, 0, 275, 276, 5, 43,
+		0, 0, 276, 282, 6, 19, -1, 0, 277, 278, 5, 26, 0, 0, 278, 279, 5, 47, 0,
+		0, 279, 280, 5, 44, 0, 0, 280, 282, 6, 19, -1, 0, 281, 265, 1, 0, 0, 0,
+		281, 269, 1, 0, 0, 0, 281, 273, 1, 0, 0, 0, 281, 277, 1, 0, 0, 0, 282,
 		39, 1, 0, 0, 0, 19, 46, 58, 82, 90, 102, 121, 130, 138, 150, 177, 185,
-		197, 208, 219, 231, 242, 250, 262, 277,
+		197, 208, 219, 231, 242, 250, 262, 281,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -264,14 +265,13 @@ const (
 	ParserParserTK_ftype       = 42
 	ParserParserTK_number      = 43
 	ParserParserTK_id          = 44
-	ParserParserTK_qid         = 45
-	ParserParserTK_ext         = 46
-	ParserParserTK_path        = 47
-	ParserParserTK_equ         = 48
-	ParserParserTK_sym         = 49
-	ParserParserCOMMENTARY     = 50
-	ParserParserNEWLINE        = 51
-	ParserParserUNUSED_        = 52
+	ParserParserTK_ext         = 45
+	ParserParserTK_path        = 46
+	ParserParserTK_equ         = 47
+	ParserParserTK_sym         = 48
+	ParserParserCOMMENTARY     = 49
+	ParserParserNEWLINE        = 50
+	ParserParserUNUSED_        = 51
 )
 
 // ParserParser rules.
@@ -4806,23 +4806,23 @@ type ILoginparamContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetV1 returns the v1 token.
-	GetV1() antlr.Token
+	// GetP1 returns the p1 token.
+	GetP1() antlr.Token
 
-	// GetV2 returns the v2 token.
-	GetV2() antlr.Token
+	// GetP2 returns the p2 token.
+	GetP2() antlr.Token
 
-	// GetV3 returns the v3 token.
-	GetV3() antlr.Token
+	// GetP3 returns the p3 token.
+	GetP3() antlr.Token
 
-	// SetV1 sets the v1 token.
-	SetV1(antlr.Token)
+	// SetP1 sets the p1 token.
+	SetP1(antlr.Token)
 
-	// SetV2 sets the v2 token.
-	SetV2(antlr.Token)
+	// SetP2 sets the p2 token.
+	SetP2(antlr.Token)
 
-	// SetV3 sets the v3 token.
-	SetV3(antlr.Token)
+	// SetP3 sets the p3 token.
+	SetP3(antlr.Token)
 
 	// GetResult returns the result attribute.
 	GetResult() []string
@@ -4833,8 +4833,9 @@ type ILoginparamContext interface {
 	// Getter signatures
 	RW_user() antlr.TerminalNode
 	TK_equ() antlr.TerminalNode
-	TK_qid() antlr.TerminalNode
+	TK_id() antlr.TerminalNode
 	RW_pass() antlr.TerminalNode
+	TK_number() antlr.TerminalNode
 	RW_id() antlr.TerminalNode
 
 	// IsLoginparamContext differentiates from other interfaces.
@@ -4845,9 +4846,9 @@ type LoginparamContext struct {
 	antlr.BaseParserRuleContext
 	parser antlr.Parser
 	result []string
-	v1     antlr.Token
-	v2     antlr.Token
-	v3     antlr.Token
+	p1     antlr.Token
+	p2     antlr.Token
+	p3     antlr.Token
 }
 
 func NewEmptyLoginparamContext() *LoginparamContext {
@@ -4877,17 +4878,17 @@ func NewLoginparamContext(parser antlr.Parser, parent antlr.ParserRuleContext, i
 
 func (s *LoginparamContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *LoginparamContext) GetV1() antlr.Token { return s.v1 }
+func (s *LoginparamContext) GetP1() antlr.Token { return s.p1 }
 
-func (s *LoginparamContext) GetV2() antlr.Token { return s.v2 }
+func (s *LoginparamContext) GetP2() antlr.Token { return s.p2 }
 
-func (s *LoginparamContext) GetV3() antlr.Token { return s.v3 }
+func (s *LoginparamContext) GetP3() antlr.Token { return s.p3 }
 
-func (s *LoginparamContext) SetV1(v antlr.Token) { s.v1 = v }
+func (s *LoginparamContext) SetP1(v antlr.Token) { s.p1 = v }
 
-func (s *LoginparamContext) SetV2(v antlr.Token) { s.v2 = v }
+func (s *LoginparamContext) SetP2(v antlr.Token) { s.p2 = v }
 
-func (s *LoginparamContext) SetV3(v antlr.Token) { s.v3 = v }
+func (s *LoginparamContext) SetP3(v antlr.Token) { s.p3 = v }
 
 func (s *LoginparamContext) GetResult() []string { return s.result }
 
@@ -4901,12 +4902,16 @@ func (s *LoginparamContext) TK_equ() antlr.TerminalNode {
 	return s.GetToken(ParserParserTK_equ, 0)
 }
 
-func (s *LoginparamContext) TK_qid() antlr.TerminalNode {
-	return s.GetToken(ParserParserTK_qid, 0)
+func (s *LoginparamContext) TK_id() antlr.TerminalNode {
+	return s.GetToken(ParserParserTK_id, 0)
 }
 
 func (s *LoginparamContext) RW_pass() antlr.TerminalNode {
 	return s.GetToken(ParserParserRW_pass, 0)
+}
+
+func (s *LoginparamContext) TK_number() antlr.TerminalNode {
+	return s.GetToken(ParserParserTK_number, 0)
 }
 
 func (s *LoginparamContext) RW_id() antlr.TerminalNode {
@@ -4936,14 +4941,14 @@ func (s *LoginparamContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *ParserParser) Loginparam() (localctx ILoginparamContext) {
 	localctx = NewLoginparamContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 38, ParserParserRULE_loginparam)
-	p.SetState(277)
+	p.SetState(281)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
-	switch p.GetTokenStream().LA(1) {
-	case ParserParserRW_user:
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 18, p.GetParserRuleContext()) {
+	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
 			p.SetState(265)
@@ -4964,23 +4969,23 @@ func (p *ParserParser) Loginparam() (localctx ILoginparamContext) {
 		{
 			p.SetState(267)
 
-			var _m = p.Match(ParserParserTK_qid)
+			var _m = p.Match(ParserParserTK_id)
 
-			localctx.(*LoginparamContext).v1 = _m
+			localctx.(*LoginparamContext).p1 = _m
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
 		localctx.(*LoginparamContext).result = []string{"user", strings.Trim((func() string {
-			if localctx.(*LoginparamContext).GetV1() == nil {
+			if localctx.(*LoginparamContext).GetP1() == nil {
 				return ""
 			} else {
-				return localctx.(*LoginparamContext).GetV1().GetText()
+				return localctx.(*LoginparamContext).GetP1().GetText()
 			}
 		}()), "\"")}
 
-	case ParserParserRW_pass:
+	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
 			p.SetState(269)
@@ -5001,27 +5006,27 @@ func (p *ParserParser) Loginparam() (localctx ILoginparamContext) {
 		{
 			p.SetState(271)
 
-			var _m = p.Match(ParserParserTK_qid)
+			var _m = p.Match(ParserParserTK_id)
 
-			localctx.(*LoginparamContext).v2 = _m
+			localctx.(*LoginparamContext).p2 = _m
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
 		localctx.(*LoginparamContext).result = []string{"pass", strings.Trim((func() string {
-			if localctx.(*LoginparamContext).GetV2() == nil {
+			if localctx.(*LoginparamContext).GetP2() == nil {
 				return ""
 			} else {
-				return localctx.(*LoginparamContext).GetV2().GetText()
+				return localctx.(*LoginparamContext).GetP2().GetText()
 			}
 		}()), "\"")}
 
-	case ParserParserRW_id:
+	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
 			p.SetState(273)
-			p.Match(ParserParserRW_id)
+			p.Match(ParserParserRW_pass)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -5038,24 +5043,60 @@ func (p *ParserParser) Loginparam() (localctx ILoginparamContext) {
 		{
 			p.SetState(275)
 
-			var _m = p.Match(ParserParserTK_qid)
+			var _m = p.Match(ParserParserTK_number)
 
-			localctx.(*LoginparamContext).v3 = _m
+			localctx.(*LoginparamContext).p2 = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		localctx.(*LoginparamContext).result = []string{"pass", (func() string {
+			if localctx.(*LoginparamContext).GetP2() == nil {
+				return ""
+			} else {
+				return localctx.(*LoginparamContext).GetP2().GetText()
+			}
+		}())}
+
+	case 4:
+		p.EnterOuterAlt(localctx, 4)
+		{
+			p.SetState(277)
+			p.Match(ParserParserRW_id)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(278)
+			p.Match(ParserParserTK_equ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(279)
+
+			var _m = p.Match(ParserParserTK_id)
+
+			localctx.(*LoginparamContext).p3 = _m
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
 		localctx.(*LoginparamContext).result = []string{"id", strings.ToUpper(strings.Trim((func() string {
-			if localctx.(*LoginparamContext).GetV3() == nil {
+			if localctx.(*LoginparamContext).GetP3() == nil {
 				return ""
 			} else {
-				return localctx.(*LoginparamContext).GetV3().GetText()
+				return localctx.(*LoginparamContext).GetP3().GetText()
 			}
 		}()), "\""))}
 
-	default:
-		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+	case antlr.ATNInvalidAltNumber:
 		goto errorExit
 	}
 

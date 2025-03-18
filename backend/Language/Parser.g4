@@ -133,7 +133,8 @@ loginparams returns[map[string]string result]:
     ;
 
 loginparam returns[[]string result]:
-        RW_user TK_equ v1 = TK_qid  {$result = []string{"user", strings.Trim($v1.text, "\"")}}
-    |   RW_pass TK_equ v2 = TK_qid  {$result = []string{"pass", strings.Trim($v2.text, "\"")}}
-    |   RW_id TK_equ v3 = TK_qid    {$result = []string{"id", strings.ToUpper(strings.Trim($v3.text, "\""))}}
+        RW_user TK_equ p1 = TK_id       {$result = []string{"user", strings.Trim($p1.text, "\"")}}
+    |   RW_pass TK_equ p2 = TK_id       {$result = []string{"pass", strings.Trim($p2.text, "\"")}}
+    |   RW_pass TK_equ p2 = TK_number   {$result = []string{"pass", $p2.text}}
+    |   RW_id TK_equ p3 = TK_id         {$result = []string{"id", strings.ToUpper(strings.Trim($p3.text, "\""))}}
     ;

@@ -65,7 +65,6 @@ TK_fs          : '2fs' | '3fs'            ;
 TK_ftype       : 'full'                   ;
 TK_number      : INTEGER                  ;
 TK_id          : ID1 | '"'ID2'"'          ;
-TK_qid         : ID1 | '"'ID2'"'          ;
 TK_ext         : EXT                      ;
 TK_path        : PATH                     ;
 TK_equ         : '='                      ;
