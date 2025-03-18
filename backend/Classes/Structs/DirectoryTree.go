@@ -43,14 +43,14 @@ func (dt *DirTree) searchInodeByPath(path []string, inode *Inode) (int32, *Inode
 
 		// TODO if the block is in the last 3 spaces then is an indirect access
 		if i >= 12 {
-			// dt.loadPointerBlock()
+			// dt.loadDirectoryPointerBlock()
 			// Load pointer block
 			var pointerBlock PointerBlock
 			if err := Utils.ReadObject(dt.File, &pointerBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
 				return -1, nil, err
 			}
 			// once loaded send it to the pointerBlockLoader
-			index, newInode, err := dt.loadPointerBlock(&pointerBlock, path, i-12)
+			index, newInode, err := dt.loadDirectoryPointerBlock(&pointerBlock, path, i-12)
 			if err == nil {
 				return index, newInode, nil
 			}
@@ -71,7 +71,7 @@ func (dt *DirTree) searchInodeByPath(path []string, inode *Inode) (int32, *Inode
 	return -1, nil, errors.New("invalid Inode loaded")
 }
 
-func (dt *DirTree) loadPointerBlock(pointerBlock *PointerBlock, path []string, level int) (int32, *Inode, error) {
+func (dt *DirTree) loadDirectoryPointerBlock(pointerBlock *PointerBlock, path []string, level int) (int32, *Inode, error) {
 	for _, block := range pointerBlock.Pointers {
 		if block == -1 {
 			continue
@@ -82,7 +82,7 @@ func (dt *DirTree) loadPointerBlock(pointerBlock *PointerBlock, path []string, l
 			if err := Utils.ReadObject(dt.File, ptBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
 				return -1, nil, err
 			}
-			index, inode, err := dt.loadPointerBlock(&ptBlock, path, level-1)
+			index, inode, err := dt.loadDirectoryPointerBlock(&ptBlock, path, level-1)
 			if err == nil {
 				return index, inode, nil
 			}
