@@ -108,7 +108,7 @@ func (l *Login) loginUser(user string, password string, partition *Structs.Parti
 
 		if words[3] == user && words[4] == password {
 			return &Structs.User{
-				Id:       id,
+				Id:       int32(id),
 				Group:    words[2],
 				Name:     words[3],
 				Password: words[4],

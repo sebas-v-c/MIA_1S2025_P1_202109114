@@ -3,7 +3,7 @@ package Structs
 import "fmt"
 
 type User struct {
-	Id       int
+	Id       int32
 	Group    string
 	Name     string
 	Password string

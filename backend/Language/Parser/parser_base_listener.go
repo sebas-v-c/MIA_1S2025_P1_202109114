@@ -146,3 +146,21 @@ func (s *BaseParserListener) EnterLogout(ctx *LogoutContext) {}
 
 // ExitLogout is called when production logout is exited.
 func (s *BaseParserListener) ExitLogout(ctx *LogoutContext) {}
+
+// EnterMkgrp is called when production mkgrp is entered.
+func (s *BaseParserListener) EnterMkgrp(ctx *MkgrpContext) {}
+
+// ExitMkgrp is called when production mkgrp is exited.
+func (s *BaseParserListener) ExitMkgrp(ctx *MkgrpContext) {}
+
+// EnterMkgrpparams is called when production mkgrpparams is entered.
+func (s *BaseParserListener) EnterMkgrpparams(ctx *MkgrpparamsContext) {}
+
+// ExitMkgrpparams is called when production mkgrpparams is exited.
+func (s *BaseParserListener) ExitMkgrpparams(ctx *MkgrpparamsContext) {}
+
+// EnterMkgrpparam is called when production mkgrpparam is entered.
+func (s *BaseParserListener) EnterMkgrpparam(ctx *MkgrpparamContext) {}
+
+// ExitMkgrpparam is called when production mkgrpparam is exited.
+func (s *BaseParserListener) ExitMkgrpparam(ctx *MkgrpparamContext) {}

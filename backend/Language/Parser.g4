@@ -36,6 +36,7 @@ command returns[interfaces.Command result]:
 //    |   c7 = cat      {$result = $c7.result}
     |   c8 = login      {$result = $c8.result}
     |   c9 = logout     {$result = $c9.result}
+    |   c10 = mkgrp     {$result = $c10.result}
     ;
 
 // =============== MKDISK ===============
@@ -143,4 +144,20 @@ loginparam returns[[]string result]:
 // =============== LOGOUT ===============
 logout returns[*commands.Logout result]:
         l = RW_logout   {$result = commands.NewLogout($l.line, $l.pos)}
+    ;
+
+// =============== MKGRP ===============
+mkgrp returns[*commands.Mkgrp result]:
+        l = RW_mkgrp p = mkgrpparams    {$result = commands.NewMkgrp($l.line, $l.pos, $p.result)}
+    |   l = RW_mkgrp                    {$result = commands.NewMkgrp($l.line, $l.pos, map[string]string{})}
+    ;
+
+mkgrpparams returns[map[string]string result]:
+        l = mkgrpparams p = mkgrpparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = mkgrpparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+mkgrpparam returns[[]string result]:
+        RW_name TK_equ p1 = TK_id       {$result = []string{"name", strings.Trim($p1.text, "\"")}}
+    |   RW_name TK_equ p2 = TK_number   {$result = []string{"name", $p2.text}}
     ;

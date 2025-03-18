@@ -71,6 +71,15 @@ type ParserListener interface {
 	// EnterLogout is called when entering the logout production.
 	EnterLogout(c *LogoutContext)
 
+	// EnterMkgrp is called when entering the mkgrp production.
+	EnterMkgrp(c *MkgrpContext)
+
+	// EnterMkgrpparams is called when entering the mkgrpparams production.
+	EnterMkgrpparams(c *MkgrpparamsContext)
+
+	// EnterMkgrpparam is called when entering the mkgrpparam production.
+	EnterMkgrpparam(c *MkgrpparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -133,4 +142,13 @@ type ParserListener interface {
 
 	// ExitLogout is called when exiting the logout production.
 	ExitLogout(c *LogoutContext)
+
+	// ExitMkgrp is called when exiting the mkgrp production.
+	ExitMkgrp(c *MkgrpContext)
+
+	// ExitMkgrpparams is called when exiting the mkgrpparams production.
+	ExitMkgrpparams(c *MkgrpparamsContext)
+
+	// ExitMkgrpparam is called when exiting the mkgrpparam production.
+	ExitMkgrpparam(c *MkgrpparamContext)
 }
