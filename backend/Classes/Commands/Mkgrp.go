@@ -5,6 +5,7 @@ import (
 	"backend/Classes/Interfaces"
 	"backend/Classes/Utils"
 	"errors"
+	"fmt"
 )
 
 type Mkgrp struct {
@@ -38,6 +39,15 @@ func (m *Mkgrp) Exec() {
 		m.AppendError("You need to be root user to execute this command")
 		return
 	}
+
+	// Verify disc integrity
+	mountedPartition, mbrPartition, file, err := env.VerifyDiscStatus(*env.CurrentUser)
+	if err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+	defer file.Close()
+	fmt.Println(mountedPartition.ToString(), mbrPartition.ToString())
 
 }
 
