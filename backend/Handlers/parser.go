@@ -20,7 +20,6 @@ type JSONResponse struct {
 }
 
 func ParseCodeHandler(c *gin.Context) {
-	// TODO: parse code and return the result
 	var req CodeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
