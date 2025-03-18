@@ -131,9 +131,18 @@ func (dt *DirTree) GetFileContentByInode(inode *Inode) (string, error) {
 		if block == -1 {
 			continue
 		}
-		// TODO if the index is greater than 12 then its an indirect block so must be implemented for larger files
+		// if the index is greater than 12 then its an indirect block so must be implemented for larger files
 		if i >= 12 {
-			panic("implement indirect block access")
+			var pointerBlock PointerBlock
+			if err := Utils.ReadObject(dt.File, &pointerBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
+				return resultString, err
+			}
+			result, err := dt.loadFilePointerBlock(&pointerBlock, resultString, i-12)
+			if err != nil {
+				return result, err
+			}
+			resultString += result
+			continue
 		}
 
 		// load fileblock from memory
@@ -142,6 +151,34 @@ func (dt *DirTree) GetFileContentByInode(inode *Inode) (string, error) {
 			return "", err
 		}
 		// add file content to the result string
+		resultString += strings.TrimRight(string(fileBlock.Content[:]), "\x00")
+	}
+	return resultString, nil
+}
+
+func (dt *DirTree) loadFilePointerBlock(pointerBlock *PointerBlock, resultString string, level int) (string, error) {
+	for _, block := range pointerBlock.Pointers {
+		if block == -1 {
+			continue
+		}
+
+		if level > 0 {
+			var ptBlock PointerBlock
+			if err := Utils.ReadObject(dt.File, &ptBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
+				return resultString, err
+			}
+			result, err := dt.loadFilePointerBlock(&ptBlock, resultString, level-1)
+			if err != nil {
+				return result, err
+			}
+			resultString += result
+			continue
+		}
+
+		var fileBlock FileBlock
+		if err := Utils.ReadObject(dt.File, &fileBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(FileBlock{})))); err != nil {
+			return resultString, err
+		}
 		resultString += strings.TrimRight(string(fileBlock.Content[:]), "\x00")
 	}
 	return resultString, nil
