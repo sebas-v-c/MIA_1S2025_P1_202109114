@@ -140,3 +140,9 @@ func (s *BaseParserListener) EnterLoginparam(ctx *LoginparamContext) {}
 
 // ExitLoginparam is called when production loginparam is exited.
 func (s *BaseParserListener) ExitLoginparam(ctx *LoginparamContext) {}
+
+// EnterLogout is called when production logout is entered.
+func (s *BaseParserListener) EnterLogout(ctx *LogoutContext) {}
+
+// ExitLogout is called when production logout is exited.
+func (s *BaseParserListener) ExitLogout(ctx *LogoutContext) {}

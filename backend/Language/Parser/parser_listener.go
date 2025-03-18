@@ -68,6 +68,9 @@ type ParserListener interface {
 	// EnterLoginparam is called when entering the loginparam production.
 	EnterLoginparam(c *LoginparamContext)
 
+	// EnterLogout is called when entering the logout production.
+	EnterLogout(c *LogoutContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -127,4 +130,7 @@ type ParserListener interface {
 
 	// ExitLoginparam is called when exiting the loginparam production.
 	ExitLoginparam(c *LoginparamContext)
+
+	// ExitLogout is called when exiting the logout production.
+	ExitLogout(c *LogoutContext)
 }

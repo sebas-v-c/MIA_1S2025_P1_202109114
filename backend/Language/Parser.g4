@@ -35,6 +35,7 @@ command returns[interfaces.Command result]:
     |   c6 = mkfs       {$result = $c6.result}
 //    |   c7 = cat      {$result = $c7.result}
     |   c8 = login      {$result = $c8.result}
+    |   c9 = logout     {$result = $c9.result}
     ;
 
 // =============== MKDISK ===============
@@ -137,4 +138,9 @@ loginparam returns[[]string result]:
     |   RW_pass TK_equ p2 = TK_id       {$result = []string{"pass", strings.Trim($p2.text, "\"")}}
     |   RW_pass TK_equ p2 = TK_number   {$result = []string{"pass", $p2.text}}
     |   RW_id TK_equ p3 = TK_id         {$result = []string{"id", strings.ToUpper(strings.Trim($p3.text, "\""))}}
+    ;
+
+// =============== LOGOUT ===============
+logout returns[*commands.Logout result]:
+        l = RW_logout   {$result = commands.NewLogout($l.line, $l.pos)}
     ;
