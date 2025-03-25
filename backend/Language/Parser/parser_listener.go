@@ -89,6 +89,15 @@ type ParserListener interface {
 	// EnterMkgrpparam is called when entering the mkgrpparam production.
 	EnterMkgrpparam(c *MkgrpparamContext)
 
+	// EnterRmgrp is called when entering the rmgrp production.
+	EnterRmgrp(c *RmgrpContext)
+
+	// EnterRmgrpparams is called when entering the rmgrpparams production.
+	EnterRmgrpparams(c *RmgrpparamsContext)
+
+	// EnterRmgrpparam is called when entering the rmgrpparam production.
+	EnterRmgrpparam(c *RmgrpparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -169,4 +178,13 @@ type ParserListener interface {
 
 	// ExitMkgrpparam is called when exiting the mkgrpparam production.
 	ExitMkgrpparam(c *MkgrpparamContext)
+
+	// ExitRmgrp is called when exiting the rmgrp production.
+	ExitRmgrp(c *RmgrpContext)
+
+	// ExitRmgrpparams is called when exiting the rmgrpparams production.
+	ExitRmgrpparams(c *RmgrpparamsContext)
+
+	// ExitRmgrpparam is called when exiting the rmgrpparam production.
+	ExitRmgrpparam(c *RmgrpparamContext)
 }
