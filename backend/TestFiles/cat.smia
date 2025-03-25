@@ -5,7 +5,6 @@ mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="Particion1"
 mkfs -id=141A
 
 login -id=141A -user=root -pass=123
-mkgrp -name=carmen
 mkgrp -name=users
-mkgrp -name=zibas
-mkgrp -name=virtualmachines
+# TODO create new user
+cat -file1=/users.txt -file2=/users.txt -file3="/users.txt" -file4=./users.txt -file5="./users.txt"

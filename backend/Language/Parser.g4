@@ -33,7 +33,7 @@ command returns[interfaces.Command result]:
     |   c4 = mount      {$result = $c4.result}
     |   c5 = mounted    {$result = $c5.result}
     |   c6 = mkfs       {$result = $c6.result}
-//    |   c7 = cat      {$result = $c7.result}
+    |   c7 = cat        {$result = $c7.result}
     |   c8 = login      {$result = $c8.result}
     |   c9 = logout     {$result = $c9.result}
     |   c10 = mkgrp     {$result = $c10.result}
@@ -121,7 +121,20 @@ mkfsparam returns[[]string result]:
     ;
 
 // =============== CAT ===============
-// TODO
+cat returns[*commands.Cat result]:
+        c = RW_cat p = catparams    {$result = commands.NewCat($c.line, $c.pos, $p.result)}
+    |   c = RW_cat                  {$result = commands.NewCat($c.line, $c.pos, []string{})}
+    ;
+
+catparams returns[[]string result]:
+        l = catparams p = catparam  {$result = $l.result;; $result = append($result, $p.result)}
+    |   p = catparam                {$result = []string{$p.result}}
+    ;
+
+catparam returns[string result]:
+        RW_fileN TK_equ p1 = TK_path    {$result = strings.Trim($p1.text, "\"")}
+        ;
+
 
 // =============== LOGIN ===============
 login returns[*commands.Login result]:

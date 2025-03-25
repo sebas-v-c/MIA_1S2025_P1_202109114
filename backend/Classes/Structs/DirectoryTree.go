@@ -83,7 +83,7 @@ func (dt *DirTree) searchInodeByPath(path []string, inode *Inode) (int32, *Inode
 	}
 
 	// Return error if inode is not found
-	return -1, nil, errors.New("invalid Inode loaded")
+	return -1, nil, errors.New("file inode not found")
 }
 
 // loadDirectoryPointerBlockContent handles loading of pointer blocks and iterates recursively for indirect blocks
@@ -296,7 +296,7 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 	inode.Size = int32(len(content))
 	copy(inode.MTime[:], time.Now().Format("2006-01-02 15:04"))
 	copy(inode.ATime[:], time.Now().Format("2006-01-02 15:04"))
-	fmt.Println(inode.ToString())
+	//fmt.Println(inode.ToString())
 	// updating bitmaps
 
 	return nil

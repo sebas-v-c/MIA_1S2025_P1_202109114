@@ -123,6 +123,24 @@ func (s *BaseParserListener) EnterMkfsparam(ctx *MkfsparamContext) {}
 // ExitMkfsparam is called when production mkfsparam is exited.
 func (s *BaseParserListener) ExitMkfsparam(ctx *MkfsparamContext) {}
 
+// EnterCat is called when production cat is entered.
+func (s *BaseParserListener) EnterCat(ctx *CatContext) {}
+
+// ExitCat is called when production cat is exited.
+func (s *BaseParserListener) ExitCat(ctx *CatContext) {}
+
+// EnterCatparams is called when production catparams is entered.
+func (s *BaseParserListener) EnterCatparams(ctx *CatparamsContext) {}
+
+// ExitCatparams is called when production catparams is exited.
+func (s *BaseParserListener) ExitCatparams(ctx *CatparamsContext) {}
+
+// EnterCatparam is called when production catparam is entered.
+func (s *BaseParserListener) EnterCatparam(ctx *CatparamContext) {}
+
+// ExitCatparam is called when production catparam is exited.
+func (s *BaseParserListener) ExitCatparam(ctx *CatparamContext) {}
+
 // EnterLogin is called when production login is entered.
 func (s *BaseParserListener) EnterLogin(ctx *LoginContext) {}
 
