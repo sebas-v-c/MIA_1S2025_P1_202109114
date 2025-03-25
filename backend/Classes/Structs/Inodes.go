@@ -42,14 +42,6 @@ func NewInode(inodeType [1]byte) *Inode {
 }
 
 func (i *Inode) ToString() string {
-	iblockList := make([]string, len(i.IBlock))
-	for index := int32(0); index < 15; index++ {
-		if i.IBlock[index] == -1 {
-			iblockList[index] = "-1"
-		} else {
-			iblockList[index] = string(i.IBlock[index])
-		}
-	}
 	return fmt.Sprintf(`        i_UID %v
         i_GID %v
         i_Size %v
@@ -65,7 +57,7 @@ func (i *Inode) ToString() string {
 		string(i.ATime[:]),
 		string(i.CTime[:]),
 		string(i.MTime[:]),
-		iblockList,
+		i.IBlock,
 		string(i.Type[:]),
 		string(i.Perm[:]))
 }

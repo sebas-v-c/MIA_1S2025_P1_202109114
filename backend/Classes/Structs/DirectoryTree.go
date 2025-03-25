@@ -4,19 +4,34 @@ import (
 	"backend/Classes/Utils"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 // DirTree represents a directory tree structure containing SuperBlock and the file reference
 type DirTree struct {
-	SuperBlock *SuperBlock // Pointer to the superblock of the file system
-	File       *os.File    // Reference to the file representing the disk
+	SuperBlock  *SuperBlock // Pointer to the superblock of the file system
+	File        *os.File    // Reference to the file representing the disk
+	BlockBitMap []byte
+	InodeBitMap []byte
 }
 
 // NewDirTree creates a new instance of DirTree with the provided superblock and file
 func NewDirTree(superBlock SuperBlock, file *os.File) *DirTree {
-	return &DirTree{SuperBlock: &superBlock, File: file}
+	var blockBitMap = make([]byte, superBlock.BlocksCount)
+	var inodeBitMap = make([]byte, superBlock.InodesCount)
+	if err := Utils.ReadObject(file, &blockBitMap, int64(superBlock.BmBlockStart)); err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	if err := Utils.ReadObject(file, &inodeBitMap, int64(superBlock.InodeStart)); err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	return &DirTree{SuperBlock: &superBlock, File: file, BlockBitMap: blockBitMap, InodeBitMap: inodeBitMap}
 }
 
 // GetInodeByPath retrieves an inode based on the provided path
@@ -48,13 +63,13 @@ func (dt *DirTree) searchInodeByPath(path []string, inode *Inode) (int32, *Inode
 
 		// If index is >= 12, it means we are dealing with an indirect access (pointer block)
 		if i >= 12 {
-			// Load the pointer block and pass it to loadDirectoryPointerBlock
+			// Load the pointer block and pass it to loadDirectoryPointerBlockContent
 			var pointerBlock PointerBlock
 			if err := Utils.ReadObject(dt.File, &pointerBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
 				return -1, nil, err
 			}
 			// Load the next inode from the pointer block
-			index, newInode, err := dt.loadDirectoryPointerBlock(&pointerBlock, path, i-12)
+			index, newInode, err := dt.loadDirectoryPointerBlockContent(&pointerBlock, path, i-12)
 			if err == nil {
 				return index, newInode, nil
 			}
@@ -71,8 +86,8 @@ func (dt *DirTree) searchInodeByPath(path []string, inode *Inode) (int32, *Inode
 	return -1, nil, errors.New("invalid Inode loaded")
 }
 
-// loadDirectoryPointerBlock handles loading of pointer blocks and iterates recursively for indirect blocks
-func (dt *DirTree) loadDirectoryPointerBlock(pointerBlock *PointerBlock, path []string, level int) (int32, *Inode, error) {
+// loadDirectoryPointerBlockContent handles loading of pointer blocks and iterates recursively for indirect blocks
+func (dt *DirTree) loadDirectoryPointerBlockContent(pointerBlock *PointerBlock, path []string, level int) (int32, *Inode, error) {
 	// Iterate over the pointer block's pointers
 	for _, block := range pointerBlock.Pointers {
 		if block == -1 {
@@ -86,7 +101,7 @@ func (dt *DirTree) loadDirectoryPointerBlock(pointerBlock *PointerBlock, path []
 				return -1, nil, err
 			}
 			// Recursive call to load the next pointer block
-			index, inode, err := dt.loadDirectoryPointerBlock(&ptBlock, path, level-1)
+			index, inode, err := dt.loadDirectoryPointerBlockContent(&ptBlock, path, level-1)
 			if err == nil {
 				return index, inode, nil
 			}
@@ -155,7 +170,7 @@ func (dt *DirTree) GetFileContentByInode(inode *Inode) (string, error) {
 			if err := Utils.ReadObject(dt.File, &pointerBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
 				return resultString.String(), err
 			}
-			result, err := dt.loadFilePointerBlock(&pointerBlock, resultString.String(), i-12)
+			result, err := dt.loadFilePointerBlockContent(&pointerBlock, resultString.String(), i-12)
 			if err != nil {
 				return result, err
 			}
@@ -171,11 +186,12 @@ func (dt *DirTree) GetFileContentByInode(inode *Inode) (string, error) {
 		resultString.WriteString(strings.TrimRight(string(fileBlock.Content[:]), "\x00"))
 	}
 
+	copy(inode.ATime[:], time.Now().Format("2006-01-02 15:04"))
 	return resultString.String(), nil
 }
 
-// loadFilePointerBlock recursively handles the indirect blocks for large files
-func (dt *DirTree) loadFilePointerBlock(pointerBlock *PointerBlock, resultString string, level int) (string, error) {
+// loadFilePointerBlockContent recursively handles the indirect blocks for large files
+func (dt *DirTree) loadFilePointerBlockContent(pointerBlock *PointerBlock, resultString string, level int) (string, error) {
 	for _, block := range pointerBlock.Pointers {
 		if block == -1 {
 			continue
@@ -187,7 +203,7 @@ func (dt *DirTree) loadFilePointerBlock(pointerBlock *PointerBlock, resultString
 			if err := Utils.ReadObject(dt.File, &ptBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
 				return resultString, err
 			}
-			result, err := dt.loadFilePointerBlock(&ptBlock, resultString, level-1)
+			result, err := dt.loadFilePointerBlockContent(&ptBlock, resultString, level-1)
 			if err != nil {
 				return result, err
 			}
@@ -203,4 +219,142 @@ func (dt *DirTree) loadFilePointerBlock(pointerBlock *PointerBlock, resultString
 		resultString += strings.TrimRight(string(fileBlock.Content[:]), "\x00")
 	}
 	return resultString, nil
+}
+
+func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
+	// ALL OF THIS IS BAD DESIGN SINCE INODE SHOULD NOT BE MODIFIED HERE, JUST RETURN
+	var lastBlock int32 = -1
+	var lastIndex = 0
+	for i, block := range inode.IBlock {
+		if block == -1 {
+			break
+		}
+		// indirect addresses
+		if i >= 12 {
+			fmt.Println("Cannot load indirect addresses, functionality not implemented")
+			panic("Implement indirect addresses")
+		}
+
+		lastBlock = block
+		lastIndex = i
+	}
+
+	// load the last file block
+	var lastFileBlock FileBlock
+	// if last block is not an empty block, meaning that the inode is empty
+	if lastBlock != -1 {
+		if err := Utils.ReadObject(dt.File, &lastFileBlock, int64(dt.SuperBlock.BlockStart+lastBlock*int32(binary.Size(FileBlock{})))); err != nil {
+			return err
+		}
+	}
+	// adding the content to append to the end of the file block
+	content := strings.TrimRight(string(lastFileBlock.Content[:]), "\x00")
+	content += s
+
+	// getting the content splited in chunks of 64 bytes
+	splittedBytesContent := dt.splitRawBytes(content, binary.Size(FileBlock{}))
+	for _, block := range splittedBytesContent {
+		var newFileBlock FileBlock
+		copy(newFileBlock.Content[:], block)
+		// writing to disc logic
+		// TODO Check logic if last index is in the last 3 Iblock position
+		if lastIndex >= 12 {
+			fmt.Println("Cannot handle indirect addresses, functionality not implemented")
+			panic("Implement indirect addresses creation")
+		}
+		// if last block was -1 it means that we need a new direction to store the File Block at the last index
+		if lastBlock == -1 {
+			// load a new File Block Direction
+			var err error
+			lastBlock, err = dt.GetAvailableBlockAddress()
+			if err != nil {
+				return err
+			}
+		}
+		// Store the new FileBlock
+		if err := Utils.WriteObject(dt.File, newFileBlock, int64(dt.SuperBlock.BlockStart+lastBlock*int32(binary.Size(FileBlock{})))); err != nil {
+			return err
+		}
+
+		// Update superblock bitmap
+		if err := Utils.WriteObject(dt.File, byte(1), int64(dt.SuperBlock.BmBlockStart+lastBlock)); err != nil {
+			return err
+		}
+		dt.BlockBitMap[lastBlock] = 1
+
+		// update inode index block address
+		inode.IBlock[lastIndex] = lastBlock
+
+		// next block is going to be a new block
+		lastBlock = -1
+		// add +1 to the index count
+		lastIndex += 1
+
+	}
+
+	// Updating inode info
+	inode.Size = int32(len(content))
+	copy(inode.MTime[:], time.Now().Format("2006-01-02 15:04"))
+	copy(inode.ATime[:], time.Now().Format("2006-01-02 15:04"))
+	fmt.Println(inode.ToString())
+	// updating bitmaps
+
+	return nil
+}
+
+/*
+func (dt *DirTree) loadFilePointerBlock(pointerBlock *PointerBlock, level int) (int32, error) {
+	var lastBlock int32 = -1
+	for _, block := range pointerBlock.Pointers {
+		if block == -1 {
+			break
+		}
+		if level > 0 {
+			var ptBlock PointerBlock
+			if err := Utils.ReadObject(dt.File, &ptBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(PointerBlock{})))); err != nil {
+				return resultString, err
+			}
+			result, err := dt.loadFilePointerBlockContent(&ptBlock, resultString, level-1)
+			if err != nil {
+				return result, err
+			}
+			resultString += result
+			continue
+		}
+		lastBlock = block
+	}
+
+}
+*/
+
+func (dt *DirTree) GetAvailableBlockAddress() (int32, error) {
+	for i, block := range dt.BlockBitMap {
+		if block == 0 {
+			return int32(i), nil
+		}
+	}
+	return -1, errors.New("no more free blocks")
+}
+
+func (dt *DirTree) GetAvailableInodeAdress() (int32, error) {
+	for i, block := range dt.BlockBitMap {
+		if block == 0 {
+			return int32(i), nil
+		}
+	}
+	return -1, errors.New("no more free inodes")
+}
+
+func (dt *DirTree) splitRawBytes(s string, chunkSize int) []string {
+	b := []byte(s)
+	var chunks []string
+	for i := 0; i < len(b); i += chunkSize {
+		end := i + chunkSize
+		if end > len(b) {
+			end = len(b)
+		}
+		chunks = append(chunks, string(b[i:end]))
+	}
+	return chunks
+
 }
