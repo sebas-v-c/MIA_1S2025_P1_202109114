@@ -37,6 +37,7 @@ command returns[interfaces.Command result]:
     |   c8 = login      {$result = $c8.result}
     |   c9 = logout     {$result = $c9.result}
     |   c10 = mkgrp     {$result = $c10.result}
+    |   c11 = rmgrp     {$result = $c11.result}
     ;
 
 // =============== MKDISK ===============
@@ -171,6 +172,22 @@ mkgrpparams returns[map[string]string result]:
     ;
 
 mkgrpparam returns[[]string result]:
+        RW_name TK_equ p1 = TK_id       {$result = []string{"name", strings.Trim($p1.text, "\"")}}
+    |   RW_name TK_equ p2 = TK_number   {$result = []string{"name", $p2.text}}
+    ;
+
+// =============== RMGRP ===============
+rmgrp returns[*commands.Rmgrp result]:
+        l = RW_rmgrp p = rmgrpparams    {$result = commands.NewRmgrp($l.line, $l.pos, $p.result)}
+    |   l = RW_rmgrp                    {$result = commands.NewRmgrp($l.line, $l.pos, map[string]string{})}
+    ;
+
+rmgrpparams returns[map[string]string result]:
+        l = rmgrpparams p = rmgrpparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = rmgrpparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+rmgrpparam returns[[]string result]:
         RW_name TK_equ p1 = TK_id       {$result = []string{"name", strings.Trim($p1.text, "\"")}}
     |   RW_name TK_equ p2 = TK_number   {$result = []string{"name", $p2.text}}
     ;
