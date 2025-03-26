@@ -205,10 +205,10 @@ mkusrparams returns[map[string]string result]:
     ;
 
 mkusrparam returns[[]string result]:
-        RW_user TK_equ p1 = TK_id       {$result = []string{"name", strings.Trim($p1.text, "\"")}}
-    |   RW_user TK_equ p2 = TK_number   {$result = []string{"name", $p2.text}}
-    |   RW_pass TK_equ p3 = TK_id       {$result = []string{"name", strings.Trim($p3.text, "\"")}}
-    |   RW_pass TK_equ p4 = TK_number   {$result = []string{"name", $p4.text}}
-    |   RW_grp TK_equ p5 = TK_id        {$result = []string{"name", strings.Trim($p5.text, "\"")}}
-    |   RW_grp TK_equ p6 = TK_number    {$result = []string{"name", $p6.text}}
+        RW_user TK_equ p1 = TK_id       {$result = []string{"user", strings.Trim($p1.text, "\"")}}
+    |   RW_user TK_equ p2 = TK_number   {$result = []string{"user", $p2.text}}
+    |   RW_pass TK_equ p3 = TK_id       {$result = []string{"pass", strings.Trim($p3.text, "\"")}}
+    |   RW_pass TK_equ p4 = TK_number   {$result = []string{"pass", $p4.text}}
+    |   RW_grp TK_equ p5 = TK_id        {$result = []string{"grp", strings.Trim($p5.text, "\"")}}
+    |   RW_grp TK_equ p6 = TK_number    {$result = []string{"grp", $p6.text}}
     ;

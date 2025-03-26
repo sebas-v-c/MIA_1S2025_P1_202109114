@@ -8,4 +8,9 @@ login -id=141A -user=root -pass=123
 mkgrp -name=carmen
 mkgrp -name=users
 mkgrp -name=zibas
-mkgrp -name=virtualmachines
+mkgrp -name=virtualmch
+
+mkgrp -name=carmen
+mkgrp -name=users
+mkgrp -name=virtualmch
+mkgrp -name=zibas

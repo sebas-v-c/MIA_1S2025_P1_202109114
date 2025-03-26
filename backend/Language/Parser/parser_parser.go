@@ -8039,7 +8039,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", strings.Trim((func() string {
+		localctx.(*MkusrparamContext).result = []string{"user", strings.Trim((func() string {
 			if localctx.(*MkusrparamContext).GetP1() == nil {
 				return ""
 			} else {
@@ -8076,7 +8076,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", (func() string {
+		localctx.(*MkusrparamContext).result = []string{"user", (func() string {
 			if localctx.(*MkusrparamContext).GetP2() == nil {
 				return ""
 			} else {
@@ -8113,7 +8113,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", strings.Trim((func() string {
+		localctx.(*MkusrparamContext).result = []string{"pass", strings.Trim((func() string {
 			if localctx.(*MkusrparamContext).GetP3() == nil {
 				return ""
 			} else {
@@ -8150,7 +8150,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", (func() string {
+		localctx.(*MkusrparamContext).result = []string{"pass", (func() string {
 			if localctx.(*MkusrparamContext).GetP4() == nil {
 				return ""
 			} else {
@@ -8187,7 +8187,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", strings.Trim((func() string {
+		localctx.(*MkusrparamContext).result = []string{"grp", strings.Trim((func() string {
 			if localctx.(*MkusrparamContext).GetP5() == nil {
 				return ""
 			} else {
@@ -8224,7 +8224,7 @@ func (p *ParserParser) Mkusrparam() (localctx IMkusrparamContext) {
 				goto errorExit
 			}
 		}
-		localctx.(*MkusrparamContext).result = []string{"name", (func() string {
+		localctx.(*MkusrparamContext).result = []string{"grp", (func() string {
 			if localctx.(*MkusrparamContext).GetP6() == nil {
 				return ""
 			} else {
