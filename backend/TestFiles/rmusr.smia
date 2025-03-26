@@ -15,12 +15,13 @@ mkusr -user=carme -pass=lietome19 -grp=carmen
 mkusr -user=amor -pass=li3tom319 -grp=carmen
 mkusr -user=vbox -pass=vbox123 -grp=virtualmch
 mkusr -user=generic -pass=richard -grp=users
-mkusr -user=generic -pass=richard -grp=users
-mkusr -user=amor -pass=li3tom319 -grp=carmen
 mkusr -user=kiss -pass=something -grp=zibas
-mkusr -user=kiss -pass=something -grp=zibas
-mkusr -user=aaaaaaaaaaa -pass=ea -grp=zibas
-mkusr -user=a -pass=aaaaaaaaaaa -grp=zibas
-mkusr -user=a -pass=aaaaaaaaaaa -grp=zibas
-mkusr -user=a -pass=a -grp=simon
-mkusr -user=a -pass=a -grp=simonsonson
+
+rmusr -user=usuario1
+rmusr -user=usuario1
+rmusr -user=usuario2
+rmusr -user=kiss
+rmusr -user=kiss
+rmusr -user=vbox
+rmusr -user=amor
+rmusr -user=carme

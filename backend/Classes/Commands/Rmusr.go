@@ -12,23 +12,23 @@ import (
 	"time"
 )
 
-type Rmgrp struct {
+type Rmusr struct {
 	Interfaces.CommandStruct
 	Params map[string]string
 }
 
-func NewRmgrp(line, column int, params map[string]string) *Rmgrp {
-	return &Rmgrp{
-		CommandStruct: Interfaces.CommandStruct{
-			Type:   Utils.RMGROUP,
+func NewRmusr(line, column int, params map[string]string) *Rmusr {
+	return &Rmusr{
+		Interfaces.CommandStruct{
+			Type:   Utils.RMUSR,
 			Line:   line,
 			Column: column,
 		},
-		Params: params,
+		params,
 	}
 }
 
-func (r *Rmgrp) Exec() {
+func (r *Rmusr) Exec() {
 	var consoleString strings.Builder
 	consoleString.WriteString("=================RMGRP=================\n")
 
@@ -78,15 +78,6 @@ func (r *Rmgrp) Exec() {
 	consoleString.WriteString(fileInode.ToString())
 	consoleString.WriteByte('\n')
 
-	/*
-		ROOT USER HAS PERMISSIONS OVER ANY FILE
-		var write bool
-		_, write, _, err = env.CheckFilePermissions(*env.CurrentUser, fileInode)
-		if !write {
-			r.AppendError("You do not have permission to write this file")
-		}
-	*/
-
 	var fileContent string
 	fileContent, err = dirTree.GetFileContentByInode(fileInode)
 	if err != nil {
@@ -100,7 +91,7 @@ func (r *Rmgrp) Exec() {
 
 	fileContentLines := strings.Split(fileContent, "\n")
 	fileContentLines = fileContentLines[:len(fileContentLines)-1]
-	groupToRemove := struct {
+	userToRemove := struct {
 		Index   int
 		Content string
 	}{Index: -1, Content: ""}
@@ -109,37 +100,35 @@ func (r *Rmgrp) Exec() {
 		words := strings.Split(line, ",")
 		// if is not of type "G" is also invalid
 		// if the length of the line is not 3 then is not valid
-		if len(words) != 3 || words[1] != "G" {
+		if len(words) != 5 || words[1] != "U" {
 			continue
 		}
 
-		if words[2] == r.Params["name"] && words[0] == "0" {
-			r.AppendError("group has already been removed")
+		if words[3] == r.Params["user"] && words[0] == "0" {
+			r.AppendError("user has already been removed")
 			return
-		} else if words[2] == r.Params["name"] {
+		} else if words[3] == r.Params["user"] {
 			words[0] = "0"
-			groupToRemove.Index = i
-			groupToRemove.Content = strings.Join(words, ",")
+			userToRemove.Index = i
+			userToRemove.Content = strings.Join(words, ",")
 			break
 		}
 	}
-	// if the group is not found the index is still -1
-	if groupToRemove.Index == -1 {
-		r.AppendError("group does not exist")
+	// if the user is not found the index is still -1
+	if userToRemove.Index == -1 {
+		r.AppendError("user to remove does not exist")
 		return
 	}
 	// store the updated content here
-	fileContentLines[groupToRemove.Index] = groupToRemove.Content
+	fileContentLines[userToRemove.Index] = userToRemove.Content
 	fileContent = strings.Join(fileContentLines, "\n") + "\n"
 	// Liberate all Inode Content
-	//consoleString.WriteString(fmt.Sprintf("Actual Bitmap %v\n", dirTree.BlockBitMap[:10]))
 	err = dirTree.FreeInodeBlockContent(fileInode)
 	if err != nil {
 		r.AppendError(err.Error())
 		return
 	}
 
-	//consoleString.WriteString(fmt.Sprintf("Freed Bitmap %v\n", dirTree.BlockBitMap[:10]))
 	consoleString.WriteString("Freed Inode:\n")
 	consoleString.WriteString(fileInode.ToString())
 	consoleString.WriteByte('\n')
@@ -150,33 +139,6 @@ func (r *Rmgrp) Exec() {
 		r.AppendError(err.Error())
 		return
 	}
-	//consoleString.WriteString(fmt.Sprintf("Appended Bitmap %v\n", dirTree.BlockBitMap[:10]))
-
-	/*
-		// Get the index of the change here
-		changedCharContentIndex := strings.Index(fileContent, groupToRemove.Content)
-		// Split file content into an array of 64 characters
-		splittedContentBytes := dirTree.SplitRawBytes(fileContent, binary.Size(Structs.FileBlock{}))
-		// Get estimated index of the byte block where the changed byte is located
-		changedCharBlockIndex := changedCharContentIndex / binary.Size(Structs.FileBlock{})
-		// Copy content of the byte block at the changed byte index into a new FileBlock
-		var changedFileBlock Structs.FileBlock
-		copy(changedFileBlock.Content[:], splittedContentBytes[changedCharBlockIndex])
-		// TODO take into account the pointer blocks
-		if changedCharBlockIndex >= 12 {
-			fmt.Println("Update pointer block not implemented yet")
-			panic("Update pointer blocks not implemented yet")
-		}
-		// Get the address of the block where the original content in the inode is stored
-		inodeBlockAddress := fileInode.IBlock[changedCharBlockIndex]
-
-		// Rewrite the new content into the inode Block address
-		if err := Utils.WriteObject(file, changedFileBlock, int64(superBlock.BlockStart+inodeBlockAddress*int32(binary.Size(Structs.FileBlock{})))); err != nil {
-			r.AppendError(err.Error())
-			return
-		}
-	*/
-
 	// Update Modified inode time
 	copy(fileInode.MTime[:], time.Now().Format("2006-01-02 15:04"))
 	if err := Utils.WriteObject(file, *fileInode, int64(superBlock.InodeStart+fileInodeIndex*int32(binary.Size(Structs.Inode{})))); err != nil {
@@ -200,13 +162,13 @@ func (r *Rmgrp) Exec() {
 	}
 	consoleString.WriteString("\nNew Inode content:\n")
 	consoleString.WriteString(fileContent)
-	consoleString.WriteString("\n=================END RMGRP=================\n")
+	consoleString.WriteString("\n=================END RMUSR=================\n")
 	r.LogConsole(consoleString.String())
 }
 
-func (r *Rmgrp) validateParams() error {
-	if _, ok := r.Params["name"]; !ok {
-		return errors.New("missing parameter -name")
+func (r *Rmusr) validateParams() error {
+	if _, ok := r.Params["user"]; !ok {
+		return errors.New("missing parameter -user")
 	}
 	return nil
 }
