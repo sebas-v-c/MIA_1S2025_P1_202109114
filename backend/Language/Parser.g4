@@ -39,6 +39,7 @@ command returns[interfaces.Command result]:
     |   c10 = mkgrp     {$result = $c10.result}
     |   c11 = rmgrp     {$result = $c11.result}
     |   c12 = mkusr     {$result = $c12.result}
+    |   c13 = rmusr     {$result = $c13.result}
     ;
 
 // =============== MKDISK ===============
@@ -211,4 +212,20 @@ mkusrparam returns[[]string result]:
     |   RW_pass TK_equ p4 = TK_number   {$result = []string{"pass", $p4.text}}
     |   RW_grp TK_equ p5 = TK_id        {$result = []string{"grp", strings.Trim($p5.text, "\"")}}
     |   RW_grp TK_equ p6 = TK_number    {$result = []string{"grp", $p6.text}}
+    ;
+
+// =============== RMUSR ===============
+rmusr returns[*commands.Rmusr result]:
+        l = RW_rmusr p = rmusrparams    {$result = commands.NewRmusr($l.line, $l.pos, $p.result)}
+    |   l = RW_rmusr                    {$result = commands.NewRmusr($l.line, $l.pos, map[string]string{})}
+    ;
+
+rmusrparams returns[map[string]string result]:
+        l = rmusrparams p = rmusrparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = rmusrparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+rmusrparam returns[[]string result]:
+        RW_user TK_equ p1 = TK_id       {$result = []string{"user", strings.Trim($p1.text, "\"")}}
+    |   RW_user TK_equ p2 = TK_number   {$result = []string{"user", $p2.text}}
     ;

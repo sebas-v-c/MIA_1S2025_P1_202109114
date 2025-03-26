@@ -218,3 +218,21 @@ func (s *BaseParserListener) EnterMkusrparam(ctx *MkusrparamContext) {}
 
 // ExitMkusrparam is called when production mkusrparam is exited.
 func (s *BaseParserListener) ExitMkusrparam(ctx *MkusrparamContext) {}
+
+// EnterRmusr is called when production rmusr is entered.
+func (s *BaseParserListener) EnterRmusr(ctx *RmusrContext) {}
+
+// ExitRmusr is called when production rmusr is exited.
+func (s *BaseParserListener) ExitRmusr(ctx *RmusrContext) {}
+
+// EnterRmusrparams is called when production rmusrparams is entered.
+func (s *BaseParserListener) EnterRmusrparams(ctx *RmusrparamsContext) {}
+
+// ExitRmusrparams is called when production rmusrparams is exited.
+func (s *BaseParserListener) ExitRmusrparams(ctx *RmusrparamsContext) {}
+
+// EnterRmusrparam is called when production rmusrparam is entered.
+func (s *BaseParserListener) EnterRmusrparam(ctx *RmusrparamContext) {}
+
+// ExitRmusrparam is called when production rmusrparam is exited.
+func (s *BaseParserListener) ExitRmusrparam(ctx *RmusrparamContext) {}
