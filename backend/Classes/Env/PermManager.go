@@ -18,6 +18,11 @@ func CheckFilePermissions(loggedUser LoggedUser, fileInode *Structs.Inode) (bool
 		return false, false, false, err
 	}
 
+	// Root user (GID 1) has permissions over any file
+	if userGID == 1 && loggedUser.User.Name == "root" && loggedUser.User.Group == "root" && loggedUser.User.Id == 1 {
+		return true, true, true, nil
+	}
+
 	if fileUID == loggedUser.User.Id {
 		read, write, execute := calculatePermissions(perms[0])
 		return read, write, execute, nil
