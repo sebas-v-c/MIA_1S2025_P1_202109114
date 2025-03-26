@@ -229,3 +229,21 @@ rmusrparam returns[[]string result]:
         RW_user TK_equ p1 = TK_id       {$result = []string{"user", strings.Trim($p1.text, "\"")}}
     |   RW_user TK_equ p2 = TK_number   {$result = []string{"user", $p2.text}}
     ;
+
+// =============== CHGRP ===============
+chgrp returns[*commands.Chgrp result]:
+        l = RW_chgrp p = chgrpparams    {$result = commands.NewChgrp($l.line, $l.pos, $p.result)}
+    |   l = RW_chgrp                    {$result = commands.NewChgrp($l.line, $l.pos, map[string]string{})}
+    ;
+
+chgrpparams returns[map[string]string result]:
+        l = chgrpparams p = chgrpparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = chgrpparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+chgrpparam returns[[]string result]:
+        RW_user TK_equ p1 = TK_id       {$result = []string{"user", strings.Trim($p1.text, "\"")}}
+    |   RW_user TK_equ p2 = TK_number   {$result = []string{"user", $p2.text}}
+    |   RW_grp TK_equ p3 = TK_id        {$result = []string{"grp", strings.Trim($p3.text, "\"")}}
+    |   RW_grp TK_equ p4 = TK_number    {$result = []string{"grp", $p4.text}}
+    ;

@@ -116,6 +116,15 @@ type ParserListener interface {
 	// EnterRmusrparam is called when entering the rmusrparam production.
 	EnterRmusrparam(c *RmusrparamContext)
 
+	// EnterChgrp is called when entering the chgrp production.
+	EnterChgrp(c *ChgrpContext)
+
+	// EnterChgrpparams is called when entering the chgrpparams production.
+	EnterChgrpparams(c *ChgrpparamsContext)
+
+	// EnterChgrpparam is called when entering the chgrpparam production.
+	EnterChgrpparam(c *ChgrpparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -223,4 +232,13 @@ type ParserListener interface {
 
 	// ExitRmusrparam is called when exiting the rmusrparam production.
 	ExitRmusrparam(c *RmusrparamContext)
+
+	// ExitChgrp is called when exiting the chgrp production.
+	ExitChgrp(c *ChgrpContext)
+
+	// ExitChgrpparams is called when exiting the chgrpparams production.
+	ExitChgrpparams(c *ChgrpparamsContext)
+
+	// ExitChgrpparam is called when exiting the chgrpparam production.
+	ExitChgrpparam(c *ChgrpparamContext)
 }

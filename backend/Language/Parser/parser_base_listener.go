@@ -236,3 +236,21 @@ func (s *BaseParserListener) EnterRmusrparam(ctx *RmusrparamContext) {}
 
 // ExitRmusrparam is called when production rmusrparam is exited.
 func (s *BaseParserListener) ExitRmusrparam(ctx *RmusrparamContext) {}
+
+// EnterChgrp is called when production chgrp is entered.
+func (s *BaseParserListener) EnterChgrp(ctx *ChgrpContext) {}
+
+// ExitChgrp is called when production chgrp is exited.
+func (s *BaseParserListener) ExitChgrp(ctx *ChgrpContext) {}
+
+// EnterChgrpparams is called when production chgrpparams is entered.
+func (s *BaseParserListener) EnterChgrpparams(ctx *ChgrpparamsContext) {}
+
+// ExitChgrpparams is called when production chgrpparams is exited.
+func (s *BaseParserListener) ExitChgrpparams(ctx *ChgrpparamsContext) {}
+
+// EnterChgrpparam is called when production chgrpparam is entered.
+func (s *BaseParserListener) EnterChgrpparam(ctx *ChgrpparamContext) {}
+
+// ExitChgrpparam is called when production chgrpparam is exited.
+func (s *BaseParserListener) ExitChgrpparam(ctx *ChgrpparamContext) {}
