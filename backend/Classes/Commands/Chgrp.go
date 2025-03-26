@@ -91,6 +91,7 @@ func (c *Chgrp) Exec() {
 
 	fileContentLines := strings.Split(fileContent, "\n")
 	fileContentLines = fileContentLines[:len(fileContentLines)-1]
+	// TODO start from here
 	userToRemove := struct {
 		Index   int
 		Content string
