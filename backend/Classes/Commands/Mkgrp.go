@@ -76,11 +76,14 @@ func (m *Mkgrp) Exec() {
 	consoleString.WriteString(fileInode.ToString())
 	consoleString.WriteByte('\n')
 
-	var write bool
-	_, write, _, err = env.CheckFilePermissions(*env.CurrentUser, fileInode)
-	if !write {
-		m.AppendError("You do not have permission to write this file")
-	}
+	/*
+		// ROOT USER HAS PERMISSIONS OVER ANY FILE
+		var write bool
+		_, write, _, err = env.CheckFilePermissions(*env.CurrentUser, fileInode)
+		if !write {
+			m.AppendError("You do not have permission to write this file")
+		}
+	*/
 
 	var fileContent string
 	fileContent, err = dirTree.GetFileContentByInode(fileInode)
