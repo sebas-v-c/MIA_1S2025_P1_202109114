@@ -76,12 +76,9 @@ func (m *Mkgrp) Exec() {
 	consoleString.WriteString(fileInode.ToString())
 	consoleString.WriteByte('\n')
 
-	var read, write bool
-	read, write, _, err = env.CheckFilePermissions(*env.CurrentUser, fileInode)
-	if !read {
-		m.AppendError("You do not have permission to read this file")
-		return
-	} else if !write {
+	var write bool
+	_, write, _, err = env.CheckFilePermissions(*env.CurrentUser, fileInode)
+	if !write {
 		m.AppendError("You do not have permission to write this file")
 	}
 

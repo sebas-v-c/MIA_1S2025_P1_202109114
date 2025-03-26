@@ -26,7 +26,7 @@ func NewDirTree(superBlock SuperBlock, file *os.File) *DirTree {
 		fmt.Println(err)
 		return nil
 	}
-	if err := Utils.ReadObject(file, &inodeBitMap, int64(superBlock.InodeStart)); err != nil {
+	if err := Utils.ReadObject(file, &inodeBitMap, int64(superBlock.BmInodeStart)); err != nil {
 		fmt.Println(err)
 		return nil
 	}
@@ -252,7 +252,7 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 	content += s
 
 	// getting the content splited in chunks of 64 bytes
-	splittedBytesContent := dt.splitRawBytes(content, binary.Size(FileBlock{}))
+	splittedBytesContent := dt.SplitRawBytes(content, binary.Size(FileBlock{}))
 	for _, block := range splittedBytesContent {
 		var newFileBlock FileBlock
 		copy(newFileBlock.Content[:], block)
@@ -295,7 +295,7 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 	// Updating inode info
 	inode.Size = int32(len(content))
 	copy(inode.MTime[:], time.Now().Format("2006-01-02 15:04"))
-	copy(inode.ATime[:], time.Now().Format("2006-01-02 15:04"))
+	//copy(inode.ATime[:], time.Now().Format("2006-01-02 15:04"))
 	//fmt.Println(inode.ToString())
 	// updating bitmaps
 
@@ -345,7 +345,7 @@ func (dt *DirTree) GetAvailableInodeAdress() (int32, error) {
 	return -1, errors.New("no more free inodes")
 }
 
-func (dt *DirTree) splitRawBytes(s string, chunkSize int) []string {
+func (dt *DirTree) SplitRawBytes(s string, chunkSize int) []string {
 	b := []byte(s)
 	var chunks []string
 	for i := 0; i < len(b); i += chunkSize {
@@ -357,4 +357,24 @@ func (dt *DirTree) splitRawBytes(s string, chunkSize int) []string {
 	}
 	return chunks
 
+}
+
+func (dt *DirTree) FreeInodeBlockContent(inode *Inode) error {
+	for i, block := range inode.IBlock {
+		if i >= 12 {
+			continue
+			// TODO free pointer blocks
+			//fmt.Println("Cannot handle indirect addresses, functionality not implemented")
+			//panic("Implement indirect addresses creation")
+		}
+
+		if block != -1 {
+			dt.BlockBitMap[block] = 0
+			inode.IBlock[i] = -1
+		}
+	}
+	if err := Utils.WriteObject(dt.File, dt.BlockBitMap, int64(dt.SuperBlock.BmBlockStart)); err != nil {
+		return err
+	}
+	return nil
 }
