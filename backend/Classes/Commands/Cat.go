@@ -5,8 +5,10 @@ import (
 	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"encoding/binary"
 	"os"
 	"strings"
+	"time"
 )
 
 type Cat struct {
@@ -55,7 +57,8 @@ func (c *Cat) Exec() {
 	var dirTree = Structs.NewDirTree(superBlock, file)
 	for _, fileName := range c.Files {
 		var fileInode *Structs.Inode
-		_, fileInode, err = dirTree.GetInodeByPath(fileName)
+		var fileInodeIndex int32
+		fileInodeIndex, fileInode, err = dirTree.GetInodeByPath(fileName)
 		if err != nil {
 			c.AppendError(err.Error())
 			return
@@ -75,6 +78,13 @@ func (c *Cat) Exec() {
 			return
 		}
 
+		// Save and update access time inode
+		copy(fileInode.ATime[:], time.Now().Format("2006-01-02 15:04"))
+		if err = Utils.WriteObject(file, *fileInode, int64(superBlock.InodeStart+fileInodeIndex*int32(binary.Size(Structs.Inode{})))); err != nil {
+			c.AppendError(err.Error())
+			return
+		}
+		//print
 		consoleString.WriteString(fileContent)
 		consoleString.WriteByte('\n')
 	}
