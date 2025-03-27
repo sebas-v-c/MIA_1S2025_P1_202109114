@@ -1,0 +1,21 @@
+mkdisk -size=500 -unit=K -fit=BF -path=/home/zibas/Temp/MIA/mount_disk1.bin
+fdisk -size=100 -unit=k -path="/home/zibas/Temp/MIA/mount_disk1.bin" -type=p -name="Particion1"
+mount -path=/home/zibas/Temp/MIA/mount_disk1.bin -name="Particion1"
+
+mkfs -id=141A
+
+login -id=141A -user=root -pass=123
+mkgrp -name=carmen
+mkgrp -name=users
+mkgrp -name=zibas
+mkgrp -name=virtualmch
+
+mkusr -user=usuario1 -pass=pinga -grp=zibas
+mkusr -user=carme -pass=lietome19 -grp=carmen
+mkusr -user=amor -pass=li3tom319 -grp=carmen
+mkusr -user=vbox -pass=vbox123 -grp=virtualmch
+
+
+chgrp -user=usuario1 -grp=vitualmch
+chgrp -user=amor -grp=zibas
+chgrp -user=vbox -grp=carmen

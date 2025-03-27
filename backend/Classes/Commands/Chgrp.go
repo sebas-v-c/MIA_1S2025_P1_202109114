@@ -7,6 +7,7 @@ import (
 	"backend/Classes/Utils"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -92,36 +93,54 @@ func (c *Chgrp) Exec() {
 	fileContentLines := strings.Split(fileContent, "\n")
 	fileContentLines = fileContentLines[:len(fileContentLines)-1]
 	// TODO start from here
-	userToRemove := struct {
+	targetUser := struct {
+		Index int
+		User  string
+		Pass  string
+		Num   string
+	}{Index: -1, User: "", Pass: "", Num: ""}
+	targetGroup := struct {
 		Index   int
 		Content string
 	}{Index: -1, Content: ""}
 	for i, line := range fileContentLines {
 		// get the coma separated values from the line and get the id
 		words := strings.Split(line, ",")
-		// if is not of type "G" is also invalid
-		// if the length of the line is not 3 then is not valid
-		if len(words) != 5 || words[1] != "U" {
-			continue
-		}
+		// Check if is a group
+		if len(words) == 3 && words[1] == "G" {
+			// check if the target group is removed
+			if words[2] == c.Params["grp"] && words[0] == "0" {
+				c.AppendError("Target group has been removed")
+				return
+			} else if words[2] == c.Params["grp"] { // If is not removed but is equal
+				targetGroup.Index = i
+				targetGroup.Content = words[2]
+			}
 
-		if words[3] == c.Params["user"] && words[0] == "0" {
-			c.AppendError("user has already been removed")
-			return
-		} else if words[3] == c.Params["user"] {
-			words[0] = "0"
-			userToRemove.Index = i
-			userToRemove.Content = strings.Join(words, ",")
-			break
+		} else if len(words) == 5 && words[1] == "U" { // check if is a user
+			if words[3] == c.Params["user"] && words[0] == "0" {
+				c.AppendError("Target user has been removed")
+				return
+			} else if words[3] == c.Params["user"] {
+				targetUser.Index = i
+				targetUser.User = words[3]
+				targetUser.Pass = words[4]
+				targetUser.Num = words[0]
+			}
 		}
 	}
-	// if the user is not found the index is still -1
-	if userToRemove.Index == -1 {
-		c.AppendError("user to remove does not exist")
+
+	if targetUser.Index == -1 {
+		c.AppendError("Target group not found")
 		return
 	}
+	if targetGroup.Index == -1 {
+		c.AppendError("Target group not found")
+		return
+	}
+
 	// store the updated content here
-	fileContentLines[userToRemove.Index] = userToRemove.Content
+	fileContentLines[targetUser.Index] = fmt.Sprintf("%s,U,%s,%s,%s", targetUser.Num, targetGroup.Content, targetUser.User, targetUser.Pass)
 	fileContent = strings.Join(fileContentLines, "\n") + "\n"
 	// Liberate all Inode Content
 	err = dirTree.FreeInodeBlockContent(fileInode)
