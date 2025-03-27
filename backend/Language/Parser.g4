@@ -41,6 +41,7 @@ command returns[interfaces.Command result]:
     |   c12 = mkusr     {$result = $c12.result}
     |   c13 = rmusr     {$result = $c13.result}
     |   c14 = chgrp     {$result = $c14.result}
+    |   c15 = mkdir     {$result = $c15.result}
     ;
 
 // =============== MKDISK ===============
