@@ -13,7 +13,7 @@ func CheckFilePermissions(loggedUser LoggedUser, fileInode *Structs.Inode) (bool
 	perms := fileInode.Perm
 	fileUID := fileInode.UID
 	fileGID := fileInode.GID
-	userGID, err := getUserGID(loggedUser.User.Group, loggedUser.MountedPartition)
+	userGID, err := GetUserGID(loggedUser.User.Group, loggedUser.MountedPartition)
 	if err != nil {
 		return false, false, false, err
 	}
@@ -66,7 +66,7 @@ func calculatePermissions(perm byte) (bool, bool, bool) {
 	}
 }
 
-func getUserGID(groupName string, mountedPartition Structs.MountedPartition) (int32, error) {
+func GetUserGID(groupName string, mountedPartition Structs.MountedPartition) (int32, error) {
 	file, err := Utils.OpenFile(mountedPartition.Path)
 	if err != nil {
 		return -1, err
