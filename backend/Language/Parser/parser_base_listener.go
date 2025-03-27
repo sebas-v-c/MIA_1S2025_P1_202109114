@@ -254,3 +254,21 @@ func (s *BaseParserListener) EnterChgrpparam(ctx *ChgrpparamContext) {}
 
 // ExitChgrpparam is called when production chgrpparam is exited.
 func (s *BaseParserListener) ExitChgrpparam(ctx *ChgrpparamContext) {}
+
+// EnterMkdir is called when production mkdir is entered.
+func (s *BaseParserListener) EnterMkdir(ctx *MkdirContext) {}
+
+// ExitMkdir is called when production mkdir is exited.
+func (s *BaseParserListener) ExitMkdir(ctx *MkdirContext) {}
+
+// EnterMkdirparams is called when production mkdirparams is entered.
+func (s *BaseParserListener) EnterMkdirparams(ctx *MkdirparamsContext) {}
+
+// ExitMkdirparams is called when production mkdirparams is exited.
+func (s *BaseParserListener) ExitMkdirparams(ctx *MkdirparamsContext) {}
+
+// EnterMkdirparam is called when production mkdirparam is entered.
+func (s *BaseParserListener) EnterMkdirparam(ctx *MkdirparamContext) {}
+
+// ExitMkdirparam is called when production mkdirparam is exited.
+func (s *BaseParserListener) ExitMkdirparam(ctx *MkdirparamContext) {}

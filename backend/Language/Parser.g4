@@ -248,3 +248,19 @@ chgrpparam returns[[]string result]:
     |   RW_grp TK_equ p3 = TK_id        {$result = []string{"grp", strings.Trim($p3.text, "\"")}}
     |   RW_grp TK_equ p4 = TK_number    {$result = []string{"grp", $p4.text}}
     ;
+
+// =============== MKDIR ===============
+mkdir returns[*commands.Mkdir result]:
+        l = RW_mkdir p = mkdirparams    {$result = commands.NewMkdir($l.line, $l.pos, $p.result)}
+    |   l = RW_mkdir                    {$result = commands.NewMkdir($l.line, $l.pos, map[string]string{})}
+    ;
+
+mkdirparams returns[map[string]string result]:
+        l = mkdirparams p = mkdirparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = mkdirparam                      {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+mkdirparam returns[[]string result]:
+        RW_path TK_equ p1 = TK_path     {$result = []string{"path", strings.Trim($p1.text, "\"")}}
+    |   RW_p                            {$result = []string{"p", ""}}
+    ;

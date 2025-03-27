@@ -125,6 +125,15 @@ type ParserListener interface {
 	// EnterChgrpparam is called when entering the chgrpparam production.
 	EnterChgrpparam(c *ChgrpparamContext)
 
+	// EnterMkdir is called when entering the mkdir production.
+	EnterMkdir(c *MkdirContext)
+
+	// EnterMkdirparams is called when entering the mkdirparams production.
+	EnterMkdirparams(c *MkdirparamsContext)
+
+	// EnterMkdirparam is called when entering the mkdirparam production.
+	EnterMkdirparam(c *MkdirparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -241,4 +250,13 @@ type ParserListener interface {
 
 	// ExitChgrpparam is called when exiting the chgrpparam production.
 	ExitChgrpparam(c *ChgrpparamContext)
+
+	// ExitMkdir is called when exiting the mkdir production.
+	ExitMkdir(c *MkdirContext)
+
+	// ExitMkdirparams is called when exiting the mkdirparams production.
+	ExitMkdirparams(c *MkdirparamsContext)
+
+	// ExitMkdirparam is called when exiting the mkdirparam production.
+	ExitMkdirparam(c *MkdirparamContext)
 }

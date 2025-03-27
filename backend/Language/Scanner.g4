@@ -51,6 +51,7 @@ RW_pass        : '-'([ ])*'pass'          ;
 RW_grp         : '-'([ ])*'grp'           ;
 RW_path        : '-'([ ])*'path'          ;
 RW_r           : '-'([ ])*'r'             ;
+RW_p           : '-'([ ])*'p'             ;
 RW_cont        : '-'([ ])*'cont'          ;
 RW_fileN       : '-'([ ])*'file'(INTEGER) ;
 RW_destino     : '-'([ ])*'destino'       ;
