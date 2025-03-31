@@ -36,7 +36,7 @@ func (r *Rmusr) Exec() {
 		r.AppendError(err.Error())
 		return
 	}
-	consoleString.WriteString("Group to remove: " + r.Params["name"])
+	consoleString.WriteString("User to remove: " + r.Params["user"])
 	consoleString.WriteByte('\n')
 
 	if env.CurrentUser == nil {

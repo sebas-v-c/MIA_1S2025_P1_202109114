@@ -37,8 +37,6 @@ func (c *Chgrp) Exec() {
 		c.AppendError(err.Error())
 		return
 	}
-	consoleString.WriteString("Group to remove: " + c.Params["name"])
-	consoleString.WriteByte('\n')
 
 	if env.CurrentUser == nil {
 		c.AppendError("No user is logged in")
