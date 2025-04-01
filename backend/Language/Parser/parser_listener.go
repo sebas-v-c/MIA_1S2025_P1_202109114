@@ -134,6 +134,15 @@ type ParserListener interface {
 	// EnterMkdirparam is called when entering the mkdirparam production.
 	EnterMkdirparam(c *MkdirparamContext)
 
+	// EnterMkfile is called when entering the mkfile production.
+	EnterMkfile(c *MkfileContext)
+
+	// EnterMkfileparams is called when entering the mkfileparams production.
+	EnterMkfileparams(c *MkfileparamsContext)
+
+	// EnterMkfileparam is called when entering the mkfileparam production.
+	EnterMkfileparam(c *MkfileparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -259,4 +268,13 @@ type ParserListener interface {
 
 	// ExitMkdirparam is called when exiting the mkdirparam production.
 	ExitMkdirparam(c *MkdirparamContext)
+
+	// ExitMkfile is called when exiting the mkfile production.
+	ExitMkfile(c *MkfileContext)
+
+	// ExitMkfileparams is called when exiting the mkfileparams production.
+	ExitMkfileparams(c *MkfileparamsContext)
+
+	// ExitMkfileparam is called when exiting the mkfileparam production.
+	ExitMkfileparam(c *MkfileparamContext)
 }

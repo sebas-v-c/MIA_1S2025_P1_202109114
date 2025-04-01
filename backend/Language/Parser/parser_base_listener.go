@@ -272,3 +272,21 @@ func (s *BaseParserListener) EnterMkdirparam(ctx *MkdirparamContext) {}
 
 // ExitMkdirparam is called when production mkdirparam is exited.
 func (s *BaseParserListener) ExitMkdirparam(ctx *MkdirparamContext) {}
+
+// EnterMkfile is called when production mkfile is entered.
+func (s *BaseParserListener) EnterMkfile(ctx *MkfileContext) {}
+
+// ExitMkfile is called when production mkfile is exited.
+func (s *BaseParserListener) ExitMkfile(ctx *MkfileContext) {}
+
+// EnterMkfileparams is called when production mkfileparams is entered.
+func (s *BaseParserListener) EnterMkfileparams(ctx *MkfileparamsContext) {}
+
+// ExitMkfileparams is called when production mkfileparams is exited.
+func (s *BaseParserListener) ExitMkfileparams(ctx *MkfileparamsContext) {}
+
+// EnterMkfileparam is called when production mkfileparam is entered.
+func (s *BaseParserListener) EnterMkfileparam(ctx *MkfileparamContext) {}
+
+// ExitMkfileparam is called when production mkfileparam is exited.
+func (s *BaseParserListener) ExitMkfileparam(ctx *MkfileparamContext) {}

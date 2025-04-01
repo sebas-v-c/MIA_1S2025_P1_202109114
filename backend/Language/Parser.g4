@@ -42,6 +42,7 @@ command returns[interfaces.Command result]:
     |   c13 = rmusr     {$result = $c13.result}
     |   c14 = chgrp     {$result = $c14.result}
     |   c15 = mkdir     {$result = $c15.result}
+    |   c16 = mkfile   {$result = $c16.result}
     ;
 
 // =============== MKDISK ===============
@@ -251,10 +252,7 @@ chgrpparam returns[[]string result]:
     ;
 
 // =============== MKDIR ===============
-mkdir returns[*commands.Mkdir result]:
-        l = RW_mkdir p = mkdirparams    {$result = commands.NewMkdir($l.line, $l.pos, $p.result)}
-    |   l = RW_mkdir                    {$result = commands.NewMkdir($l.line, $l.pos, map[string]string{})}
-    ;
+mkdir returns[*commands.Mkdir result]: l = RW_mkdir p = mkdirparams    {$result = commands.NewMkdir($l.line, $l.pos, $p.result)} |   l = RW_mkdir                    {$result = commands.NewMkdir($l.line, $l.pos, map[string]string{})} ;
 
 mkdirparams returns[map[string]string result]:
         l = mkdirparams p = mkdirparam      {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
@@ -264,4 +262,22 @@ mkdirparams returns[map[string]string result]:
 mkdirparam returns[[]string result]:
         RW_path TK_equ p1 = TK_path     {$result = []string{"path", strings.Trim($p1.text, "\"")}}
     |   RW_p                            {$result = []string{"p", ""}}
+    ;
+
+// =============== MKFILE ===============
+mkfile returns[*commands.Mkfile result]:
+        l = RW_mkfile p = mkfileparams  {$result = commands.NewMkfile($l.line, $l.pos, $p.result)}
+    |   l = RW_mkfile                   {$result = commands.NewMkfile($l.line, $l.pos, map[string]string{})}
+    ;
+
+mkfileparams returns[map[string]string result]:
+        l = mkfileparams p = mkfileparam    {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = mkfileparam                     {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+mkfileparam returns[[]string result]:
+        RW_path TK_equ p1 = TK_path     {$result = []string{"path", strings.Trim($p1.text, "\"")}}
+    |   RW_r                            {$result = []string{"r", ""}}
+    |   RW_size TK_equ p2 = TK_number   {$result = []string{"size", $p2.text}}
+    |   RW_cont TK_equ p3 = TK_path     {$result = []string{"cont", strings.Trim($p3.text, "\"")}}
     ;
