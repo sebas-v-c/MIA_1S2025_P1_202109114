@@ -42,6 +42,10 @@ func (dt *DirTree) GetInodeByPath(path string) (int32, *Inode, error) {
 	if splitedPath[0] == "" {
 		splitedPath = splitedPath[1:] // Remove leading empty component from path
 	}
+	// TODO check if this is correct
+	if splitedPath[0] == "" || splitedPath[0] == "/" {
+		splitedPath[0] = "."
+	}
 
 	// Read the first inode (root directory)
 	var firstInode Inode
@@ -127,7 +131,7 @@ func (dt *DirTree) iterateFolderBlock(block int32, path []string) (int32, *Inode
 	// Search through the folder content for the matching name
 	for _, content := range folderBlock.Content {
 		// Compare the folder name with the path component
-		if strings.TrimRight(string(content.Name[:]), "\x00") != path[0] {
+		if strings.TrimRight(string(content.Name[:]), "\x00") != path[0] || content.Inode == -1 {
 			continue
 		}
 
@@ -476,6 +480,9 @@ func (dt *DirTree) CreateNewInode(index int32, inode *Inode, name string, UID, G
 
 func (dt *DirTree) CreateNewDir(index int32, inode *Inode, dirName string, uid int32, gid int32) (int32, *Inode, error) {
 	newInodeIndex, newInode, err := dt.CreateNewInode(index, inode, dirName, uid, gid, [1]byte{0})
+	if err != nil {
+		return -1, nil, err
+	}
 
 	newFolderBlock := NewFolderBlock()
 	newFolderBlockIndex, err := dt.GetAvailableBlockAddress()

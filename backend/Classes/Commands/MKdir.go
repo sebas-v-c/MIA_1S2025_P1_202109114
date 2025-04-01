@@ -5,6 +5,7 @@ import (
 	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"os"
@@ -107,9 +108,17 @@ func (m *Mkdir) Exec() {
 					m.AppendError(err.Error())
 					return
 				}
-				consoleString.WriteString(fmt.Sprintf("Directory %s, created at %s", dir, joinedPath))
+				consoleString.WriteString(fmt.Sprintf("\nDirectory %s, created at %s\n", dir, joinedPath))
+
+				var writtenInode Structs.Inode
+				if err := Utils.ReadObject(file, &writtenInode, int64(superBlock.InodeStart+dirInodeIndex*int32(binary.Size(Structs.Inode{})))); err != nil {
+					m.AppendError(err.Error())
+					return
+				}
+				consoleString.WriteString("Written Inode:\n")
+				consoleString.WriteString(writtenInode.ToString())
 			} else if err != nil { // if createDirs is false and is not the last dir then return an error
-				m.AppendError(err.Error())
+				m.AppendError(fmt.Sprintf("path to directory does not exist: %s", joinedPath+dir))
 				return
 			}
 		}
@@ -120,6 +129,7 @@ func (m *Mkdir) Exec() {
 		parentDirInode = dirInode
 	}
 
+	consoleString.WriteString("\n=================END MKDIR=================\n")
 	m.LogConsole(consoleString.String())
 }
 
