@@ -232,7 +232,7 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 		// indirect addresses
 		if i >= 12 {
 			fmt.Println("Cannot load indirect addresses, functionality not implemented")
-			panic("Implement indirect addresses")
+			return errors.New("implement indirect address")
 		}
 
 		lastBlock = block
@@ -260,7 +260,7 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 		// TODO Check logic if last index is in the last 3 Iblock position
 		if lastIndex >= 12 {
 			fmt.Println("Cannot handle indirect addresses, functionality not implemented")
-			panic("Implement indirect addresses creation")
+			return errors.New("implement indirect addresses creation")
 		}
 		// if last block was -1 it means that we need a new direction to store the File Block at the last index
 		if lastBlock == -1 {
@@ -379,4 +379,131 @@ func (dt *DirTree) FreeInodeBlockContent(inode *Inode) error {
 	return nil
 }
 
+func (dt *DirTree) CreateNewInode(index int32, inode *Inode, name string, UID, GID int32, inodeType [1]byte) (int32, *Inode, error) {
+	// ALL OF THIS IS BAD DESIGN SINCE INODE SHOULD NOT BE MODIFIED HERE, JUST RETURN
+	var lastBlock int32 = -1
+	var lastIndex = 0
+	for i, block := range inode.IBlock {
+		if block == -1 {
+			break
+		}
+		// indirect addresses
+		if i >= 12 {
+			fmt.Println("Cannot load indirect addresses, functionality not implemented")
+			return -1, nil, errors.New("implement indirect addresses inode creation")
+		}
 
+		lastBlock = block
+		lastIndex = i
+	}
+
+	// load the last file block
+	var lastFolderBlock FolderBlock
+	var emptyContentIndex = -1
+	// last block could never be a -1 since every folder inode has at least 2 folder created
+	if err := Utils.ReadObject(dt.File, &lastFolderBlock, int64(dt.SuperBlock.BlockStart+lastBlock*int32(binary.Size(FolderBlock{})))); err != nil {
+		return -1, nil, err
+	}
+	// look for any empty content inode in current folder block
+	for i, content := range lastFolderBlock.Content {
+		if content.Inode == -1 {
+			emptyContentIndex = i
+			break
+		}
+	}
+
+	// if empty content block is -1 then there is a need to create a new folder block for parent inode
+	if emptyContentIndex == -1 {
+		// new folder block
+		lastFolderBlock = *NewFolderBlock()
+		// set the index content to 0 since is a new folder block
+		emptyContentIndex = 0
+		// set the last index of the i node blocks to be +1
+		lastIndex += 1
+		// get a new block address for new Folder block
+		var err error
+		lastBlock, err = dt.GetAvailableBlockAddress()
+		if err != nil {
+			return -1, nil, err
+		}
+		// TODO implement indirect addresses creation inode
+		if lastIndex >= 12 {
+			fmt.Println("Cannot handle indirect addresses, functionality not implemented")
+			return -1, nil, errors.New("implement indirect addresses creation inode")
+		}
+
+		// Update parent inode
+		inode.IBlock[lastIndex] = lastBlock
+	}
+	// update index block
+	copy(inode.MTime[:], time.Now().Format("2006-01-02 15:04"))
+
+	// Create new Inode
+	newInode := NewInode(inodeType)
+	newInode.UID = UID
+	newInode.GID = GID
+	newInodeIndex, err := dt.GetAvailableInodeAdress()
+	if err != nil {
+		return -1, nil, err
+	}
+
+	// Update information of new entry at the last folder block
+	copy(lastFolderBlock.Content[emptyContentIndex].Name[:], name)
+	lastFolderBlock.Content[emptyContentIndex].Inode = newInodeIndex
+
+	// Write updated  folder block
+	if err := Utils.WriteObject(dt.File, &lastFolderBlock, int64(dt.SuperBlock.BlockStart+lastBlock*int32(binary.Size(FolderBlock{})))); err != nil {
+		return -1, nil, err
+	}
+	if err := Utils.WriteObject(dt.File, byte(1), int64(dt.SuperBlock.BmBlockStart+lastBlock)); err != nil {
+		return -1, nil, err
+	}
+	dt.BlockBitMap[lastBlock] = 1
+	// Write new Inode
+	if err := Utils.WriteObject(dt.File, newInode, int64(dt.SuperBlock.InodeStart+newInodeIndex*int32(binary.Size(Inode{})))); err != nil {
+		return -1, nil, err
+	}
+	if err := Utils.WriteObject(dt.File, byte(1), int64(dt.SuperBlock.BmInodeStart+newInodeIndex)); err != nil {
+		return -1, nil, err
+	}
+	dt.InodeBitMap[newInodeIndex] = 1
+	// Write updated root inode
+	if err := Utils.WriteObject(dt.File, inode, int64(dt.SuperBlock.InodeStart+index*int32(binary.Size(Inode{})))); err != nil {
+		return -1, nil, err
+	}
+	return newInodeIndex, newInode, nil
+}
+
+func (dt *DirTree) CreateNewDir(index int32, inode *Inode, dirName string, uid int32, gid int32) (int32, *Inode, error) {
+	newInodeIndex, newInode, err := dt.CreateNewInode(index, inode, dirName, uid, gid, [1]byte{0})
+
+	newFolderBlock := NewFolderBlock()
+	newFolderBlockIndex, err := dt.GetAvailableBlockAddress()
+	if err != nil {
+		return -1, nil, err
+	}
+
+	// default folder block directions
+	newFolderBlock.Content[0].Inode = newInodeIndex
+	copy(newFolderBlock.Content[0].Name[:], ".")
+	newFolderBlock.Content[1].Inode = index
+	copy(newFolderBlock.Content[1].Name[:], "..")
+
+	// assign new inode the new folder block
+	newInode.IBlock[0] = newFolderBlockIndex
+
+	// write new folder block
+	if err := Utils.WriteObject(dt.File, newFolderBlock, int64(dt.SuperBlock.BlockStart+newFolderBlockIndex*int32(binary.Size(FolderBlock{})))); err != nil {
+		return -1, nil, err
+	}
+	if err := Utils.WriteObject(dt.File, byte(1), int64(dt.SuperBlock.BmBlockStart+newFolderBlockIndex)); err != nil {
+		return -1, nil, err
+	}
+	dt.BlockBitMap[newFolderBlockIndex] = 1
+	// Write updated new inode
+	if err := Utils.WriteObject(dt.File, newInode, int64(dt.SuperBlock.InodeStart+newInodeIndex*int32(binary.Size(Inode{})))); err != nil {
+		return -1, nil, err
+	}
+
+	return newInodeIndex, newInode, err
+}

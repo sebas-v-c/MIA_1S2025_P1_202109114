@@ -231,6 +231,8 @@ func createRootAndUsersFile(superBlock Structs.SuperBlock, file *os.File) error 
 	// The next available space is for the file users.txt
 	rootFolderBlock.Content[2].Inode = 1
 	copy(rootFolderBlock.Content[2].Name[:], "users.txt")
+	// update the last inode pointer
+	rootFolderBlock.Content[3].Inode = -1
 
 	// Writing the root inode at the start of the Inode part
 	if err := Utils.WriteObject(file, rootInode, int64(superBlock.InodeStart)); err != nil {
