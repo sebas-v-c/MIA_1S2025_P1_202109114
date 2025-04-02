@@ -6,15 +6,20 @@ mkfs -id=141A
 
 login -id=141A -user=root -pass=123
 
-rep -path=/home/zibas/algo
+
+# all of this code should throw errors
+rep -path=/home/zibas/Calificacion_MIA/Reportes/mbr.jpg
 rep -id=14A1
-rep -path=/home/zibas/algo -id=14A1
-rep -path=/home/zibas/algo -id=14A1 -name=disk
-rep -path=/home/zibas/algo -id=14A1 -name=inode
-rep -path=/home/zibas/algo -id=14A1 -name=nadota
+rep -path=/home/zibas/Calificacion_MIA/Reportes/mbr.jpg -id=14A1
+rep -path=/home/zibas/Calificacion_MIA/Reportes/nadota.jpg -id=14A1 -name=nadota
 
-rep -path=/home/zibas/algo -id=14A1 -path_file_ls=/hay/alguien/ahi -name=ls
-rep -path=/home/zibas/algo -id=14A1 -path_file_ls=/hay/alguien/ahi -name=file
-rep -path=/home/zibas/algo -id=14A1 -path_file_ls=/hay/alguien/ahi -name=disk
-rep -path=/home/zibas/algo -id=14A1 -path_file_ls=/hay/alguien/ahi -name=inode
 
+# good reports
+rep -path=/home/zibas/Calificacion_MIA/Reportes/mbr.jpg -id=14A1 -name=mbr
+#rep -path=/home/zibas/Calificacion_MIA/Reportes/inode.jpg -id=14A1 -name=inode
+
+#rep -path=/home/zibas/Calificacion_MIA/Reportes/ls.jpg -id=14A1 -path_file_ls=/hay/alguien/ahi -name=ls
+#rep -path=/home/zibas/Calificacion_MIA/Reportes/file.jpg -path_file_ls=/hay/alguien/ahi -name=file
+
+#rep -path=/home/zibas/Calificacion_MIA/Reportes/disk.jpg -id=14A1 -path_file_ls=/hay/alguien/ahi -name=disk
+#rep -path=/home/zibas/Calificacion_MIA/Reportes/inode.jpg -path_file_ls=/hay/alguien/ahi -name=inode

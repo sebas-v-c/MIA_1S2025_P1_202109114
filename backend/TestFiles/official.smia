@@ -9,12 +9,12 @@
 
 #----------------- MKDISK CON ERROR -----------------
 # ERROR PARAMETROS
-mkdisk -param=x -size=30 -path=/home/zibas/Calificacion_MIA/Discos/DiscoN.mia
+#mkdisk -param=x -size=30 -path=/home/zibas/Calificacion_MIA/Discos/DiscoN.mia
 
 
 #----------------- CREACION DE DISCOS -----------------
 # ERROR PARAMETROS
-mkdisk -tamaño=3000 -unit=K -path=/home/zibas/Calificacion_MIA/Discos/DiscoN.mia
+#mkdisk -tamaño=3000 -unit=K -path=/home/zibas/Calificacion_MIA/Discos/DiscoN.mia
 # 50M A
 Mkdisk -size=50 -unit=M -fit=FF -path=/home/zibas/Calificacion_MIA/Discos/Disco1.mia
 # 50M B
@@ -137,29 +137,29 @@ mounted
 #-----------------REPORTES PARTE 1-----------------
 #DISCO 1
 #ERROR ID NO ENCONTRADO
-#rep -id=A141 -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE.jpg -name=mbr
+rep -id=A141 -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE.jpg -name=mbr
 #REPORTE DISK
 #rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r1_disk.jpg -name=disk
 #REPORTE MBR
-#rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r2_mbr.jpg -name=mbr
+rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r2_mbr.jpg -name=mbr
 
 
 #DISCO 3
 #ERROR ID NO ENCONTRADO
-#rep -id=143B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
+rep -id=143B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
 #REPORTE DISK
 #rep -id=141B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r3_disk.jpg -name=disk
 #REPORTE MBR
-#rep -id=142B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r4_disk.jpg -name=mbr
+rep -id=142B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r4_disk.jpg -name=mbr
 
 
 #DISCO 5
 #ERROR ID NO ENCONTRADO
-#rep -id=IDx -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
+rep -id=IDx -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
 #REPORTE DISK
 #rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r5_disk.jpg -name=disk
 #REPORTE MBR
-#rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r6_mbr.jpg -name=mbr
+rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r6_mbr.jpg -name=mbr
 
 
 #-----------------5. MKFS-----------------
