@@ -143,6 +143,15 @@ type ParserListener interface {
 	// EnterMkfileparam is called when entering the mkfileparam production.
 	EnterMkfileparam(c *MkfileparamContext)
 
+	// EnterRep is called when entering the rep production.
+	EnterRep(c *RepContext)
+
+	// EnterRepparams is called when entering the repparams production.
+	EnterRepparams(c *RepparamsContext)
+
+	// EnterRepparam is called when entering the repparam production.
+	EnterRepparam(c *RepparamContext)
+
 	// ExitInit is called when exiting the init production.
 	ExitInit(c *InitContext)
 
@@ -277,4 +286,13 @@ type ParserListener interface {
 
 	// ExitMkfileparam is called when exiting the mkfileparam production.
 	ExitMkfileparam(c *MkfileparamContext)
+
+	// ExitRep is called when exiting the rep production.
+	ExitRep(c *RepContext)
+
+	// ExitRepparams is called when exiting the repparams production.
+	ExitRepparams(c *RepparamsContext)
+
+	// ExitRepparam is called when exiting the repparam production.
+	ExitRepparam(c *RepparamContext)
 }

@@ -42,7 +42,8 @@ command returns[interfaces.Command result]:
     |   c13 = rmusr     {$result = $c13.result}
     |   c14 = chgrp     {$result = $c14.result}
     |   c15 = mkdir     {$result = $c15.result}
-    |   c16 = mkfile   {$result = $c16.result}
+    |   c16 = mkfile    {$result = $c16.result}
+    |   c17 = rep       {$result = $c17.result}
     ;
 
 // =============== MKDISK ===============
@@ -280,4 +281,22 @@ mkfileparam returns[[]string result]:
     |   RW_r                            {$result = []string{"r", ""}}
     |   RW_size TK_equ p2 = TK_number   {$result = []string{"size", $p2.text}}
     |   RW_cont TK_equ p3 = TK_path     {$result = []string{"cont", strings.Trim($p3.text, "\"")}}
+    ;
+
+// =============== REP ===============
+rep returns[*commands.Rep result]:
+        l = RW_rep p = repparams  {$result = commands.NewRep($l.line, $l.pos, $p.result)}
+    |   l = RW_rep                   {$result = commands.NewRep($l.line, $l.pos, map[string]string{})}
+    ;
+
+repparams returns[map[string]string result]:
+        l = repparams p = repparam    {$result = $l.result;; $result[$p.result[0]] = $p.result[1]}
+    |   p = repparam                     {$result = map[string]string{$p.result[0]: $p.result[1]}}
+    ;
+
+repparam returns[[]string result]:
+        RW_name TK_equ p1 = TK_id       {$result = []string{"name", strings.Trim($p1.text, "\"")}}
+    |   RW_path TK_equ p2 = TK_path     {$result = []string{"path", strings.Trim($p2.text, "\"")}}
+    |   RW_id TK_equ p3 = TK_id         {$result = []string{"id", strings.Trim($p3.text, "\"")}}
+    |   RW_pfl TK_equ p4 = TK_path     {$result = []string{"pfl", strings.Trim($p4.text, "\"")}}
     ;

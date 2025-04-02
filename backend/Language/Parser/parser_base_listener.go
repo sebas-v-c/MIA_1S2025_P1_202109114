@@ -290,3 +290,21 @@ func (s *BaseParserListener) EnterMkfileparam(ctx *MkfileparamContext) {}
 
 // ExitMkfileparam is called when production mkfileparam is exited.
 func (s *BaseParserListener) ExitMkfileparam(ctx *MkfileparamContext) {}
+
+// EnterRep is called when production rep is entered.
+func (s *BaseParserListener) EnterRep(ctx *RepContext) {}
+
+// ExitRep is called when production rep is exited.
+func (s *BaseParserListener) ExitRep(ctx *RepContext) {}
+
+// EnterRepparams is called when production repparams is entered.
+func (s *BaseParserListener) EnterRepparams(ctx *RepparamsContext) {}
+
+// ExitRepparams is called when production repparams is exited.
+func (s *BaseParserListener) ExitRepparams(ctx *RepparamsContext) {}
+
+// EnterRepparam is called when production repparam is entered.
+func (s *BaseParserListener) EnterRepparam(ctx *RepparamContext) {}
+
+// ExitRepparam is called when production repparam is exited.
+func (s *BaseParserListener) ExitRepparam(ctx *RepparamContext) {}

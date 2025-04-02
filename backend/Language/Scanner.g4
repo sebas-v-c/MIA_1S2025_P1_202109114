@@ -57,6 +57,7 @@ RW_fileN       : '-'([ ])*'file'(INTEGER) ;
 RW_destino     : '-'([ ])*'destino'       ;
 RW_ugo         : '-'([ ])*'ugo'           ;
 RW_ruta        : '-'([ ])*'ruta'          ;
+RW_pfl         : '-'([ ])*'path_file_ls'  ;
 
 // Tokens
 TK_fit         : 'BF' | 'FF' | 'WF'       ;
