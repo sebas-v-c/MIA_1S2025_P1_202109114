@@ -139,7 +139,7 @@ mounted
 #ERROR ID NO ENCONTRADO
 rep -id=A141 -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE.jpg -name=mbr
 #REPORTE DISK
-#rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r1_disk.jpg -name=disk
+rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r1_disk.jpg -name=disk
 #REPORTE MBR
 rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r2_mbr.jpg -name=mbr
 
@@ -148,16 +148,16 @@ rep -id=141A -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r2_mbr.jpg -name=mbr
 #ERROR ID NO ENCONTRADO
 rep -id=143B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
 #REPORTE DISK
-#rep -id=141B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r3_disk.jpg -name=disk
+rep -id=141B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r3_disk.jpg -name=disk
 #REPORTE MBR
-rep -id=142B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r4_disk.jpg -name=mbr
+rep -id=142B -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r4_mbr.jpg -name=mbr
 
 
 #DISCO 5
 #ERROR ID NO ENCONTRADO
 rep -id=IDx -Path=/home/zibas/Calificacion_MIA/Reportes/p1_rE_mbr.jpg -name=mbr
 #REPORTE DISK
-#rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r5_disk.jpg -name=disk
+rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r5_disk.jpg -name=disk
 #REPORTE MBR
 rep -id=141C -Path=/home/zibas/Calificacion_MIA/Reportes/p1_r6_mbr.jpg -name=mbr
 
@@ -283,7 +283,7 @@ cat -file1=/home/archivos/user/docs/Tarea2.txt
 cat -file1=/home/archivos/user/docs/Tarea3.txt
 
 #------------------------REPORTES PARTE 4----------------
-#rep -id=141A -path=/home/zibas/Calificacion_MIA/Reportes/p4_r1_inode.jpg" -name=inode
+rep -id=141A -path=/home/zibas/Calificacion_MIA/Reportes/p4_r1_inode.jpg" -name=inode
 #rep -id=141A -path=/home/zibas/Calificacion_MIA/Reportes/p4_r2_block.jpg" -name=block
 #rep -id=141A -path=/home/zibas/Calificacion_MIA/Reportes/p4_r3_bm_inode.txt" -name=bm_inode
 #rep -id=141A -path=/home/zibas/Calificacion_MIA/Reportes/p4_r4_bm_block.txt" -name=bm_block

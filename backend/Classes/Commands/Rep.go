@@ -5,6 +5,7 @@ import (
 	"backend/Classes/Interfaces"
 	"backend/Classes/Structs"
 	"backend/Classes/Utils"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"os"
@@ -68,7 +69,7 @@ func (r *Rep) Exec() {
 			return
 		}
 	case "disk":
-		//r.createDiskRep()
+		repContent, err = r.createDiskRep(file)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
@@ -252,6 +253,110 @@ func (r *Rep) createMBRRep(file *os.File) (string, error) {
 	sb.WriteString("        >\n")
 	sb.WriteString("    ];\n")
 	sb.WriteString("}\n")
+
+	return sb.String(), nil
+}
+
+func (r *Rep) createDiskRep(file *os.File) (string, error) {
+	var sb strings.Builder
+
+	var mbr Structs.MBR
+	if err := Utils.ReadObject(file, &mbr, 0); err != nil {
+		return "", err
+	}
+
+	totalSize := float64(mbr.MbrSize)
+
+	sb.WriteString("digraph DiskLayout {\n")
+	sb.WriteString("    node [shape=plaintext];\n")
+	sb.WriteString("    disk [label=<\n")
+	sb.WriteString("    <table border=\"0\" cellborder=\"1\" cellspacing=\"0\">\n")
+	sb.WriteString("        <tr>\n")
+
+	// MBR fixed block
+	sb.WriteString("            <td><b>MBR</b></td>\n")
+	used := (float64(binary.Size(Structs.MBR{})) / totalSize) * 100
+
+	for _, part := range mbr.Partitions {
+		if part.Size == 0 {
+			continue
+		}
+
+		partName := strings.TrimRight(string(part.Name[:]), "\x00")
+		partType := strings.TrimSpace(string(part.Type[:]))
+		partSize := float64(part.Size)
+		partPercentage := (partSize / totalSize) * 100
+
+		if partType == "E" {
+			sb.WriteString("            <td>\n")
+			sb.WriteString("                <table border=\"0\" cellborder=\"1\">\n")
+			sb.WriteString("                    <tr><td colspan=\"2\"><b>Extendida</b></td></tr>\n")
+
+			// Add the EBR metadata size (if needed)
+			used += (float64(binary.Size(Structs.EBR{})) / totalSize) * 100
+
+			currentEBRPos := part.Start
+			endOfExtended := part.Start + part.Size
+			lastLogicalEnd := part.Start
+
+			for currentEBRPos != -1 {
+				var ebr Structs.EBR
+				if err := Utils.ReadObject(file, &ebr, int64(currentEBRPos)); err != nil {
+					break
+				}
+
+				ebrName := strings.TrimRight(string(ebr.Name[:]), "\x00")
+				if ebrName == "" {
+					ebrName = "Logica"
+				}
+
+				logicalStart := ebr.Start
+				logicalEnd := ebr.Start + ebr.Size
+				logicalSize := float64(ebr.Size)
+				logicalPercentage := (logicalSize / totalSize) * 100
+
+				// Internal free space between logicals
+				if logicalStart > lastLogicalEnd {
+					freeSize := float64(logicalStart - lastLogicalEnd)
+					freePercentage := (freeSize / totalSize) * 100
+					//sb.WriteString(fmt.Sprintf("                    <tr><td colspan=\"2\">Libre<br/>%.2f%%</td></tr>\n", freePercentage))
+					used += freePercentage
+				}
+
+				// Add EBR + logical partition
+				sb.WriteString("                    <tr>\n")
+				sb.WriteString(fmt.Sprintf("                        <td>EBR</td><td>%s<br/>%.2f%%</td>\n", ebrName, logicalPercentage))
+				sb.WriteString("                    </tr>\n")
+				used += logicalPercentage
+				lastLogicalEnd = logicalEnd
+				currentEBRPos = ebr.Next
+			}
+
+			// Final internal free space in extended partition
+			if endOfExtended > lastLogicalEnd {
+				freeSize := float64(endOfExtended - lastLogicalEnd)
+				freePercentage := (freeSize / totalSize) * 100
+				sb.WriteString(fmt.Sprintf("                    <tr><td colspan=\"2\">Libre<br/>%.2f%%</td></tr>\n", freePercentage))
+				used += freePercentage
+			}
+
+			sb.WriteString("                </table>\n")
+			sb.WriteString("            </td>\n")
+			//used += partPercentage // count full extended partition
+		} else {
+			sb.WriteString(fmt.Sprintf("            <td><b>%s</b><br/>%.2f%%</td>\n", partName, partPercentage))
+			used += partPercentage
+		}
+	}
+
+	// Remaining free space in the disk
+	free := 100.0 - used
+	if free < 0 {
+		free = 0
+	}
+	sb.WriteString(fmt.Sprintf("            <td>Libre<br/>%.2f%%</td>\n", free))
+
+	sb.WriteString("        </tr>\n</table>>];\n}")
 
 	return sb.String(), nil
 }
