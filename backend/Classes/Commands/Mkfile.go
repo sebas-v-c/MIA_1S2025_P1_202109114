@@ -76,7 +76,7 @@ func (m *Mkfile) Exec() {
 	// If -r flag is set then create the files
 	if _, ok := m.Params["r"]; ok {
 		// here we send the splitedPath but not the last item since is not a folder, is a file
-		if err, consoleString = CreateDirs(dirTree, splitedPath[:len(splitedPath)-2], createDirs, consoleString, file, superBlock); err != nil {
+		if err, consoleString = CreateDirs(dirTree, splitedPath[:len(splitedPath)-1], createDirs, &consoleString, file, superBlock); err != nil {
 			m.AppendError(err.Error())
 			return
 		}
@@ -113,6 +113,10 @@ func (m *Mkfile) Exec() {
 	fileDirPath := filepath.Dir(m.Params["path"])
 	fileName := filepath.Base(m.Params["path"])
 	parentInodeIndex, parentInode, err := dirTree.GetInodeByPath(fileDirPath)
+	if err != nil {
+		m.AppendError(err.Error())
+		return
+	}
 	UID := env.CurrentUser.User.Id
 	GID, err := env.GetUserGID(env.CurrentUser.User.Group, env.CurrentUser.MountedPartition)
 	if err != nil {
@@ -150,7 +154,7 @@ func (m *Mkfile) Exec() {
 	consoleString.WriteString("\nNew Inode content:\n")
 	consoleString.WriteString(fileContent)
 
-	consoleString.WriteString("=================END MKFILE=================\n")
+	consoleString.WriteString("\n=================END MKFILE=================\n")
 	m.LogConsole(consoleString.String())
 }
 

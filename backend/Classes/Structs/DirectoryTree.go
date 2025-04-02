@@ -516,7 +516,7 @@ func (dt *DirTree) CreateNewDir(index int32, inode *Inode, dirName string, uid i
 }
 
 func (dt *DirTree) CreateNewFile(index int32, inode *Inode, fileName string, content string, uid int32, gid int32) (int32, *Inode, error) {
-	newInodeIndex, newInode, err := dt.CreateNewInode(index, inode, fileName, uid, gid, [1]byte{0})
+	newInodeIndex, newInode, err := dt.CreateNewInode(index, inode, fileName, uid, gid, [1]byte{1})
 	if err != nil {
 		return -1, nil, err
 	}

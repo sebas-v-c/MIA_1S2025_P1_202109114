@@ -6,12 +6,11 @@ mkfs -id=141A
 
 login -id=141A -user=root -pass=123
 
-mkdir -path=/hola
-mkdir -path=/hola/carmen
 
-mkdir -path=/hola/carmen/amor
+mkfile -path=/algo.txt
+mkfile -path=/algo2.txt -size=128
+mkfile -path=/home/carmen/a.txt -r
+mkfile -path=/home/zibas/a.txt
+mkfile -path=/home/carmen/oli.txt -cont=/algo2.txt
+mkfile -path=/home/carmen/oli2.txt -cont=/algo2.txt -size=2
 
-mkdir -p -path=/adios/no/hay/ola
-mkdir -path=/camion/simon/bolivar
-
-mkdir -path=/hola
