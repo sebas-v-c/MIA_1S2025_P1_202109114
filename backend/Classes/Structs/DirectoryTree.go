@@ -514,3 +514,24 @@ func (dt *DirTree) CreateNewDir(index int32, inode *Inode, dirName string, uid i
 
 	return newInodeIndex, newInode, err
 }
+
+func (dt *DirTree) CreateNewFile(index int32, inode *Inode, fileName string, content string, uid int32, gid int32) (int32, *Inode, error) {
+	newInodeIndex, newInode, err := dt.CreateNewInode(index, inode, fileName, uid, gid, [1]byte{0})
+	if err != nil {
+		return -1, nil, err
+	}
+
+	// load content into file
+	if err := dt.AppendToFileInode(content, newInode); err != nil {
+		return -1, nil, err
+	}
+
+	// Write updated new inode
+	if err := Utils.WriteObject(dt.File, newInode, int64(dt.SuperBlock.InodeStart+newInodeIndex*int32(binary.Size(Inode{})))); err != nil {
+		return -1, nil, err
+	}
+	// update old inode
+
+	return newInodeIndex, newInode, err
+
+}

@@ -70,12 +70,23 @@ func (m *Mkdir) Exec() {
 	if splitedPath[0] == "" || splitedPath[0] == "/" {
 		splitedPath = splitedPath[1:] // Remove leading empty component from path
 	}
-	var parentDirInode *Structs.Inode
-	var parentDirInodeIndex int32
-	parentDirInodeIndex, parentDirInode, err = dirTree.GetInodeByPath("/")
-	if err != nil {
+
+	if err, consoleString = CreateDirs(dirTree, splitedPath, createDirs, consoleString, file, superBlock); err != nil {
 		m.AppendError(err.Error())
 		return
+	}
+
+	consoleString.WriteString("\n=================END MKDIR=================\n")
+	m.LogConsole(consoleString.String())
+}
+
+func CreateDirs(dirTree *Structs.DirTree, splitedPath []string, createDirs bool, consoleString strings.Builder, file *os.File, superBlock Structs.SuperBlock) (error, strings.Builder) {
+	var parentDirInode *Structs.Inode
+	var parentDirInodeIndex int32
+	var err error
+	parentDirInodeIndex, parentDirInode, err = dirTree.GetInodeByPath("/")
+	if err != nil {
+		return err, consoleString
 	}
 
 	var joinedPath = "/"
@@ -84,11 +95,10 @@ func (m *Mkdir) Exec() {
 		// check permissions on parent folder
 		_, write, _, err := env.CheckFilePermissions(*env.CurrentUser, parentDirInode)
 		if err != nil {
-			m.AppendError(err.Error())
-			return
+			return err, consoleString
 		}
 		if !write {
-			m.AppendError("You dont have write permissions in this folder")
+			return errors.New("you dont have write permissions in this folder"), consoleString
 		}
 
 		dirInodeIndex, dirInode, err := dirTree.GetInodeByPath(joinedPath + dir)
@@ -100,26 +110,22 @@ func (m *Mkdir) Exec() {
 				UID := env.CurrentUser.User.Id
 				GID, err := env.GetUserGID(env.CurrentUser.User.Group, env.CurrentUser.MountedPartition)
 				if err != nil {
-					m.AppendError(err.Error())
-					return
+					return err, consoleString
 				}
 				dirInodeIndex, dirInode, err = dirTree.CreateNewDir(parentDirInodeIndex, parentDirInode, dir, UID, GID)
 				if err != nil {
-					m.AppendError(err.Error())
-					return
+					return err, consoleString
 				}
 				consoleString.WriteString(fmt.Sprintf("\nDirectory %s, created at %s\n", dir, joinedPath))
 
 				var writtenInode Structs.Inode
 				if err := Utils.ReadObject(file, &writtenInode, int64(superBlock.InodeStart+dirInodeIndex*int32(binary.Size(Structs.Inode{})))); err != nil {
-					m.AppendError(err.Error())
-					return
+					return err, consoleString
 				}
 				consoleString.WriteString("Written Inode:\n")
 				consoleString.WriteString(writtenInode.ToString())
 			} else if err != nil { // if createDirs is false and is not the last dir then return an error
-				m.AppendError(fmt.Sprintf("path to directory does not exist: %s", joinedPath+dir))
-				return
+				return errors.New("path to directory does not exist: " + joinedPath + dir), consoleString
 			}
 		}
 
@@ -128,9 +134,7 @@ func (m *Mkdir) Exec() {
 		parentDirInodeIndex = dirInodeIndex
 		parentDirInode = dirInode
 	}
-
-	consoleString.WriteString("\n=================END MKDIR=================\n")
-	m.LogConsole(consoleString.String())
+	return nil, consoleString
 }
 
 func (m *Mkdir) validateParams() error {
