@@ -42,6 +42,12 @@ func NewInode(inodeType [1]byte) *Inode {
 }
 
 func (i *Inode) ToString() string {
+	var inodeType string
+	if i.Type == [1]byte{0} {
+		inodeType = "0"
+	} else {
+		inodeType = "1"
+	}
 	return fmt.Sprintf(`        i_UID %v
         i_GID %v
         i_Size %v
@@ -49,7 +55,7 @@ func (i *Inode) ToString() string {
         i_CTime %s
         i_MTime %s
         i_Block %v
-        i_Type %v
+        i_Type %s
         i_Perm %v`,
 		i.UID,
 		i.GID,
@@ -58,6 +64,6 @@ func (i *Inode) ToString() string {
 		string(i.CTime[:]),
 		string(i.MTime[:]),
 		i.IBlock,
-		string(i.Type[:]),
+		inodeType,
 		string(i.Perm[:]))
 }

@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -86,6 +87,10 @@ func (m *Mkfile) Exec() {
 	// if size flag is set, then fill the file content with number from 0 to 9
 	if _, ok := m.Params["size"]; ok {
 		if num, err := strconv.Atoi(m.Params["size"]); err == nil {
+			if num < 0 {
+				m.AppendError("size must be greater than zero")
+				return
+			}
 			for i := 0; i < num; i++ {
 				fileContent += fmt.Sprintf("%d", i%10)
 			}
@@ -97,16 +102,31 @@ func (m *Mkfile) Exec() {
 
 	// if cont flag is set, then read the content of the other file
 	if _, ok := m.Params["cont"]; ok {
-		_, tempInode, err := dirTree.GetInodeByPath(m.Params["cont"])
+		contentFile, err := Utils.OpenFile(m.Params["cont"])
 		if err != nil {
 			m.AppendError(err.Error())
 			return
 		}
-		fileContent, err = dirTree.GetFileContentByInode(tempInode)
+		defer contentFile.Close()
+		content, err := io.ReadAll(contentFile)
 		if err != nil {
 			m.AppendError(err.Error())
 			return
 		}
+		fileContent = string(content)
+
+		/*
+			_, tempInode, err := dirTree.GetInodeByPath(m.Params["cont"])
+			if err != nil {
+				m.AppendError(err.Error())
+				return
+			}
+			fileContent, err = dirTree.GetFileContentByInode(tempInode)
+			if err != nil {
+				m.AppendError(err.Error())
+				return
+			}
+		*/
 	}
 
 	// File
@@ -142,7 +162,7 @@ func (m *Mkfile) Exec() {
 		m.AppendError(err.Error())
 		return
 	}
-	consoleString.WriteString("Written Inode:\n")
+	consoleString.WriteString("\n\nWritten Inode:\n")
 	consoleString.WriteString(writtenInode.ToString())
 
 	// print stored content
