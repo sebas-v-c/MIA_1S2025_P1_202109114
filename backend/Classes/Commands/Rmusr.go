@@ -53,7 +53,7 @@ func (r *Rmusr) Exec() {
 	var mbrPartition *Structs.Partition
 	var file *os.File
 	var err error
-	_, mbrPartition, file, err = env.VerifyDiscStatus(*env.CurrentUser)
+	_, mbrPartition, file, err = env.VerifyDiscStatus(env.CurrentUser.MountedPartition.Id)
 	if err != nil {
 		r.AppendError(err.Error())
 		return

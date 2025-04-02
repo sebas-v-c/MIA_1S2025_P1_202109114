@@ -51,7 +51,7 @@ func (m *Mkgrp) Exec() {
 	var mbrPartition *Structs.Partition
 	var file *os.File
 	var err error
-	_, mbrPartition, file, err = env.VerifyDiscStatus(*env.CurrentUser)
+	_, mbrPartition, file, err = env.VerifyDiscStatus(env.CurrentUser.MountedPartition.Id)
 	if err != nil {
 		m.AppendError(err.Error())
 		return

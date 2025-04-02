@@ -7,10 +7,11 @@ import (
 	"os"
 )
 
-func VerifyDiscStatus(loggedUser LoggedUser) (*Structs.MountedPartition, *Structs.Partition, *os.File, error) {
+func VerifyDiscStatus(partition [4]byte) (*Structs.MountedPartition, *Structs.Partition, *os.File, error) {
 	// Check state of the disk
 	var mountedPartition *Structs.MountedPartition
-	if mountedPartition = getPartitionInRam(loggedUser.MountedPartition.Id); mountedPartition == nil {
+	//if mountedPartition = getPartitionInRam(loggedUser.MountedPartition.Id); mountedPartition == nil {
+	if mountedPartition = getPartitionInRam(partition); mountedPartition == nil {
 		return nil, nil, nil, errors.New("No partition was founded given id")
 	}
 

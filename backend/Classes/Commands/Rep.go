@@ -32,6 +32,29 @@ func (r *Rep) Exec() {
 		return
 	}
 
+	switch r.Params["name"] {
+	case "mbr":
+		r.createMBRRep()
+	case "disk":
+		r.createDiskRep()
+	case "inode":
+		r.createInodeRep()
+	case "block":
+		r.createBlockRep()
+	case "bm_inode":
+		r.createBMInodeRep()
+	case "bm_block":
+		r.createBMBlockRep()
+	case "tree":
+		r.createTreeRep()
+	case "sb":
+		r.createSbRep()
+	case "file":
+		r.createFileRep()
+	case "ls":
+		r.createLsRep()
+	}
+
 	consoleString.WriteString("\n=================REP=================\n")
 	r.LogConsole(consoleString.String())
 }
@@ -45,26 +68,20 @@ func (r *Rep) validateParams() error {
 		return errors.New("missing parameter -id")
 	}
 
-	if _, ok := r.Params["pfl"]; ok {
-		if name, ok := r.Params["name"]; ok {
-			if name != "ls" && name != "file" {
-				return errors.New("parameter -name must be 'ls' or 'file' if parameter -path_file_ls is present")
-			}
-			return nil
-		} else {
-			return errors.New("missing parameter -name")
-		}
+	name, ok := r.Params["name"]
+	if !ok {
+		return errors.New("missing parameter -name")
 	}
 
-	if name, ok := r.Params["name"]; ok {
-		if name != "mbr" && name != "disk" && name != "inode" && name != "block" && name != "bm_inode" && name != "bm_block" && name != "tree" && name != "sb" {
-			return errors.New("report name could only be mbr, disk, inode, block, bm_inode, bm_block, tree, sb, file or ls")
+	switch name {
+	case "ls", "file":
+		if _, ok := r.Params["pfl"]; !ok {
+			return errors.New("parameter -path_file_ls is required when generating 'ls' and 'file' reports")
 		}
-		if name == "ls" || name == "file" {
-			return errors.New("ls and file only could be generated if parameter 'pdf' is present")
-		}
-	} else {
-		return errors.New("missing parameter -name")
+	case "mbr", "disk", "inode", "block", "bm_inode", "bm_block", "tree", "sb":
+
+	default:
+		return errors.New("invalid value for -name. Allowed: mbr, disk, inode, block, bm_inode, bm_block, tree, sb, file, ls")
 	}
 
 	return nil
