@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -105,17 +106,35 @@ func (r *Rep) Exec() {
 			return
 		}
 	case "sb":
-		//r.createSbRep()
+		repContent, err = r.createSbRep(dirTree)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
 		}
 	case "file":
-		//r.createFileRep()
+		repContent, err = r.createFileRep(dirTree)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
 		}
+		/*
+			// Create report file and write it
+			if err := Utils.CreateFile(r.Params["path"]); err != nil {
+				r.AppendError(err.Error())
+				return
+			}
+			repFile, err := Utils.OpenFile(r.Params["path"])
+			if err != nil {
+				r.AppendError(err.Error())
+				return
+			}
+			if err := Utils.WriteObject(repFile, []byte(repContent), int64(0)); err != nil {
+				r.AppendError(err.Error())
+				return
+			}
+			return
+		*/
+
 	case "ls":
 		//r.createLsRep()
 		if err != nil {
@@ -145,6 +164,7 @@ func (r *Rep) Exec() {
 
 	// Convert .dot to image
 	// Generate image using dot command (requires Graphviz installed)
+
 	cmd := exec.Command("dot", "-Tjpg", r.Params["path"]+".dot", "-o", r.Params["path"]+".jpg")
 	err = cmd.Run()
 	if err != nil {
@@ -522,5 +542,97 @@ func (r *Rep) createTreeRep(dirTree *Structs.DirTree) (string, error) {
 	}
 
 	sb.WriteString("}\n")
+	return sb.String(), nil
+}
+
+func (r *Rep) createSbRep(dirTree *Structs.DirTree) (string, error) {
+	var sb strings.Builder
+
+	sb.WriteString("digraph SuperBlockReport {\n")
+	sb.WriteString("    rankdir=TB;\n")
+	sb.WriteString("    node [shape=plaintext];\n\n")
+	sb.WriteString("    superblock [\n")
+	sb.WriteString("        label=<\n")
+	sb.WriteString("            <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">\n")
+	sb.WriteString("                <TR>\n")
+	sb.WriteString("                    <TD COLSPAN=\"2\" BGCOLOR=\"#6bbf6b\">\n")
+	sb.WriteString("                        <FONT COLOR=\"white\"><B>Reporte de SUPERBLOQUE</B></FONT>\n")
+	sb.WriteString("                    </TD>\n")
+	sb.WriteString("                </TR>\n")
+
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>FilesystemType</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.FilesystemType))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>InodesCount</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.InodesCount))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>BlocksCount</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.BlocksCount))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>FreeBlocksCount</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.FreeBlocksCount))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>FreeInodesCount</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.FreeInodesCount))
+	// Convert the byte arrays to string
+	time := strings.TrimRight(string(dirTree.SuperBlock.MTime[:]), "\x00")
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>MTime</B></TD><TD>%s</TD></TR>\n", time))
+	time = strings.TrimRight(string(dirTree.SuperBlock.UMTime[:]), "\x00")
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>UMTime</B></TD><TD>%s</TD></TR>\n", time))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>MntCount</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.MntCount))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>Magic</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.Magic))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>InodeSize</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.InodeSize))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>BlockSize</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.BlockSize))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>FirstInode</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.FirstInode))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>FirstBlock</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.FirstBlock))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>BmInodeStart</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.BmInodeStart))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>BmBlockStart</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.BmBlockStart))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#d2f0d2\"><TD><B>InodeStart</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.InodeStart))
+	sb.WriteString(fmt.Sprintf("                <TR BGCOLOR=\"#c8ecc8\"><TD><B>BlockStart</B></TD><TD>%d</TD></TR>\n", dirTree.SuperBlock.BlockStart))
+
+	sb.WriteString("                <TR>\n")
+	sb.WriteString("                    <TD COLSPAN=\"2\" BGCOLOR=\"#6bbf6b\">\n")
+	sb.WriteString("                        <FONT COLOR=\"white\"><I>Fin del Reporte</I></FONT>\n")
+	sb.WriteString("                    </TD>\n")
+	sb.WriteString("                </TR>\n")
+	sb.WriteString("            </TABLE>\n")
+	sb.WriteString("        >\n")
+	sb.WriteString("    ];\n")
+	sb.WriteString("}\n")
+
+	return sb.String(), nil
+}
+
+func (r *Rep) createFileRep(dirTree *Structs.DirTree) (string, error) {
+	_, inode, err := dirTree.GetInodeByPath(r.Params["pfl"])
+	if err != nil {
+		return "", err
+	}
+	var content string
+	content, err = dirTree.GetFileContentByInode(inode)
+	if err != nil {
+		return "", err
+	}
+	fileName := filepath.Base(r.Params["pfl"])
+
+	var sb strings.Builder
+
+	// Start the DOT graph.
+	sb.WriteString("digraph FileReport {\n")
+	sb.WriteString("    rankdir=TB;\n")
+	sb.WriteString("    node [shape=plaintext];\n")
+	sb.WriteString("\n")
+	sb.WriteString("    file_report [\n")
+	sb.WriteString("        label=<\n")
+	sb.WriteString("            <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">\n")
+	// Header row with the file name.
+	sb.WriteString(fmt.Sprintf("                <TR><TD COLSPAN=\"1\" BGCOLOR=\"#6bbf6b\"><FONT COLOR=\"white\"><B>%s</B></FONT></TD></TR>\n", fileName))
+
+	// Split the content into 64-character lines.
+	for i := 0; i < len(content); i += 64 {
+		end := i + 64
+		if end > len(content) {
+			end = len(content)
+		}
+		line := content[i:end]
+		sb.WriteString(fmt.Sprintf("                <TR><TD>%s</TD></TR>\n", line))
+	}
+
+	sb.WriteString("            </TABLE>\n")
+	sb.WriteString("        >\n")
+	sb.WriteString("    ];\n")
+	sb.WriteString("}\n")
+
 	return sb.String(), nil
 }
