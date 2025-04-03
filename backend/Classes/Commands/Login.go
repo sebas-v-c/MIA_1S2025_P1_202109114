@@ -1,3 +1,5 @@
+// Package Commands provides implementations for various filesystem commands,
+// including user login, logout, file/directory creation, and disk management.
 package Commands
 
 import (
@@ -12,43 +14,57 @@ import (
 	"strings"
 )
 
+// Login represents the LOGIN command, which is used to authenticate a user
+// against the filesystem's user records stored in "/users.txt".
+// It embeds the common CommandStruct for shared behavior and holds a map of parameters.
 type Login struct {
-	Interfaces.CommandStruct
-	Params map[string]string
+	Interfaces.CommandStruct                   // Embeds common command metadata (Type, Line, Column, etc.)
+	Params                   map[string]string // Params contains command-specific parameters (e.g., "user", "pass", "id").
 }
 
+// NewLogin creates a new instance of the Login command with the specified source location and parameters.
 func NewLogin(line, column int, params map[string]string) *Login {
 	return &Login{
 		CommandStruct: Interfaces.CommandStruct{
-			Type:   Utils.LOGIN,
-			Line:   line,
-			Column: column,
+			Type:   Utils.LOGIN, // Command type constant for LOGIN.
+			Line:   line,        // Source code line where the command is defined.
+			Column: column,      // Source code column where the command is defined.
 		},
-		Params: params,
+		Params: params, // Command-specific parameters.
 	}
 }
 
+// Exec executes the LOGIN command.
+// It validates the provided parameters, retrieves the mounted partition,
+// checks the partition's integrity, and attempts to locate and authenticate the user
+// using the information from the "/users.txt" file. If successful, it sets the global
+// current user; otherwise, it logs an appropriate error.
 func (l *Login) Exec() {
+	// Validate that required parameters are provided.
 	if err := l.validateParams(); err != nil {
 		l.AppendError(err.Error())
 		return
 	}
 
+	// Begin constructing the console output log.
 	var consoleString string
 	consoleString = "=================LOGIN=================\n"
 	consoleString += fmt.Sprintf("Logging in: user: %s , pass: %s , at '%s'\n", l.Params["user"], l.Params["pass"], l.Params["id"])
 
+	// Check if a user is already logged in.
 	if env.CurrentUser != nil {
 		l.AppendError("Already logged in")
 		return
 	}
 
+	// Retrieve the mounted partition from RAM using the provided partition id.
 	var mountedPartition *Structs.MountedPartition
 	if mountedPartition = l.getPartitionInRam(); mountedPartition == nil {
 		l.AppendError("No partition was founded given id")
 		return
 	}
 
+	// Check the health of the mounted partition by comparing it with the MBR on disk.
 	var mbrPartition *Structs.Partition
 	var discFile *os.File
 	mbrPartition, discFile = l.checkMountedPartitionHealth(mountedPartition)
@@ -58,6 +74,7 @@ func (l *Login) Exec() {
 	}
 	defer discFile.Close()
 
+	// Attempt to log in the user by reading the "/users.txt" file from the filesystem.
 	var loggedUser *Structs.User
 	loggedUser, err := l.loginUser(l.Params["user"], l.Params["pass"], mbrPartition, discFile)
 	if err != nil {
@@ -65,6 +82,8 @@ func (l *Login) Exec() {
 		return
 	}
 	consoleString += "User '" + loggedUser.Name + "' logged in successfully\n"
+
+	// Set the global current user with the authenticated user and the mounted partition.
 	env.CurrentUser = &env.LoggedUser{
 		User:             *loggedUser,
 		MountedPartition: *mountedPartition,
@@ -73,39 +92,43 @@ func (l *Login) Exec() {
 	l.LogConsole(consoleString)
 }
 
+// loginUser attempts to locate and authenticate a user by searching the "/users.txt" file.
+// It reads the filesystem superblock and directory tree, then retrieves the user inode and its content.
+// The function returns the matching user if found (and if the provided password matches), or an error otherwise.
 func (l *Login) loginUser(user string, password string, partition *Structs.Partition, file *os.File) (*Structs.User, error) {
 	var fsSuperBlock Structs.SuperBlock
 	if err := Utils.ReadObject(file, &fsSuperBlock, int64(partition.Start)); err != nil {
 		return nil, err
 	}
 
+	// Build the directory tree from the superblock.
 	dirTree := Structs.NewDirTree(fsSuperBlock, file)
-	//var inodeIndex int32
 	var fileInode *Structs.Inode
 	var err error
 	_, fileInode, err = dirTree.GetInodeByPath("/users.txt")
 	if err != nil {
 		return nil, err
 	}
-	// Get file content given the inode
+
+	// Retrieve the content of the "/users.txt" file.
 	var fileContent string
 	fileContent, err = dirTree.GetFileContentByInode(fileInode)
 	if err != nil {
 		return nil, err
 	}
-	// split in lines the file content and iterate over it
+
+	// Split the file content into lines and iterate over each line.
 	fileContentLines := strings.Split(fileContent, "\n")
 	for _, line := range fileContentLines {
-		// get the coma separated values from the line and get the id
+		// Split each line by commas to extract user details.
 		words := strings.Split(line, ",")
 		id, _ := strconv.Atoi(words[0])
-		// if id == 0 then user was deleted and is invalid
-		// if is not of type "U" is also invalid
-		// if the length of the line is not 5 then is not valid
+		// Skip lines that are invalid: user deleted (id == 0), not a user entry, or malformed.
 		if words[1] != "U" || id == 0 || len(words) != 5 {
 			continue
 		}
 
+		// If the username and password match, return the corresponding user.
 		if words[3] == user && words[4] == password {
 			return &Structs.User{
 				Id:       int32(id),
@@ -118,6 +141,9 @@ func (l *Login) loginUser(user string, password string, partition *Structs.Parti
 	return nil, errors.New("User '" + user + "' does not exist")
 }
 
+// checkMountedPartitionHealth verifies that the mounted partition exists on disk by reading the MBR.
+// It opens the disk file for the mounted partition, reads the MBR, and searches for the partition
+// matching the mounted partition's id. It returns the partition (if found) along with the file pointer.
 func (l *Login) checkMountedPartitionHealth(mountedPartition *Structs.MountedPartition) (*Structs.Partition, *os.File) {
 	file, err := Utils.OpenFile(mountedPartition.Path)
 	if err != nil {
@@ -129,8 +155,8 @@ func (l *Login) checkMountedPartitionHealth(mountedPartition *Structs.MountedPar
 		l.AppendError(err.Error())
 		return nil, nil
 	}
+	// Search the partitions in the MBR for a matching partition id.
 	for _, partition := range discMBR.Partitions {
-		//fmt.Println(partition.ToString())
 		if partition.Id == mountedPartition.Id {
 			return &partition, file
 		}
@@ -139,6 +165,8 @@ func (l *Login) checkMountedPartitionHealth(mountedPartition *Structs.MountedPar
 	return nil, nil
 }
 
+// validateParams checks that all required parameters for the LOGIN command are provided.
+// It returns an error if any required parameter ("user", "pass", or "id") is missing.
 func (l *Login) validateParams() error {
 	if _, ok := l.Params["user"]; !ok {
 		return errors.New("missing parameter -user")
@@ -150,6 +178,8 @@ func (l *Login) validateParams() error {
 	return nil
 }
 
+// getPartitionInRam searches for a mounted partition in memory (RAM) that matches the provided "id" parameter.
+// It iterates over the global list of mounted partitions and returns the matching partition, or nil if not found.
 func (l *Login) getPartitionInRam() *Structs.MountedPartition {
 	for _, part := range env.GetPartitions() {
 		if string(part.Id[:]) == l.Params["id"] {
