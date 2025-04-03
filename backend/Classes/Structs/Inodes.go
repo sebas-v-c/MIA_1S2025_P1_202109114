@@ -9,7 +9,7 @@ type Inode struct {
 	UID    int32
 	GID    int32
 	Size   int32
-	ATime  [17]byte
+	ATime  [17]byte // "2020-20-20 13:00
 	CTime  [17]byte
 	MTime  [17]byte
 	IBlock [15]int32

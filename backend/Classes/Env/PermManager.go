@@ -24,18 +24,18 @@ func CheckFilePermissions(loggedUser LoggedUser, fileInode *Structs.Inode) (bool
 	}
 
 	if fileUID == loggedUser.User.Id {
-		read, write, execute := calculatePermissions(perms[0])
+		read, write, execute := CalculatePermissions(perms[0])
 		return read, write, execute, nil
 	} else if fileGID == userGID {
-		read, write, execute := calculatePermissions(perms[1])
+		read, write, execute := CalculatePermissions(perms[1])
 		return read, write, execute, nil
 	} else {
-		read, write, execute := calculatePermissions(perms[2])
+		read, write, execute := CalculatePermissions(perms[2])
 		return read, write, execute, nil
 	}
 }
 
-func calculatePermissions(perm byte) (bool, bool, bool) {
+func CalculatePermissions(perm byte) (bool, bool, bool) {
 	switch perm {
 	case '0':
 		// case 0: no permissions

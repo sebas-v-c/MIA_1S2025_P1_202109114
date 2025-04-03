@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -76,7 +77,7 @@ func (r *Rep) Exec() {
 			return
 		}
 	case "inode":
-		//r.createInodeRep()
+		repContent, err = r.createInodeRep(dirTree)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
@@ -88,13 +89,13 @@ func (r *Rep) Exec() {
 			return
 		}
 	case "bm_inode":
-		//r.createBMInodeRep()
+		repContent, err = r.createBMRep(dirTree.InodeBitMap, "BM_INODE")
 		if err != nil {
 			r.AppendError(err.Error())
 			return
 		}
 	case "bm_block":
-		//r.createBMBlockRep()
+		repContent, err = r.createBMRep(dirTree.BlockBitMap, "BM_BLOCK")
 		if err != nil {
 			r.AppendError(err.Error())
 			return
@@ -117,26 +118,8 @@ func (r *Rep) Exec() {
 			r.AppendError(err.Error())
 			return
 		}
-		/*
-			// Create report file and write it
-			if err := Utils.CreateFile(r.Params["path"]); err != nil {
-				r.AppendError(err.Error())
-				return
-			}
-			repFile, err := Utils.OpenFile(r.Params["path"])
-			if err != nil {
-				r.AppendError(err.Error())
-				return
-			}
-			if err := Utils.WriteObject(repFile, []byte(repContent), int64(0)); err != nil {
-				r.AppendError(err.Error())
-				return
-			}
-			return
-		*/
-
 	case "ls":
-		//r.createLsRep()
+		repContent, err = r.createLsRep(dirTree)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
@@ -627,6 +610,280 @@ func (r *Rep) createFileRep(dirTree *Structs.DirTree) (string, error) {
 		}
 		line := content[i:end]
 		sb.WriteString(fmt.Sprintf("                <TR><TD>%s</TD></TR>\n", line))
+	}
+
+	sb.WriteString("            </TABLE>\n")
+	sb.WriteString("        >\n")
+	sb.WriteString("    ];\n")
+	sb.WriteString("}\n")
+
+	return sb.String(), nil
+}
+
+func (r *Rep) createLsRep(dirTree *Structs.DirTree) (string, error) {
+	_, inode, err := dirTree.GetInodeByPath(r.Params["pfl"])
+	if err != nil {
+		return "", err
+	}
+
+	if inode.Type != [1]byte{0} {
+		return "", errors.New("Inode is not a directory")
+	}
+
+	var folderBlocks []Structs.FolderBlock
+	for _, block := range inode.IBlock {
+		if block == -1 {
+			continue
+		}
+		var folderBlock Structs.FolderBlock
+		if err := Utils.ReadObject(dirTree.File, &folderBlock, int64(dirTree.SuperBlock.BlockStart+block*int32(binary.Size(Structs.FolderBlock{})))); err != nil {
+			return "", err
+		}
+		folderBlocks = append(folderBlocks, folderBlock)
+	}
+
+	var sb strings.Builder
+
+	// Start the DOT graph.
+	sb.WriteString("digraph FileTable {\n")
+	sb.WriteString("    rankdir=TB;\n")
+	sb.WriteString("    node [shape=plaintext];\n")
+	sb.WriteString("\n")
+	sb.WriteString("    ls_report [\n")
+	sb.WriteString("        label=<\n")
+	sb.WriteString("            <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">\n")
+	// Header row with the file name.
+	sb.WriteString(fmt.Sprintf("                <TR>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Permisos</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Owner</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Grupo</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Size (en Bytes)</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Fecha</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Hora</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Tipo</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                    <TD><B>Name</B></TD>\n"))
+	sb.WriteString(fmt.Sprintf("                </TR>\n"))
+
+	for _, block := range folderBlocks {
+		for _, content := range block.Content {
+			if content.Inode == -1 {
+				continue
+			}
+			fileName := strings.TrimRight(string(content.Name[:]), "\x00")
+			if fileName == "." || fileName == ".." {
+				continue
+			}
+
+			var contentInode Structs.Inode
+			if err := Utils.ReadObject(dirTree.File, &contentInode, int64(dirTree.SuperBlock.InodeStart+content.Inode*int32(binary.Size(Structs.Inode{})))); err != nil {
+				return "", err
+			}
+
+			sb.WriteString(fmt.Sprintf("                <TR>\n"))
+			sb.WriteString(fmt.Sprintf("                    <TD>-%s</TD>\n", r.getPermString(contentInode.Perm)))
+
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", r.getOwnerNameByGID(contentInode.GID, dirTree)))
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", r.getOwnerNameByUID(contentInode.UID, dirTree)))
+			sb.WriteString(fmt.Sprintf("                    <TD>%d</TD>\n", contentInode.Size))
+
+			time := strings.TrimRight(string(contentInode.MTime[:]), "\x00")
+			date := strings.Split(time, " ")[0]
+			hour := strings.Split(time, " ")[1]
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", date))
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", hour))
+
+			var fileType string
+			if contentInode.Type == [1]byte{1} {
+				fileType = "File"
+			} else {
+				fileType = "Directory"
+			}
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", fileType))
+			sb.WriteString(fmt.Sprintf("                    <TD>%s</TD>\n", fileName))
+			sb.WriteString(fmt.Sprintf("                </TR>\n"))
+		}
+
+	}
+
+	sb.WriteString("            </TABLE>\n")
+	sb.WriteString("        >\n")
+	sb.WriteString("    ];\n")
+	sb.WriteString("}\n")
+
+	return sb.String(), nil
+}
+
+func (r *Rep) getPermString(perms [3]byte) string {
+	var permString string
+	for i := 0; i < 3; i++ {
+		read, write, execute := env.CalculatePermissions(perms[i])
+		if read {
+			permString += "r"
+		} else {
+			permString += "-"
+		}
+		if write {
+			permString += "w"
+		} else {
+			permString += "-"
+		}
+		if execute {
+			permString += "x"
+		} else {
+			permString += "-"
+		}
+	}
+
+	return permString
+}
+
+func (r *Rep) getOwnerNameByGID(GID int32, dirTree *Structs.DirTree) string {
+	_, usersInode, err := dirTree.GetInodeByPath("/users.txt")
+	if err != nil {
+		return "error"
+	}
+
+	var content string
+	content, err = dirTree.GetFileContentByInode(usersInode)
+	if err != nil {
+		return "error"
+	}
+
+	lines := strings.Split(content, "\n")
+	lines = lines[:len(lines)-1]
+	for _, line := range lines {
+		// get the coma separated values from the line and get the id
+		words := strings.Split(line, ",")
+		// if line is of type group and of length then is not a user
+		if len(words) == 3 && words[1] == "G" {
+			id, _ := strconv.Atoi(words[0])
+			if int32(id) == GID {
+				return words[2]
+			}
+		}
+	}
+	return "error"
+}
+
+func (r *Rep) getOwnerNameByUID(UID int32, dirTree *Structs.DirTree) string {
+	_, usersInode, err := dirTree.GetInodeByPath("/users.txt")
+	if err != nil {
+		return "error"
+	}
+
+	var content string
+	content, err = dirTree.GetFileContentByInode(usersInode)
+	if err != nil {
+		return "error"
+	}
+
+	lines := strings.Split(content, "\n")
+	lines = lines[:len(lines)-1]
+	for _, line := range lines {
+		// get the coma separated values from the line and get the id
+		words := strings.Split(line, ",")
+		// if line is of type group and of length then is not a user
+		if len(words) == 5 && words[1] == "U" {
+			id, _ := strconv.Atoi(words[0])
+			if int32(id) == UID {
+				return words[3]
+			}
+		}
+	}
+	return "error"
+}
+
+func (r *Rep) createInodeRep(dirTree *Structs.DirTree) (string, error) {
+	var sb strings.Builder
+
+	sb.WriteString("digraph FileSystem {\n")
+	//sb.WriteString("    rankdir=LR;\n")
+	//sb.WriteString("    splines=false;\n")
+	sb.WriteString("    node [shape=plaintext, style=\"filled,rounded\", fillcolor=\"#f0f8ff\"];\n")
+
+	// Loop through the BitMap of inodes
+	for i, bit := range dirTree.InodeBitMap {
+		index := int32(i)
+		if bit != 1 {
+			continue
+		}
+
+		var bitMapInode Structs.Inode
+		if err := Utils.ReadObject(dirTree.File, &bitMapInode, int64(dirTree.SuperBlock.InodeStart+index*int32(binary.Size(Structs.Inode{})))); err != nil {
+			return "", err
+		}
+
+		sb.WriteString(fmt.Sprintf("\n    inode%d [\n", index))
+		sb.WriteString(fmt.Sprintf("        label=<\n"))
+		sb.WriteString(fmt.Sprintf("        <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		sb.WriteString(fmt.Sprintf("            <TR><TD COLSPAN=\"2\" BGCOLOR=\"#cce5ff\"><B>Inode%d</B></TD></TR>\n", index))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>UID</TD><TD>%d</TD></TR>\n", bitMapInode.UID))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>GID</TD><TD>%d</TD></TR>\n", bitMapInode.GID))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>Size</TD><TD>%d</TD></TR>\n", bitMapInode.Size))
+		time := strings.TrimRight(string(bitMapInode.ATime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>ATime</TD><TD>%s</TD></TR>\n", time))
+		time = strings.TrimRight(string(bitMapInode.CTime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>CTime</TD><TD>%s</TD></TR>\n", time))
+		time = strings.TrimRight(string(bitMapInode.MTime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>MTime</TD><TD>%s</TD></TR>\n", time))
+		sb.WriteString(fmt.Sprintf("            <TR>\n"))
+		sb.WriteString(fmt.Sprintf("                <TD>IBlock</TD>\n"))
+		sb.WriteString(fmt.Sprintf("                <TD>\n"))
+		sb.WriteString(fmt.Sprintf("                    <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		for j, addr := range bitMapInode.IBlock {
+			sb.WriteString(fmt.Sprintf("                        <TR><TD PORT=\"ib%d\">block_%d: %d</TD></TR>\n", j, j, addr))
+			if addr == -1 {
+				continue
+			}
+		}
+		sb.WriteString(fmt.Sprintf("                    </TABLE>\n"))
+		sb.WriteString(fmt.Sprintf("                </TD>\n"))
+		sb.WriteString(fmt.Sprintf("            </TR>\n"))
+		if bitMapInode.Type == [1]byte{0} {
+			sb.WriteString(fmt.Sprintf("            <TR><TD>Type</TD><TD>%d</TD></TR>\n", 0))
+		} else {
+			sb.WriteString(fmt.Sprintf("            <TR><TD>Type</TD><TD>%d</TD></TR>\n", 1))
+		}
+		sb.WriteString(fmt.Sprintf("            <TR><TD>Perm</TD><TD>%s</TD></TR>\n", string(bitMapInode.Perm[:])))
+		sb.WriteString(fmt.Sprintf("        </TABLE>\n"))
+
+		sb.WriteString(fmt.Sprintf("        >\n"))
+		sb.WriteString(fmt.Sprintf("    ];\n"))
+	}
+
+	sb.WriteString("}\n")
+	return sb.String(), nil
+}
+
+func (r *Rep) createBMRep(bitmap []byte, reportName string) (string, error) {
+	var sb strings.Builder
+
+	sb.WriteString("digraph BitmapReport {\n")
+	sb.WriteString("    rankdir=TB;\n")
+	sb.WriteString("    node [shape=plaintext];\n\n")
+	sb.WriteString(fmt.Sprintf("    %s [\n", reportName))
+	sb.WriteString("        label=<\n")
+	sb.WriteString("            <TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">\n")
+
+	// Iterate through the bitmap and create rows of 20 columns
+	for i := 0; i < len(bitmap); i++ {
+		// If it's the beginning of a new row, open a TR tag.
+		if i%20 == 0 {
+			sb.WriteString("                <TR>\n")
+		}
+
+		// Add a table cell with the value.
+		sb.WriteString(fmt.Sprintf("                    <TD>%d</TD>\n", bitmap[i]))
+
+		// If it's the last column in the row, close the TR tag.
+		if i%20 == 19 {
+			sb.WriteString("                </TR>\n")
+		}
+	}
+
+	// If the bitmap length is not a multiple of 20, close the last row.
+	if len(bitmap)%20 != 0 {
+		sb.WriteString("                </TR>\n")
 	}
 
 	sb.WriteString("            </TABLE>\n")

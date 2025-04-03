@@ -343,7 +343,7 @@ func (dt *DirTree) GetAvailableBlockAddress() (int32, error) {
 }
 
 func (dt *DirTree) GetAvailableInodeAdress() (int32, error) {
-	for i, block := range dt.BlockBitMap {
+	for i, block := range dt.InodeBitMap {
 		if block == 0 {
 			return int32(i), nil
 		}
