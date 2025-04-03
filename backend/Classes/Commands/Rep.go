@@ -58,7 +58,7 @@ func (r *Rep) Exec() {
 	}
 
 	// Get dir tree
-	//var dirTree = Structs.NewDirTree(superBlock, file)
+	var dirTree = Structs.NewDirTree(superBlock, file)
 	var repContent string
 
 	switch r.Params["name"] {
@@ -99,7 +99,7 @@ func (r *Rep) Exec() {
 			return
 		}
 	case "tree":
-		//r.createTreeRep()
+		repContent, err = r.createTreeRep(dirTree)
 		if err != nil {
 			r.AppendError(err.Error())
 			return
@@ -220,7 +220,7 @@ func (r *Rep) createMBRRep(file *os.File) (string, error) {
 		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_status</b></td><td>%s</td></tr>\n", partStatus))
 		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_type</b></td><td>%s</td></tr>\n", partType))
 		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_fit</b></td><td>%s</td></tr>\n", partFit))
-		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_start</b></td><td>%d</td></tr>\n", part.Start))
+		sb.WriteString(fmt.Sprintf("				   <tr><td><b>part_start</b></td><td>%d</td></tr>\n", part.Start))
 		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_size</b></td><td>%d</td></tr>\n", part.Size))
 		sb.WriteString(fmt.Sprintf("                <tr><td><b>part_name</b></td><td>%s</td></tr>\n", partName))
 
@@ -233,11 +233,18 @@ func (r *Rep) createMBRRep(file *os.File) (string, error) {
 					break // error leyendo EBR, salir del bucle
 				}
 
+				var ebrMount string
+				if ebr.Mount == 0 {
+					ebrMount = "0"
+				} else {
+					ebrMount = "1"
+				}
+
 				ebrName := strings.TrimRight(string(ebr.Name[:]), "\x00")
 				sb.WriteString("                <tr><td colspan=\"2\" bgcolor=\"#FF9999\"><b>Particion Logica</b></td></tr>\n")
-				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_mount</b></td><td>%c</td></tr>\n", ebr.Mount))
+				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_mount</b></td><td>%s</td></tr>\n", ebrMount))
 				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_next</b></td><td>%d</td></tr>\n", ebr.Next))
-				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_fit</b></td><td>%c</td></tr>\n", ebr.Fit))
+				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_fit</b></td><td>%s</td></tr>\n", string(ebr.Fit)))
 				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_start</b></td><td>%d</td></tr>\n", ebr.Start))
 				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_size</b></td><td>%d</td></tr>\n", ebr.Size))
 				sb.WriteString(fmt.Sprintf("                <tr><td><b>part_name</b></td><td>%s</td></tr>\n", ebrName))
@@ -358,5 +365,162 @@ func (r *Rep) createDiskRep(file *os.File) (string, error) {
 
 	sb.WriteString("        </tr>\n</table>>];\n}")
 
+	return sb.String(), nil
+}
+
+func (r *Rep) createTreeRep(dirTree *Structs.DirTree) (string, error) {
+	var sb strings.Builder
+
+	sb.WriteString("digraph FileSystem {\n")
+	sb.WriteString("    rankdir=LR;\n")
+	sb.WriteString("    splines=false;\n")
+	sb.WriteString("    node [shape=plaintext, style=\"filled,rounded\", fillcolor=\"#f0f8ff\"];\n")
+
+	// here we store block and file addresses so we can recover this addresses and graph them
+	var folderBlockAddresses []int32
+	var fileBlockAddresses []int32
+
+	// Structure type
+	type ConnectionType int
+	const (
+		ItoF ConnectionType = iota
+		ItoD
+		DtoI
+	)
+	type Connection struct {
+		Type  ConnectionType
+		Inode int32
+		Block int32
+		From  int32
+	}
+	var connections []Connection
+
+	// Loop through the BitMap of inodes
+	for i, bit := range dirTree.InodeBitMap {
+		index := int32(i)
+		if bit != 1 {
+			continue
+		}
+
+		var bitMapInode Structs.Inode
+		if err := Utils.ReadObject(dirTree.File, &bitMapInode, int64(dirTree.SuperBlock.InodeStart+index*int32(binary.Size(Structs.Inode{})))); err != nil {
+			return "", err
+		}
+
+		sb.WriteString(fmt.Sprintf("\n    inode%d [\n", index))
+		sb.WriteString(fmt.Sprintf("        label=<\n"))
+		sb.WriteString(fmt.Sprintf("        <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		sb.WriteString(fmt.Sprintf("            <TR><TD COLSPAN=\"2\" BGCOLOR=\"#cce5ff\"><B>Inode%d</B></TD></TR>\n", index))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>UID</TD><TD>%d</TD></TR>\n", bitMapInode.UID))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>GID</TD><TD>%d</TD></TR>\n", bitMapInode.GID))
+		sb.WriteString(fmt.Sprintf("            <TR><TD>Size</TD><TD>%d</TD></TR>\n", bitMapInode.Size))
+		time := strings.TrimRight(string(bitMapInode.ATime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>ATime</TD><TD>%s</TD></TR>\n", time))
+		time = strings.TrimRight(string(bitMapInode.CTime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>CTime</TD><TD>%s</TD></TR>\n", time))
+		time = strings.TrimRight(string(bitMapInode.MTime[:]), "\x00")
+		sb.WriteString(fmt.Sprintf("            <TR><TD>MTime</TD><TD>%s</TD></TR>\n", time))
+		sb.WriteString(fmt.Sprintf("            <TR>\n"))
+		sb.WriteString(fmt.Sprintf("                <TD>IBlock</TD>\n"))
+		sb.WriteString(fmt.Sprintf("                <TD>\n"))
+		sb.WriteString(fmt.Sprintf("                    <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		for j, addr := range bitMapInode.IBlock {
+			sb.WriteString(fmt.Sprintf("                        <TR><TD PORT=\"ib%d\">block_%d: %d</TD></TR>\n", j, j, addr))
+			if addr == -1 {
+				continue
+			}
+			// Set connection type
+			var connType ConnectionType
+			if bitMapInode.Type == [1]byte{0} {
+				connType = ItoD
+				folderBlockAddresses = append(folderBlockAddresses, addr)
+			} else {
+				connType = ItoF
+				fileBlockAddresses = append(fileBlockAddresses, addr)
+			}
+			connections = append(connections, Connection{
+				Type:  connType,
+				Inode: index,
+				Block: addr,
+				From:  int32(j),
+			})
+		}
+		sb.WriteString(fmt.Sprintf("                    </TABLE>\n"))
+		sb.WriteString(fmt.Sprintf("                </TD>\n"))
+		sb.WriteString(fmt.Sprintf("            </TR>\n"))
+		if bitMapInode.Type == [1]byte{0} {
+			sb.WriteString(fmt.Sprintf("            <TR><TD>Type</TD><TD>%d</TD></TR>\n", 0))
+		} else {
+			sb.WriteString(fmt.Sprintf("            <TR><TD>Type</TD><TD>%d</TD></TR>\n", 1))
+		}
+		sb.WriteString(fmt.Sprintf("            <TR><TD>Perm</TD><TD>%s</TD></TR>\n", string(bitMapInode.Perm[:])))
+		sb.WriteString(fmt.Sprintf("        </TABLE>\n"))
+
+		sb.WriteString(fmt.Sprintf("        >\n"))
+		sb.WriteString(fmt.Sprintf("    ];\n"))
+
+	}
+
+	for _, blockIndex := range fileBlockAddresses {
+		var fileBlock Structs.FileBlock
+		if err := Utils.ReadObject(dirTree.File, &fileBlock, int64(dirTree.SuperBlock.BlockStart+blockIndex*int32(binary.Size(Structs.FileBlock{})))); err != nil {
+			return "", err
+		}
+		blockContent := strings.TrimRight(string(fileBlock.Content[:]), "\x00")
+
+		sb.WriteString(fmt.Sprintf("\n    fileBlock%d [\n", blockIndex))
+		sb.WriteString(fmt.Sprintf("        label=<\n"))
+		sb.WriteString(fmt.Sprintf("            <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		sb.WriteString(fmt.Sprintf("                <TR><TD BGCOLOR=\"#ffe0b3\"><B>File Block %d</B></TD></TR>\n", blockIndex))
+		sb.WriteString(fmt.Sprintf("                <TR><TD>%s</TD></TR>\n", blockContent))
+		sb.WriteString(fmt.Sprintf("            </TABLE>\n"))
+		sb.WriteString(fmt.Sprintf("        >\n"))
+		sb.WriteString(fmt.Sprintf("    ];\n"))
+	}
+
+	for _, blockIndex := range folderBlockAddresses {
+		var folderBlock Structs.FolderBlock
+		if err := Utils.ReadObject(dirTree.File, &folderBlock, int64(dirTree.SuperBlock.BlockStart+blockIndex*int32(binary.Size(Structs.FolderBlock{})))); err != nil {
+			return "", err
+		}
+
+		sb.WriteString(fmt.Sprintf("\n    folderBlock%d [\n", blockIndex))
+		sb.WriteString(fmt.Sprintf("        label=<\n"))
+		sb.WriteString(fmt.Sprintf("            <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n"))
+		sb.WriteString(fmt.Sprintf("                <TR><TD COLSPAN=\"2\" BGCOLOR=\"#b3ffcc\"><B>Folder Block %d</B></TD></TR>\n", blockIndex))
+		for j, content := range folderBlock.Content {
+			blockName := strings.TrimRight(string(content.Name[:]), "\x00")
+			sb.WriteString(fmt.Sprintf("                <TR><TD >%s</TD><TD PORT=\"ib%d\">%d</TD></TR>\n", blockName, j, content.Inode))
+			if content.Inode == -1 {
+				continue
+			}
+			if blockName == "." || blockName == ".." {
+				continue
+			}
+			connections = append(connections, Connection{
+				Type:  DtoI,
+				Inode: content.Inode,
+				Block: blockIndex,
+				From:  int32(j),
+			})
+		}
+		sb.WriteString(fmt.Sprintf("            </TABLE>\n"))
+		sb.WriteString(fmt.Sprintf("        >\n"))
+		sb.WriteString(fmt.Sprintf("    ];\n"))
+
+	}
+
+	for _, connection := range connections {
+		switch connection.Type {
+		case ItoF:
+			sb.WriteString(fmt.Sprintf("    inode%d:ib%d -> fileBlock%d\n", connection.Inode, connection.From, connection.Block))
+		case ItoD:
+			sb.WriteString(fmt.Sprintf("    inode%d:ib%d -> folderBlock%d\n", connection.Inode, connection.From, connection.Block))
+		case DtoI:
+			sb.WriteString(fmt.Sprintf("    folderBlock%d:ib%d -> inode%d\n", connection.Block, connection.From, connection.Inode))
+		}
+	}
+
+	sb.WriteString("}\n")
 	return sb.String(), nil
 }
