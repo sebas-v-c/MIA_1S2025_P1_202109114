@@ -868,7 +868,7 @@ func (r *Rep) createBMRep(bitmap []byte, reportName string) (string, error) {
 	// Iterate through the bitmap and create rows of 20 columns
 	for i := 0; i < len(bitmap); i++ {
 		// If it's the beginning of a new row, open a TR tag.
-		if i%20 == 0 {
+		if i%100 == 0 {
 			sb.WriteString("                <TR>\n")
 		}
 
@@ -876,13 +876,13 @@ func (r *Rep) createBMRep(bitmap []byte, reportName string) (string, error) {
 		sb.WriteString(fmt.Sprintf("                    <TD>%d</TD>\n", bitmap[i]))
 
 		// If it's the last column in the row, close the TR tag.
-		if i%20 == 19 {
+		if i%100 == 99 {
 			sb.WriteString("                </TR>\n")
 		}
 	}
 
 	// If the bitmap length is not a multiple of 20, close the last row.
-	if len(bitmap)%20 != 0 {
+	if len(bitmap)%100 != 0 {
 		sb.WriteString("                </TR>\n")
 	}
 
