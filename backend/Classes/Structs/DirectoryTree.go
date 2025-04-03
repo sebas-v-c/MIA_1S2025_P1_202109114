@@ -285,6 +285,8 @@ func (dt *DirTree) AppendToFileInode(s string, inode *Inode) error {
 			return err
 		}
 		dt.BlockBitMap[lastBlock] = 1
+		dt.SuperBlock.FreeBlocksCount = dt.freeBlocks()
+		dt.SuperBlock.FirstInode, _ = dt.GetAvailableInodeAdress()
 
 		// update inode index block address
 		inode.IBlock[lastIndex] = lastBlock
@@ -462,7 +464,10 @@ func (dt *DirTree) CreateNewInode(index int32, inode *Inode, name string, UID, G
 	if err := Utils.WriteObject(dt.File, byte(1), int64(dt.SuperBlock.BmBlockStart+lastBlock)); err != nil {
 		return -1, nil, err
 	}
+	// write free remaining blocks in superblock
 	dt.BlockBitMap[lastBlock] = 1
+	dt.SuperBlock.FreeBlocksCount = dt.freeBlocks()
+	dt.SuperBlock.FirstBlock, _ = dt.GetAvailableBlockAddress()
 	// Write new Inode
 	if err := Utils.WriteObject(dt.File, newInode, int64(dt.SuperBlock.InodeStart+newInodeIndex*int32(binary.Size(Inode{})))); err != nil {
 		return -1, nil, err
@@ -471,6 +476,8 @@ func (dt *DirTree) CreateNewInode(index int32, inode *Inode, name string, UID, G
 		return -1, nil, err
 	}
 	dt.InodeBitMap[newInodeIndex] = 1
+	dt.SuperBlock.FreeInodesCount = dt.freeInodes()
+	dt.SuperBlock.FirstInode, _ = dt.GetAvailableInodeAdress()
 	// Write updated root inode
 	if err := Utils.WriteObject(dt.File, inode, int64(dt.SuperBlock.InodeStart+index*int32(binary.Size(Inode{})))); err != nil {
 		return -1, nil, err
@@ -507,6 +514,8 @@ func (dt *DirTree) CreateNewDir(index int32, inode *Inode, dirName string, uid i
 		return -1, nil, err
 	}
 	dt.BlockBitMap[newFolderBlockIndex] = 1
+	dt.SuperBlock.FreeBlocksCount = dt.freeBlocks()
+	dt.SuperBlock.FirstBlock, _ = dt.GetAvailableBlockAddress()
 	// Write updated new inode
 	if err := Utils.WriteObject(dt.File, newInode, int64(dt.SuperBlock.InodeStart+newInodeIndex*int32(binary.Size(Inode{})))); err != nil {
 		return -1, nil, err
@@ -534,4 +543,34 @@ func (dt *DirTree) CreateNewFile(index int32, inode *Inode, fileName string, con
 
 	return newInodeIndex, newInode, err
 
+}
+
+func (dt *DirTree) GetInodeByIndex(index int32) (*Inode, error) {
+	var inode Inode
+	if err := Utils.ReadObject(dt.File, &inode, int64(dt.SuperBlock.InodeStart+index*int32(binary.Size(Inode{})))); err != nil {
+		return nil, err
+	}
+	return &inode, nil
+}
+
+// occupiedBlocks
+func (dt *DirTree) freeBlocks() int32 {
+	var counter int32 = 0
+	for _, bit := range dt.BlockBitMap {
+		if bit == 0 {
+			counter++
+		}
+	}
+	return counter
+}
+
+// occupiedInodes
+func (dt *DirTree) freeInodes() int32 {
+	var counter int32 = 0
+	for _, bit := range dt.InodeBitMap {
+		if bit == 0 {
+			counter++
+		}
+	}
+	return counter
 }

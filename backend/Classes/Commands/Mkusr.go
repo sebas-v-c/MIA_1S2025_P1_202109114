@@ -144,6 +144,12 @@ func (m *Mkusr) Exec() {
 		m.AppendError(err.Error())
 		return
 	}
+	// Close dirtree by updating the superblock
+	if err := Utils.WriteObject(file, dirTree.SuperBlock, int64(mbrPartition.Start)); err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+
 	consoleString.WriteString("\nNew Inode content:\n")
 	consoleString.WriteString(fileContent)
 	consoleString.WriteString("\n=================END MKUSR=================\n")

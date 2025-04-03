@@ -198,6 +198,12 @@ func (r *Rmgrp) Exec() {
 		r.AppendError(err.Error())
 		return
 	}
+
+	// Close dirtree by updating the superblock
+	if err := Utils.WriteObject(file, dirTree.SuperBlock, int64(mbrPartition.Start)); err != nil {
+		r.AppendError(err.Error())
+		return
+	}
 	consoleString.WriteString("\nNew Inode content:\n")
 	consoleString.WriteString(fileContent)
 	consoleString.WriteString("\n=================END RMGRP=================\n")

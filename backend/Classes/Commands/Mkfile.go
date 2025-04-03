@@ -174,6 +174,11 @@ func (m *Mkfile) Exec() {
 	consoleString.WriteString("\nNew Inode content:\n")
 	consoleString.WriteString(fileContent)
 
+	// Close dirtree by updating the superblock
+	if err := Utils.WriteObject(file, dirTree.SuperBlock, int64(mbrPartition.Start)); err != nil {
+		m.AppendError(err.Error())
+		return
+	}
 	consoleString.WriteString("\n=================END MKFILE=================\n")
 	m.LogConsole(consoleString.String())
 }

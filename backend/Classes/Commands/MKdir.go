@@ -76,6 +76,12 @@ func (m *Mkdir) Exec() {
 		return
 	}
 
+	// Close dirtree by updating the superblock
+	if err := Utils.WriteObject(file, dirTree.SuperBlock, int64(mbrPartition.Start)); err != nil {
+		m.AppendError(err.Error())
+		return
+	}
+
 	consoleString.WriteString("\n=================END MKDIR=================\n")
 	m.LogConsole(consoleString.String())
 }
