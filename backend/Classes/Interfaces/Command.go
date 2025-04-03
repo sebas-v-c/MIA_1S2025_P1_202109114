@@ -1,3 +1,4 @@
+// Package Interfaces defines the interfaces and shared structures for executable commands.
 package Interfaces
 
 import (
@@ -6,6 +7,8 @@ import (
 )
 
 // Command defines the interface for all executable commands.
+// Each command must provide methods for retrieving its source position,
+// determining its type, and executing its logic.
 type Command interface {
 	// GetLine returns the line number where the command is defined.
 	GetLine() int
@@ -21,11 +24,12 @@ type Command interface {
 }
 
 // CommandStruct provides shared behavior for commands.
-// It no longer contains `Params` or `Result`, making it truly minimal.
+// It serves as a minimal base structure that includes the command type,
+// and the line and column numbers where the command is defined.
 type CommandStruct struct {
-	Type   Utils.Type // The type of command.
-	Line   int        // The line number of the command in the source.
-	Column int        // The column number of the command in the source.
+	Type   Utils.Type // Type is the type of the command.
+	Line   int        // Line is the line number where the command is defined.
+	Column int        // Column is the column number where the command is defined.
 }
 
 // GetLine returns the line number where the command is defined.
@@ -45,11 +49,13 @@ func (c *CommandStruct) GetType() Utils.Type {
 
 // Exec provides a default execution method for commands.
 // This method should be overridden by specific command implementations.
+// Calling this default method results in a runtime panic.
 func (c *CommandStruct) Exec() {
 	panic("Exec() is not implemented")
 }
 
-// AppendError logs a runtime error related to this command.
+// AppendError logs a runtime error associated with this command.
+// It creates a RuntimeError entry with the command's source position and type.
 func (c *CommandStruct) AppendError(msg string) {
 	env.AddError(env.RuntimeError{
 		Line:    c.GetLine(),
@@ -59,6 +65,7 @@ func (c *CommandStruct) AppendError(msg string) {
 	})
 }
 
+// LogConsole logs a message to the command log console.
 func (c *CommandStruct) LogConsole(msg string) {
 	env.AddCommandLog(msg)
 }
