@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// such as creating directories, files, and other disk operations.
 package Commands
 
 import (

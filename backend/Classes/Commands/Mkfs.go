@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// including commands for formatting partitions and creating EXT2 filesystems.
 package Commands
 
 import (

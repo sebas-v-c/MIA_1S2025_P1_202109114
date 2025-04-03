@@ -1,5 +1,4 @@
-// Package Commands provides implementations for various filesystem commands,
-// such as reading file contents with the CAT command.
+// Package Commands provides implementations for various filesystem commands.
 package Commands
 
 import (

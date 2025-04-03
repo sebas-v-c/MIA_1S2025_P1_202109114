@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// including changing the group of a user.
 package Commands
 
 import (

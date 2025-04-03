@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various commands that operate on the filesystem,
-// such as adding or removing users and groups.
 package Commands
 
 import (

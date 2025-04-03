@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// including user logout functionality.
 package Commands
 
 import (

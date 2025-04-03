@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// including the creation of new users.
 package Commands
 
 import (

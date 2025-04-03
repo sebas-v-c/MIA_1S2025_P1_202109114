@@ -1,5 +1,3 @@
-// Package Commands provides implementations for various filesystem commands,
-// including commands to display mounted partitions, remove disks, users, groups, etc.
 package Commands
 
 import (
