@@ -1,0 +1,835 @@
+<!DOCTYPE html><html><head>
+      <title>GoDoc</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/zibas/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.8.18/crossnote/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="application-architecture-overview">Application Architecture Overview </h1>
+<p>This document describes how the application’s frontend, backend, and underlying disk resources interact based on the provided diagram.</p>
+<p><img src="/docs/diagram.png" alt="Application Architecture Diagram" title="Architecture Diagram"></p>
+<hr>
+<h2 id="high-level-flow">High-Level Flow </h2>
+<ol>
+<li>
+<p><strong>Frontend (React Application)</strong></p>
+<ul>
+<li>The user interacts with a React-based web client.</li>
+<li>The client allows the user to submit code or commands, typically via a form or code editor in the UI.</li>
+</ul>
+</li>
+<li>
+<p><strong>Backend (API)</strong></p>
+<ul>
+<li>The frontend sends a POST request to <code>http://localhost:8090/parse</code> (or a similar endpoint).</li>
+<li>The request body usually contains JSON data, such as:<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"mkdir -p /folder"</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+<li>The backend receives the request, processes the code or commands, and may interact with one or more mounted disks.</li>
+<li>The backend responds with a JSON payload indicating success, logs, or errors:<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"logs"</span><span class="token operator">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"syntactic error"</span><span class="token punctuation">,</span>
+  <span class="token property">"runtime"</span><span class="token operator">:</span> <span class="token string">"runtime error"</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+<li>These results are then used by the frontend to display feedback to the user.</li>
+</ul>
+</li>
+<li>
+<p><strong>Disks (Filesystem Resources)</strong></p>
+<ul>
+<li>The backend manages several “disks” (or disk images) which can be mounted, unmounted, and manipulated by commands.</li>
+<li>The backend’s command parser (or interpreter) reads and writes data to these disks—creating directories, files, or performing other filesystem operations.</li>
+<li>The user’s commands (e.g., <code>mkdir</code>, <code>rm</code>, <code>mkfs</code>) are executed against these virtual disks, and the results are then sent back through the API response.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="detailed-interactions">Detailed Interactions </h2>
+<ol>
+<li>
+<p><strong>User Action (Frontend)</strong></p>
+<ul>
+<li>A user writes or selects a command (like <code>mkdir -p /folder</code>) in the React app.</li>
+<li>When they submit, the frontend constructs a JSON payload:<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"mkdir -p /folder"</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+<li>The frontend makes an HTTP POST to <code>http://localhost:8090/parse</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Command Parsing (Backend)</strong></p>
+<ul>
+<li>The backend exposes an API endpoint (<code>/parse</code>) to handle code or command submissions.</li>
+<li>Upon receiving the request:
+<ol>
+<li>The backend reads the <code>"code"</code> field from the JSON.</li>
+<li>The command parser or interpreter checks syntax, validity, and handles any arguments.</li>
+<li>If needed, the parser executes the command against the internal data structures or mounted disks.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Filesystem Operations (Disks)</strong></p>
+<ul>
+<li>If the command involves disk manipulation (e.g., creating a directory, listing partitions, mounting a disk), the backend accesses one or more disk files.</li>
+<li>The backend might:
+<ul>
+<li>Open a disk file.</li>
+<li>Read or write a Master Boot Record (MBR).</li>
+<li>Update metadata in a superblock.</li>
+<li>Create or modify directories and files inside the disk’s data structures.</li>
+</ul>
+</li>
+<li>Any changes or read operations on the disk are done at this step.</li>
+</ul>
+</li>
+<li>
+<p><strong>Result Logging and Error Handling (Backend)</strong></p>
+<ul>
+<li>The backend collects logs (e.g., command success messages, debugging info).</li>
+<li>If any errors occur (syntax errors, runtime errors, insufficient permissions), the backend includes them in the response.</li>
+<li>The response body might look like:<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"logs"</span><span class="token operator">:</span> <span class="token string">"Directory '/folder' created successfully."</span><span class="token punctuation">,</span>
+  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+  <span class="token property">"runtime"</span><span class="token operator">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+<li>Alternatively, if an error occurred:<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"logs"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+  <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Syntax error near '-p'"</span><span class="token punctuation">,</span>
+  <span class="token property">"runtime"</span><span class="token operator">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>Response to Frontend</strong></p>
+<ul>
+<li>The backend returns a JSON response containing logs and errors.</li>
+<li>The frontend receives the response and updates the UI accordingly—showing success messages or errors to the user.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="diagram-reference">Diagram Reference </h2>
+<p>In the diagram:</p>
+<ol>
+<li>
+<p><strong>Frontend (React)</strong></p>
+<ul>
+<li>Depicted as a window labeled “React” on the left.</li>
+<li>Sends a POST request to the API with <code>{"code":"mkdir -p /folder"}</code> or similar.</li>
+</ul>
+</li>
+<li>
+<p><strong>API</strong></p>
+<ul>
+<li>Shown as a server in the center with an “API” label.</li>
+<li>It processes incoming requests on the <code>/parse</code> endpoint.</li>
+<li>It returns a JSON response like <code>{"logs":"success","errors":"syntactic error","runtime":"runtime error"}</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Disks</strong></p>
+<ul>
+<li>On the right side, the diagram shows multiple disk icons labeled “DISC.”</li>
+<li>The API has direct access to these disks.</li>
+<li>Commands that manipulate the filesystem on these disks are executed by the API’s command logic.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="summary">Summary </h2>
+<ul>
+<li>The <strong>frontend</strong> (React) is responsible for providing a user interface to enter and submit commands.</li>
+<li>The <strong>backend</strong> (API) receives these commands, parses them, and executes the requested operations (e.g., creating directories, mounting disks) on the <strong>disks</strong> (which are managed by the backend).</li>
+<li>The result (success, logs, or errors) is returned to the frontend in JSON format, allowing the user to see immediate feedback about their commands.</li>
+</ul>
+<h1 id="project-packages">Project Packages </h1>
+<h1 id="package-commands">package Commands </h1>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-import">import</span> <span class="token string">"backend/Classes/Commands"</span>
+</code></pre><p>Package Commands provides implementations for various filesystem commands.</p>
+<h2 id="functions">FUNCTIONS </h2>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">CreateDirs</span><span class="token punctuation">(</span>dirTree <span class="token operator">*</span>Structs<span class="token punctuation">.</span>DirTree<span class="token punctuation">,</span> splitedPath <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span> createDirs <span class="token builtin">bool</span><span class="token punctuation">,</span> consoleString <span class="token operator">*</span>strings<span class="token punctuation">.</span>Builder<span class="token punctuation">,</span> file <span class="token operator">*</span>os<span class="token punctuation">.</span>File<span class="token punctuation">,</span> superBlock Structs<span class="token punctuation">.</span>SuperBlock<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">error</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span>Builder<span class="token punctuation">)</span>
+    CreateDirs is a helper function that creates directories along a specified
+    path<span class="token punctuation">.</span> It starts from the root <span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span> and iterates through each directory in
+    the provided path<span class="token punctuation">.</span> If a directory does not exist and the createDirs flag is
+    set <span class="token punctuation">(</span>or <span class="token keyword keyword-if">if</span> it's the last directory<span class="token punctuation">)</span><span class="token punctuation">,</span> it creates the directory and updates
+    the parent inode accordingly<span class="token punctuation">.</span> It returns an <span class="token builtin">error</span> <span class="token punctuation">(</span><span class="token keyword keyword-if">if</span> any<span class="token punctuation">)</span> and the updated
+    console log<span class="token punctuation">.</span>
+</code></pre><h2 id="types">TYPES </h2>
+<h3 id="cat">CAT </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Cat <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct          <span class="token comment">// Embeds common command metadata (Type, Line, Column, etc.)</span>
+        Files                    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Files is a slice of file paths to be displayed.</span>
+<span class="token punctuation">}</span>
+    Cat represents the CAT command<span class="token punctuation">,</span> which is used to display the contents of one
+    or more files<span class="token punctuation">.</span> It embeds the common CommandStruct <span class="token keyword keyword-for">for</span> shared metadata and
+    behavior<span class="token punctuation">,</span> and holds a slice of file paths to be read<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewCat</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> files <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Cat
+    NewCat creates a <span class="token builtin">new</span> instance of the Cat command with the specified source
+    location and list of file paths<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Cat<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the CAT command<span class="token punctuation">.</span> It verifies that a user is logged in<span class="token punctuation">,</span>
+    checks the disk integrity<span class="token punctuation">,</span> and then iterates over the provided file paths<span class="token punctuation">.</span>
+    For each file<span class="token punctuation">,</span> it verifies read permissions<span class="token punctuation">,</span> retrieves the file content<span class="token punctuation">,</span>
+    updates the access time<span class="token punctuation">,</span> and appends the content to the console log<span class="token punctuation">.</span>
+</code></pre><h3 id="chgrp">CHGRP </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Chgrp <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure for metadata (Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds the command parameters (e.g., "user" and "grp").</span>
+<span class="token punctuation">}</span>
+    Chgrp represents the CHGRP command<span class="token punctuation">,</span> which is used to change the group
+    associated with a user in the <span class="token string">"/users.txt"</span> file<span class="token punctuation">.</span> It embeds the common
+    CommandStruct <span class="token keyword keyword-for">for</span> shared command metadata and behavior<span class="token punctuation">,</span> and holds a <span class="token keyword keyword-map">map</span> of
+    command<span class="token operator">-</span>specific parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewChgrp</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Chgrp
+    NewChgrp creates a <span class="token builtin">new</span> instance of the Chgrp command with the specified
+    source location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Chgrp<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the CHGRP command<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> ensures the logged
+    user is root<span class="token punctuation">,</span> verifies the disk integrity<span class="token punctuation">,</span> retrieves the <span class="token string">"/users.txt"</span> file<span class="token punctuation">,</span>
+    and then updates the group <span class="token keyword keyword-for">for</span> the specified user<span class="token punctuation">.</span>
+</code></pre><h3 id="fdisk">FDISK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Fdisk <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure (provides Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds command-specific parameters like "size", "path", "name", "type", "fit", and "unit".</span>
+<span class="token punctuation">}</span>
+    Fdisk represents the FDISK command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span> partition
+    on a disk file<span class="token punctuation">.</span> It embeds the common CommandStruct <span class="token keyword keyword-for">for</span> shared command
+    metadata and behavior<span class="token punctuation">,</span> and holds a <span class="token keyword keyword-map">map</span> of command parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewFdisk</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Fdisk
+    NewFdisk creates a <span class="token builtin">new</span> Fdisk command instance with the specified source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>f <span class="token operator">*</span>Fdisk<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the FDISK command to create a <span class="token builtin">new</span> partition<span class="token punctuation">.</span> It validates
+    parameters<span class="token punctuation">,</span> opens the disk file<span class="token punctuation">,</span> reads the disk MBR<span class="token punctuation">,</span> and creates a <span class="token builtin">new</span>
+    primary<span class="token punctuation">,</span> extended<span class="token punctuation">,</span> or logical partition based on the provided parameters<span class="token punctuation">.</span>
+    The command calculates the appropriate start position and size <span class="token keyword keyword-for">for</span> the
+    partition<span class="token punctuation">,</span> updates the MBR<span class="token punctuation">,</span> and <span class="token punctuation">(</span><span class="token keyword keyword-if">if</span> needed<span class="token punctuation">)</span> creates an EBR <span class="token keyword keyword-for">for</span> logical
+    partitions<span class="token punctuation">.</span>
+</code></pre><h3 id="login">LOGIN </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Login <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embeds common command metadata (Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params contains command-specific parameters (e.g., "user", "pass", "id").</span>
+<span class="token punctuation">}</span>
+    Login represents the LOGIN command<span class="token punctuation">,</span> which is used to authenticate a user
+    against the filesystem's user records stored in <span class="token string">"/users.txt"</span><span class="token punctuation">.</span> It embeds the
+    common CommandStruct <span class="token keyword keyword-for">for</span> shared behavior and holds a <span class="token keyword keyword-map">map</span> of parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewLogin</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Login
+    NewLogin creates a <span class="token builtin">new</span> instance of the Login command with the specified
+    source location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>l <span class="token operator">*</span>Login<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the LOGIN command<span class="token punctuation">.</span> It validates the provided parameters<span class="token punctuation">,</span>
+    retrieves the mounted partition<span class="token punctuation">,</span> checks the partition's integrity<span class="token punctuation">,</span>
+    and attempts to locate and authenticate the user using the information
+    from the <span class="token string">"/users.txt"</span> file<span class="token punctuation">.</span> If successful<span class="token punctuation">,</span> it sets the global current user<span class="token punctuation">;</span>
+    otherwise<span class="token punctuation">,</span> it logs an appropriate <span class="token builtin">error</span><span class="token punctuation">.</span>
+</code></pre><h3 id="logout">LOGOUT </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Logout <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct <span class="token comment">// Embeds common command behavior and metadata.</span>
+<span class="token punctuation">}</span>
+    Logout represents the LOGOUT command<span class="token punctuation">,</span> which is used to log out the currently
+    logged<span class="token operator">-</span>in user<span class="token punctuation">.</span> It embeds the common CommandStruct to inherit shared
+    metadata <span class="token punctuation">(</span>such as Type<span class="token punctuation">,</span> Line<span class="token punctuation">,</span> and Column<span class="token punctuation">)</span><span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewLogout</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">*</span>Logout
+    NewLogout creates a <span class="token builtin">new</span> instance of the Logout command with the specified
+    source location<span class="token punctuation">.</span> It initializes the command with the LOGOUT <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> and sets
+    the line and column where the command is defined<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>l <span class="token operator">*</span>Logout<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the LOGOUT command<span class="token punctuation">.</span> It checks whether a user is currently
+    logged in<span class="token punctuation">;</span> <span class="token keyword keyword-if">if</span> not<span class="token punctuation">,</span> it logs an <span class="token builtin">error</span><span class="token punctuation">.</span> If a user is logged in<span class="token punctuation">,</span> it sets the
+    global current user to <span class="token boolean">nil</span> <span class="token punctuation">(</span>logging out<span class="token punctuation">)</span><span class="token punctuation">,</span> then logs a success message to the
+    console<span class="token punctuation">.</span>
+</code></pre><h3 id="mkdir">MKDIR </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkdir <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embeds common command metadata (Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds command parameters (e.g., "path").</span>
+<span class="token punctuation">}</span>
+    Mkdir represents the MKDIR command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span> directory
+    <span class="token punctuation">(</span>or directories<span class="token punctuation">)</span> in the filesystem<span class="token punctuation">.</span> It embeds the common CommandStruct to
+    inherit shared metadata and behavior<span class="token punctuation">,</span> and holds a <span class="token keyword keyword-map">map</span> of parameters <span class="token keyword keyword-for">for</span> the
+    command<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkdir</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkdir
+    NewMkdir creates a <span class="token builtin">new</span> instance of the Mkdir command with the given source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkdir<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKDIR command to create a <span class="token builtin">new</span> directory<span class="token punctuation">.</span> It validates
+    parameters<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span> and then attempts to create the
+    directory <span class="token punctuation">(</span>or directories<span class="token punctuation">)</span> along the provided path<span class="token punctuation">.</span> The final updated
+    superblock is written to disk<span class="token punctuation">,</span> and a log is generated<span class="token punctuation">.</span>
+</code></pre><h3 id="mkdisk">MKDISK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkdisk <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure (provides Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds command-specific parameters such as "size", "path", "fit", and "unit".</span>
+<span class="token punctuation">}</span>
+    Mkdisk represents the MKDISK command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span>
+    disk file with a specified size and configuration<span class="token punctuation">.</span> It embeds the common
+    CommandStruct to inherit shared metadata and behavior<span class="token punctuation">,</span> and holds a <span class="token keyword keyword-map">map</span> <span class="token keyword keyword-for">for</span>
+    command parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkdisk</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkdisk
+    NewMkdisk creates a <span class="token builtin">new</span> Mkdisk command instance with the specified source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkdisk<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKDISK command<span class="token punctuation">.</span> It validates the parameters<span class="token punctuation">,</span> creates a
+    disk file with the specified size<span class="token punctuation">,</span> writes empty data in batches to the file<span class="token punctuation">,</span>
+    creates a <span class="token builtin">new</span> MBR structure<span class="token punctuation">,</span> and writes the MBR to the disk<span class="token punctuation">.</span> Finally<span class="token punctuation">,</span>
+    it logs the outcome<span class="token punctuation">.</span>
+</code></pre><h3 id="mkfile">MKFILE </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkfile <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure providing metadata (Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds command-specific parameters, such as "path", "size", and "cont".</span>
+<span class="token punctuation">}</span>
+    Mkfile represents the MKFILE command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span> file in
+    the filesystem<span class="token punctuation">.</span> It embeds the common CommandStruct <span class="token keyword keyword-for">for</span> shared behavior and
+    includes a <span class="token keyword keyword-map">map</span> <span class="token keyword keyword-for">for</span> command parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkfile</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkfile
+    NewMkfile creates a <span class="token builtin">new</span> Mkfile command instance with the given source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkfile<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKFILE command to create a <span class="token builtin">new</span> file in the filesystem<span class="token punctuation">.</span>
+    It validates parameters<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span> optionally creates missing
+    directories<span class="token punctuation">,</span> prepares file content <span class="token punctuation">(</span>from a given size or an external file<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    locates the parent directory inode<span class="token punctuation">,</span> and creates a <span class="token builtin">new</span> file inode with the
+    specified content<span class="token punctuation">.</span> The updated inode and file content are then written to
+    disk<span class="token punctuation">,</span> and a log message is generated<span class="token punctuation">.</span>
+</code></pre><h3 id="mkfs">MKFS </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkfs <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure (provides Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params contains command parameters such as "id" and "type".</span>
+<span class="token punctuation">}</span>
+    Mkfs represents the MKFS command<span class="token punctuation">,</span> which is used to format a mounted
+    partition with an EXT2 filesystem<span class="token punctuation">.</span> It embeds the common CommandStruct <span class="token keyword keyword-for">for</span>
+    shared metadata and includes a <span class="token keyword keyword-map">map</span> <span class="token keyword keyword-for">for</span> command parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkfs</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkfs
+    NewMkfs creates a <span class="token builtin">new</span> Mkfs command instance with the specified source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkfs<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKFS command to format the partition with an EXT2
+    filesystem<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> verifies the mounted partition<span class="token punctuation">,</span>
+    calculates filesystem parameters<span class="token punctuation">,</span> creates a <span class="token builtin">new</span> superblock<span class="token punctuation">,</span> initializes
+    inodes and blocks<span class="token punctuation">,</span> creates root and users files<span class="token punctuation">,</span> updates bitmaps<span class="token punctuation">,</span> and writes
+    the final superblock back to disk<span class="token punctuation">.</span>
+</code></pre><h3 id="mkgrp">MKGRP </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkgrp <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure (provides Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params contains command parameters, e.g., "name" of the group.</span>
+<span class="token punctuation">}</span>
+    Mkgrp represents the MKGRP command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span> group<span class="token punctuation">.</span>
+    It embeds the common CommandStruct to inherit shared metadata and behavior<span class="token punctuation">,</span>
+    and holds a <span class="token keyword keyword-map">map</span> of parameters required <span class="token keyword keyword-for">for</span> creating the group<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkgrp</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkgrp
+    NewMkgrp creates a <span class="token builtin">new</span> Mkgrp command instance with the specified source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkgrp<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKGRP command to create a <span class="token builtin">new</span> group<span class="token punctuation">.</span> It validates
+    parameters<span class="token punctuation">,</span> ensures that the current user is root<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span>
+    locates the <span class="token string">"/users.txt"</span> inode that stores user and group entries<span class="token punctuation">,</span> and then
+    appends a <span class="token builtin">new</span> group entry <span class="token keyword keyword-if">if</span> it does not already exist<span class="token punctuation">.</span>
+</code></pre><h3 id="mkusr">MKUSR </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mkusr <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure (provides Type, Line, Column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params contains command parameters such as "user", "pass", and "grp".</span>
+<span class="token punctuation">}</span>
+    Mkusr represents the MKUSR command<span class="token punctuation">,</span> which is used to create a <span class="token builtin">new</span> user<span class="token punctuation">.</span>
+    It embeds the common CommandStruct to inherit shared metadata and behavior<span class="token punctuation">,</span>
+    and it holds a <span class="token keyword keyword-map">map</span> of parameters required <span class="token keyword keyword-for">for</span> user creation<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMkusr</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mkusr
+    NewMkusr creates a <span class="token builtin">new</span> Mkusr command instance with the specified source
+    location and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mkusr<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MKUSR command to create a <span class="token builtin">new</span> user<span class="token punctuation">.</span> It validates
+    parameters<span class="token punctuation">,</span> checks that the current user is root<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span>
+    locates the <span class="token string">"/users.txt"</span> inode<span class="token punctuation">,</span> and appends a <span class="token builtin">new</span> user entry to that file<span class="token punctuation">.</span>
+</code></pre><h3 id="mount">MOUNT </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mount <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embeds common command metadata (type, line, column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds the command parameters, such as "path" and "name".</span>
+<span class="token punctuation">}</span>
+    Mount represents the MOUNT command<span class="token punctuation">,</span> which is used to mount a disk<span class="token punctuation">.</span> It embeds
+    the common CommandStruct <span class="token keyword keyword-for">for</span> shared behavior and includes a <span class="token keyword keyword-map">map</span> <span class="token keyword keyword-for">for</span> command
+    parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMount</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mount
+    NewMount creates a <span class="token builtin">new</span> Mount command instance with the provided source
+    position and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mount<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the MOUNT command<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> opens the disk
+    file<span class="token punctuation">,</span> reads the MBR<span class="token punctuation">,</span> and mounts a primary partition<span class="token punctuation">.</span> It then updates the
+    partition's status and ID<span class="token punctuation">,</span> adds the partition to the global RAM partitions<span class="token punctuation">,</span>
+    writes the updated MBR back to disk<span class="token punctuation">,</span> and logs the operation<span class="token punctuation">.</span>
+</code></pre><h3 id="mounted">MOUNTED </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Mounted <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct <span class="token comment">// Embedded command structure for basic metadata.</span>
+<span class="token punctuation">}</span>
+    Mounted represents the command that logs information about currently mounted
+    partitions<span class="token punctuation">.</span> It embeds the common CommandStruct which provides metadata like
+    the command <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> source code line<span class="token punctuation">,</span> and column numbers<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMounted</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">*</span>Mounted
+    NewMounted creates a <span class="token builtin">new</span> instance of the Mounted command with the specified
+    line and column numbers<span class="token punctuation">.</span> It returns a pointer to the Mounted command<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Mounted<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the Mounted command<span class="token punctuation">.</span> It builds a console <span class="token builtin">string</span> that lists
+    all currently loaded mounted partitions<span class="token punctuation">.</span> If no partitions are mounted<span class="token punctuation">,</span>
+    it logs an appropriate message<span class="token punctuation">.</span>
+</code></pre><h3 id="rep">REP </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Rep <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct
+        Params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewRep</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Rep
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>r <span class="token operator">*</span>Rep<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre><h3 id="rmdisk">RMDISK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Rmdisk <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure providing metadata (type, line, column, etc.)</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds the command parameters (e.g., file path for removal).</span>
+<span class="token punctuation">}</span>
+    Rmdisk represents the command to remove a disk file<span class="token punctuation">.</span> It embeds the common
+    CommandStruct <span class="token keyword keyword-for">for</span> basic command metadata and includes a <span class="token keyword keyword-map">map</span> <span class="token keyword keyword-for">for</span> command
+    parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewRmdisk</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Rmdisk
+    NewRmdisk creates a <span class="token builtin">new</span> instance of the Rmdisk command with the specified
+    source position and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>r <span class="token operator">*</span>Rmdisk<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the Rmdisk command logic<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> then
+    attempts to remove the specified disk file<span class="token punctuation">.</span> If the removal is successful<span class="token punctuation">,</span>
+    it logs a success message<span class="token punctuation">;</span> otherwise<span class="token punctuation">,</span> it appends an <span class="token builtin">error</span><span class="token punctuation">.</span>
+</code></pre><h3 id="rmgrp">RMGRP </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Rmgrp <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure providing basic metadata.</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds the command parameters (e.g., the group name to remove).</span>
+<span class="token punctuation">}</span>
+    Rmgrp represents the command to remove a group<span class="token punctuation">.</span> It embeds the common
+    CommandStruct and includes a <span class="token keyword keyword-map">map</span> of parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewRmgrp</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Rmgrp
+    NewRmgrp creates a <span class="token builtin">new</span> instance of the Rmgrp command with the specified
+    source position and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>r <span class="token operator">*</span>Rmgrp<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the Rmgrp command logic<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> ensures that
+    the current user is root<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span> locates the <span class="token string">"/users.txt"</span>
+    inode <span class="token punctuation">(</span>which also contains group entries<span class="token punctuation">)</span><span class="token punctuation">,</span> and then marks the specified
+    group as removed in the file content<span class="token punctuation">.</span>
+</code></pre><h3 id="rmusr">RMUSR </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Rmusr <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Interfaces<span class="token punctuation">.</span>CommandStruct                   <span class="token comment">// Embedded command structure providing basic command metadata.</span>
+        Params                   <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// Params holds the command parameters, e.g., the username to remove.</span>
+<span class="token punctuation">}</span>
+    Rmusr represents the command to remove a user<span class="token punctuation">.</span> It embeds the common
+    CommandStruct and includes a <span class="token keyword keyword-map">map</span> of parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewRmusr</span><span class="token punctuation">(</span>line<span class="token punctuation">,</span> column <span class="token builtin">int</span><span class="token punctuation">,</span> params <span class="token keyword keyword-map">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">*</span>Rmusr
+    NewRmusr creates a <span class="token builtin">new</span> instance of the Rmusr command with the given source
+    position and parameters<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>r <span class="token operator">*</span>Rmusr<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec executes the Rmusr command logic<span class="token punctuation">.</span> It validates parameters<span class="token punctuation">,</span> checks <span class="token keyword keyword-if">if</span>
+    the current user is root<span class="token punctuation">,</span> verifies disk integrity<span class="token punctuation">,</span> locates the <span class="token string">"/users.txt"</span>
+    inode<span class="token punctuation">,</span> and then marks the specified user as removed in the file content<span class="token punctuation">.</span>
+</code></pre><h1 id="package-env">package Env </h1>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-import">import</span> <span class="token string">"backend/Classes/Env"</span>
+</code></pre><p>Package Env provides utilities for handling disk and partition status.</p>
+<h2 id="variables">VARIABLES </h2>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-var">var</span> <span class="token punctuation">(</span>
+        Errors            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>RuntimeError             <span class="token comment">// Errors is a slice of runtime errors.</span>
+        CommandLogs       <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">string</span>                   <span class="token comment">// CommandLogs holds log messages for executed commands.</span>
+        CurrentUser       <span class="token operator">*</span>LoggedUser                 <span class="token comment">// CurrentUser represents the currently logged in user.</span>
+        MountedPartitions <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Structs<span class="token punctuation">.</span>MountedPartition <span class="token comment">// MountedPartitions is a slice of mounted partitions.</span>
+
+<span class="token punctuation">)</span>
+    Global variables shared across requests or sessions<span class="token punctuation">.</span> They hold runtime
+    errors<span class="token punctuation">,</span> command logs<span class="token punctuation">,</span> the current user<span class="token punctuation">,</span> and a list of mounted partitions<span class="token punctuation">.</span>
+</code></pre><h2 id="functions-1">FUNCTIONS </h2>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">AddCommandLog</span><span class="token punctuation">(</span>msg <span class="token builtin">string</span><span class="token punctuation">)</span>
+    AddCommandLog safely adds a command log message to the global CommandLogs
+    slice<span class="token punctuation">.</span> It locks the shared resource to ensure thread safety<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">AddError</span><span class="token punctuation">(</span>err RuntimeError<span class="token punctuation">)</span>
+    AddError safely adds a <span class="token builtin">new</span> runtime <span class="token builtin">error</span> to the global Errors slice<span class="token punctuation">.</span>
+    It locks the shared resource to prevent concurrent access issues<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">AddPartition</span><span class="token punctuation">(</span>p <span class="token operator">*</span>Structs<span class="token punctuation">.</span>MountedPartition<span class="token punctuation">)</span>
+    AddPartition safely adds a mounted partition to the global MountedPartitions
+    list<span class="token punctuation">.</span> It locks the shared resource to ensure thread safety<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">CalculatePermissions</span><span class="token punctuation">(</span>perm <span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">)</span>
+    CalculatePermissions converts a permission <span class="token builtin">byte</span> <span class="token punctuation">(</span>expressed as a character
+    <span class="token char">'0'</span><span class="token operator">-</span><span class="token char">'7'</span><span class="token punctuation">)</span> into boolean values representing read<span class="token punctuation">,</span> write<span class="token punctuation">,</span> and execute
+    permissions<span class="token punctuation">.</span> The permission digit corresponds to a specific combination<span class="token punctuation">:</span>
+    <span class="token char">'0'</span><span class="token punctuation">:</span> no permissions<span class="token punctuation">,</span> <span class="token char">'1'</span><span class="token punctuation">:</span> execute<span class="token punctuation">,</span> <span class="token char">'2'</span><span class="token punctuation">:</span> write<span class="token punctuation">,</span> <span class="token char">'3'</span><span class="token punctuation">:</span> write and execute<span class="token punctuation">,</span>
+    <span class="token char">'4'</span><span class="token punctuation">:</span> read<span class="token punctuation">,</span> <span class="token char">'5'</span><span class="token punctuation">:</span> read and execute<span class="token punctuation">,</span> <span class="token char">'6'</span><span class="token punctuation">:</span> read and write<span class="token punctuation">,</span> <span class="token char">'7'</span><span class="token punctuation">:</span> read<span class="token punctuation">,</span> write and
+    execute<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">CheckFilePermissions</span><span class="token punctuation">(</span>loggedUser LoggedUser<span class="token punctuation">,</span> fileInode <span class="token operator">*</span>Structs<span class="token punctuation">.</span>Inode<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    CheckFilePermissions checks <span class="token keyword keyword-if">if</span> the given logged user has read<span class="token punctuation">,</span> write<span class="token punctuation">,</span>
+    and execute permissions <span class="token keyword keyword-for">for</span> the file represented by the provided inode<span class="token punctuation">.</span> It
+    returns three booleans corresponding to read<span class="token punctuation">,</span> write<span class="token punctuation">,</span> and execute permissions
+    respectively<span class="token punctuation">,</span> along with an <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span> one occurs<span class="token punctuation">.</span> The function determines
+    permissions based on the file's owner <span class="token punctuation">(</span>UID<span class="token punctuation">)</span><span class="token punctuation">,</span> group <span class="token punctuation">(</span>GID<span class="token punctuation">)</span><span class="token punctuation">,</span> and a lookup of
+    the user's group ID from the mounted partition<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">CleanConsole</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    CleanConsole resets the global state <span class="token keyword keyword-for">for</span> errors and command logs<span class="token punctuation">.</span> It safely
+    clears the Errors and CommandLogs slices<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">GetCommandLogs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">string</span>
+    GetCommandLogs returns a <span class="token builtin">copy</span> of the current command log messages<span class="token punctuation">.</span> A <span class="token builtin">copy</span> is
+    returned to prevent external modifications of the global CommandLogs slice<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">GetPartitions</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Structs<span class="token punctuation">.</span>MountedPartition
+    GetPartitions returns a <span class="token builtin">copy</span> of the current mounted partitions<span class="token punctuation">.</span> A <span class="token builtin">copy</span> is
+    returned to prevent race conditions and external modifications<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">GetUserGID</span><span class="token punctuation">(</span>groupName <span class="token builtin">string</span><span class="token punctuation">,</span> mountedPartition Structs<span class="token punctuation">.</span>MountedPartition<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetUserGID retrieves the group ID <span class="token punctuation">(</span>GID<span class="token punctuation">)</span> <span class="token keyword keyword-for">for</span> a user based on the provided
+    group name and mounted partition<span class="token punctuation">.</span> It opens the file system corresponding
+    to the mounted partition<span class="token punctuation">,</span> reads the superblock and directory tree<span class="token punctuation">,</span>
+    and then searches <span class="token keyword keyword-for">for</span> the <span class="token string">"/users.txt"</span> file<span class="token punctuation">,</span> which contains user and group
+    information<span class="token punctuation">.</span> If found<span class="token punctuation">,</span> the function returns the group ID as an <span class="token builtin">int32</span><span class="token punctuation">;</span>
+    otherwise<span class="token punctuation">,</span> it returns an <span class="token builtin">error</span><span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">VerifyDiscStatus</span><span class="token punctuation">(</span>partition <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>Structs<span class="token punctuation">.</span>MountedPartition<span class="token punctuation">,</span> <span class="token operator">*</span>Structs<span class="token punctuation">.</span>Partition<span class="token punctuation">,</span> <span class="token operator">*</span>os<span class="token punctuation">.</span>File<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    VerifyDiscStatus checks the status of a disk partition given its ID<span class="token punctuation">.</span>
+    It attempts to retrieve the mounted partition from RAM using the provided
+    partition ID<span class="token punctuation">,</span> then validates the health of the partition by reading the
+    disk's MBR<span class="token punctuation">.</span> It returns pointers to the mounted partition<span class="token punctuation">,</span> its corresponding
+    MBR partition entry<span class="token punctuation">,</span> the disk file<span class="token punctuation">,</span> and an <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span> any step fails<span class="token punctuation">.</span>
+</code></pre><h2 id="types-1">TYPES </h2>
+<h3 id="loggeduser">LoggedUser </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> LoggedUser <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        User             Structs<span class="token punctuation">.</span>User             <span class="token comment">// User contains the user details.</span>
+        MountedPartition Structs<span class="token punctuation">.</span>MountedPartition <span class="token comment">// MountedPartition is the partition currently in use.</span>
+<span class="token punctuation">}</span>
+    LoggedUser holds information about the currently logged in user and the
+    partition that the user has mounted<span class="token punctuation">.</span>
+</code></pre><h3 id="runtimeerror">RuntimeError </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> RuntimeError <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Line    <span class="token builtin">int</span>        <span class="token comment">// Line is the line number where the error occurred.</span>
+        Column  <span class="token builtin">int</span>        <span class="token comment">// Column is the column number where the error occurred.</span>
+        Command Utils<span class="token punctuation">.</span>Type <span class="token comment">// Command is the type of command that generated the error.</span>
+        Msg     <span class="token builtin">string</span>     <span class="token comment">// Msg is the detailed error message.</span>
+<span class="token punctuation">}</span>
+    RuntimeError represents an <span class="token builtin">error</span> encountered during execution<span class="token punctuation">.</span> It includes
+    the source position <span class="token punctuation">(</span>line and column<span class="token punctuation">)</span><span class="token punctuation">,</span> the <span class="token keyword keyword-type">type</span> of command that caused the
+    <span class="token builtin">error</span><span class="token punctuation">,</span> and an <span class="token builtin">error</span> message<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">GetErrors</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>RuntimeError
+    GetErrors returns a <span class="token builtin">copy</span> of the current runtime errors<span class="token punctuation">.</span> A <span class="token builtin">copy</span> is returned
+    to prevent external modifications of the global Errors slice<span class="token punctuation">.</span>
+</code></pre><h1 id="package-interfaces">Package Interfaces </h1>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-import">import</span> <span class="token string">"backend/Classes/Interfaces"</span>
+</code></pre><p>Package Interfaces defines the interfaces and shared structures for executable<br>
+commands.</p>
+<h2 id="types-2">TYPES </h2>
+<h3 id="command">Command </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Command <span class="token keyword keyword-interface">interface</span> <span class="token punctuation">{</span>
+        <span class="token comment">// GetLine returns the line number where the command is defined.</span>
+        <span class="token function">GetLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+
+<span class="token comment">// GetColumn returns the column number where the command is defined.</span>
+        <span class="token function">GetColumn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+
+<span class="token comment">// GetType returns the type of the command.</span>
+        <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Utils<span class="token punctuation">.</span>Type
+
+<span class="token comment">// Exec executes the command's logic.</span>
+        <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+    Command defines the <span class="token keyword keyword-interface">interface</span> <span class="token keyword keyword-for">for</span> all executable commands<span class="token punctuation">.</span> Each command must
+    provide methods <span class="token keyword keyword-for">for</span> retrieving its source position<span class="token punctuation">,</span> determining its <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span>
+    and executing its logic<span class="token punctuation">.</span>
+</code></pre><h3 id="commandstruct">CommandStruct </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> CommandStruct <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Type   Utils<span class="token punctuation">.</span>Type <span class="token comment">// Type is the type of the command.</span>
+        Line   <span class="token builtin">int</span>        <span class="token comment">// Line is the line number where the command is defined.</span>
+        Column <span class="token builtin">int</span>        <span class="token comment">// Column is the column number where the command is defined.</span>
+<span class="token punctuation">}</span>
+    CommandStruct provides shared behavior <span class="token keyword keyword-for">for</span> commands<span class="token punctuation">.</span> It serves as a minimal
+    base structure that includes the command <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> and the line and column
+    numbers where the command is defined<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">AppendError</span><span class="token punctuation">(</span>msg <span class="token builtin">string</span><span class="token punctuation">)</span>
+    AppendError logs a runtime <span class="token builtin">error</span> associated with this command<span class="token punctuation">.</span> It creates a
+    RuntimeError entry with the command's source position and <span class="token keyword keyword-type">type</span><span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">Exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Exec provides a <span class="token keyword keyword-default">default</span> execution method <span class="token keyword keyword-for">for</span> commands<span class="token punctuation">.</span> This method should be
+    overridden by specific command implementations<span class="token punctuation">.</span> Calling this <span class="token keyword keyword-default">default</span> method
+    results in a runtime <span class="token builtin">panic</span><span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">GetColumn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+    GetColumn returns the column number where the command is defined<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">GetLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+    GetLine returns the line number where the command is defined<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Utils<span class="token punctuation">.</span>Type
+    GetType returns the <span class="token keyword keyword-type">type</span> of the command<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>CommandStruct<span class="token punctuation">)</span> <span class="token function">LogConsole</span><span class="token punctuation">(</span>msg <span class="token builtin">string</span><span class="token punctuation">)</span>
+    LogConsole logs a message to the command log console<span class="token punctuation">.</span>
+</code></pre><h1 id="package-structs">package Structs </h1>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-import">import</span> <span class="token string">"backend/Classes/Structs"</span>
+</code></pre><p>Package Structs provides data structures for representing various filesystem<br>
+components.</p>
+<h2 id="types-3">TYPES </h2>
+<h3 id="content">Content </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Content <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Name  <span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// Name holds the content's name as a fixed-size byte array.</span>
+        Inode <span class="token builtin">int32</span>    <span class="token comment">// Inode is the index of the inode associated with this content entry.</span>
+<span class="token punctuation">}</span>
+    Content represents an entry within a folder block<span class="token punctuation">.</span> It contains a fixed<span class="token operator">-</span>size
+    name and an inode number that points to the associated file or directory<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Content<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the Content<span class="token punctuation">.</span>
+    It converts the Name field from a <span class="token builtin">byte</span> array to a <span class="token builtin">string</span> and displays the
+    inode number<span class="token punctuation">.</span>
+</code></pre><h3 id="ebr">EBR </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> EBR <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Mount <span class="token builtin">byte</span>     <span class="token comment">// Mount indicates the mount status of the partition ('0' for unmounted).</span>
+        Fit   <span class="token builtin">byte</span>     <span class="token comment">// Fit specifies the partition's fit type (e.g., first, best, or worst fit).</span>
+        Start <span class="token builtin">int32</span>    <span class="token comment">// Start is the starting byte position of the partition.</span>
+        Size  <span class="token builtin">int32</span>    <span class="token comment">// Size indicates the total size of the partition in bytes.</span>
+        Next  <span class="token builtin">int32</span>    <span class="token comment">// Next points to the starting byte of the next EBR (-1 if none).</span>
+        Name  <span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// Name holds the partition's name.</span>
+<span class="token punctuation">}</span>
+    EBR represents an Extended Boot Record<span class="token punctuation">.</span> It stores metadata <span class="token keyword keyword-for">for</span> a logical
+    partition including its mount status<span class="token punctuation">,</span> fit <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> starting position<span class="token punctuation">,</span> size<span class="token punctuation">,</span>
+    pointer to the next EBR<span class="token punctuation">,</span> and its name<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewEBR</span><span class="token punctuation">(</span>fit <span class="token builtin">byte</span><span class="token punctuation">,</span> start<span class="token punctuation">,</span> size <span class="token builtin">int32</span><span class="token punctuation">,</span> name <span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token operator">*</span>EBR
+    NewEBR creates a <span class="token builtin">new</span> Extended Boot Record with the provided fit <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span>
+    starting position<span class="token punctuation">,</span> size<span class="token punctuation">,</span> and name<span class="token punctuation">.</span> The Mount field is initialized to <span class="token char">'0'</span>
+    <span class="token punctuation">(</span>unmounted<span class="token punctuation">)</span> and Next is set to <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> indicating that there is no subsequent
+    EBR<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>EBR<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the EBR<span class="token punctuation">.</span> It includes
+    details such as mount status<span class="token punctuation">,</span> start position<span class="token punctuation">,</span> size<span class="token punctuation">,</span> name<span class="token punctuation">,</span> and the pointer to
+    the next EBR<span class="token punctuation">.</span>
+</code></pre><h3 id="fileblock">FILEBLOCK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> FileBlock <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Content <span class="token punctuation">[</span><span class="token number">64</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// Content holds the raw file data.</span>
+<span class="token punctuation">}</span>
+    FileBlock represents a block of data <span class="token keyword keyword-for">for</span> file storage<span class="token punctuation">.</span> It contains a
+    fixed<span class="token operator">-</span>size array of <span class="token number">64</span> bytes that holds file content<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>fb <span class="token operator">*</span>FileBlock<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the FileBlock's
+    content<span class="token punctuation">.</span> It trims the <span class="token builtin">byte</span> array at the first null <span class="token builtin">byte</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> and returns the
+    resulting <span class="token builtin">string</span><span class="token punctuation">.</span> This is useful <span class="token keyword keyword-for">for</span> converting the fixed<span class="token operator">-</span>size <span class="token builtin">byte</span> array
+    into a human<span class="token operator">-</span>readable <span class="token builtin">string</span><span class="token punctuation">.</span>
+</code></pre><h3 id="folderblock">FOLDERBLOCK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> FolderBlock <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Content <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>Content <span class="token comment">// Content is an array of 4 Content items representing directory entries.</span>
+<span class="token punctuation">}</span>
+    FolderBlock represents a block in the filesystem that holds directory
+    content<span class="token punctuation">.</span> It contains an array of Content structures<span class="token punctuation">,</span> each representing an
+    entry in a folder<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewFolderBlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>FolderBlock
+    NewFolderBlock creates and returns a <span class="token builtin">new</span> FolderBlock instance<span class="token punctuation">.</span> It
+    initializes the Content array with <span class="token keyword keyword-default">default</span> values where each Content's Inode
+    is set to <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> indicating that the entry is unused<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>fb <span class="token operator">*</span>FolderBlock<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the FolderBlock<span class="token punctuation">.</span>
+    It iterates over the Content array and concatenates each entry's <span class="token builtin">string</span>
+    representation<span class="token punctuation">.</span>
+</code></pre><h3 id="inode">INODE </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Inode <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        UID    <span class="token builtin">int32</span>     <span class="token comment">// UID is the user identifier that owns the inode.</span>
+        GID    <span class="token builtin">int32</span>     <span class="token comment">// GID is the group identifier that owns the inode.</span>
+        Size   <span class="token builtin">int32</span>     <span class="token comment">// Size represents the size of the file or directory in bytes.</span>
+        ATime  <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// ATime is the last access time in "YYYY-MM-DD HH:MM" format.</span>
+        CTime  <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// CTime is the creation time in "YYYY-MM-DD HH:MM" format.</span>
+        MTime  <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// MTime is the last modification time in "YYYY-MM-DD HH:MM" format.</span>
+        IBlock <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token builtin">int32</span> <span class="token comment">// IBlock is an array of pointers to data blocks.</span>
+        Type   <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span>   <span class="token comment">// Type denotes the inode type: '0' for folder and '1' for file.</span>
+        Perm   <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token builtin">byte</span>   <span class="token comment">// Perm represents the permission settings (e.g., "644").</span>
+<span class="token punctuation">}</span>
+    Inode represents a file or directory inode in the filesystem<span class="token punctuation">.</span> It contains
+    metadata such as the user and group IDs<span class="token punctuation">,</span> file size<span class="token punctuation">,</span> timestamps <span class="token keyword keyword-for">for</span> access<span class="token punctuation">,</span>
+    creation<span class="token punctuation">,</span> and modification<span class="token punctuation">,</span> data block pointers<span class="token punctuation">,</span> the <span class="token keyword keyword-type">type</span> of the inode<span class="token punctuation">,</span>
+    and its permissions<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewInode</span><span class="token punctuation">(</span>inodeType <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token operator">*</span>Inode
+    NewInode creates a <span class="token builtin">new</span> inode with <span class="token keyword keyword-default">default</span> parameters<span class="token punctuation">.</span> The inodeType
+    parameter must be <span class="token char">'0'</span> <span class="token keyword keyword-for">for</span> a folder and <span class="token char">'1'</span> <span class="token keyword keyword-for">for</span> a file<span class="token punctuation">.</span> It initializes the
+    timestamps to the current time and sets <span class="token keyword keyword-default">default</span> permissions<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>i <span class="token operator">*</span>Inode<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the inode<span class="token punctuation">.</span> It includes
+    details such as UID<span class="token punctuation">,</span> GID<span class="token punctuation">,</span> size<span class="token punctuation">,</span> timestamps<span class="token punctuation">,</span> block pointers<span class="token punctuation">,</span> inode <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span>
+    and permissions<span class="token punctuation">.</span>
+</code></pre><h3 id="mbr">MBR </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> MBR <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        MbrSize      <span class="token builtin">int32</span>        <span class="token comment">// MbrSize indicates the total size of the MBR in bytes.</span>
+        CreationDate <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token builtin">byte</span>     <span class="token comment">// CreationDate holds the creation date in "YYYY-MM-DD" format.</span>
+        Signature    <span class="token builtin">int32</span>        <span class="token comment">// Signature is a randomly generated identifier for the MBR.</span>
+        Fit          <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span>      <span class="token comment">// Fit represents the partition fit type (e.g., first, best, or worst fit).</span>
+        Partitions   <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>Partition <span class="token comment">// Partitions is an array containing up to 4 partitions.</span>
+<span class="token punctuation">}</span>
+    MBR represents the Master Boot Record of a disk<span class="token punctuation">.</span> It stores information about
+    the disk size<span class="token punctuation">,</span> creation date<span class="token punctuation">,</span> a unique signature<span class="token punctuation">,</span> the partition fit <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span>
+    and an array of partitions<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewMBR</span><span class="token punctuation">(</span>size <span class="token builtin">int32</span><span class="token punctuation">,</span> fit <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token operator">*</span>MBR
+    NewMBR creates a <span class="token builtin">new</span> MBR instance with the provided size and fit parameters<span class="token punctuation">.</span>
+    It initializes the creation date with the current date<span class="token punctuation">,</span> generates a random
+    signature<span class="token punctuation">,</span> and sets up an empty partitions array<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>MBR<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the MBR<span class="token punctuation">.</span> The <span class="token builtin">string</span>
+    includes details such as the MBR size<span class="token punctuation">,</span> creation date<span class="token punctuation">,</span> fit <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> and a list
+    of each partition's <span class="token builtin">string</span> representation<span class="token punctuation">.</span>
+</code></pre><h3 id="mountedpartition">MOUNTEDPARTITION </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> MountedPartition <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Partition            <span class="token comment">// Embedded Partition struct.</span>
+        DiscSignature <span class="token builtin">int32</span>  <span class="token comment">// DiscSignature is a numeric signature for the disk.</span>
+        DiscTag       <span class="token builtin">rune</span>   <span class="token comment">// DiscTag is a character identifier for the disk.</span>
+        Path          <span class="token builtin">string</span> <span class="token comment">// Path is the filesystem path where the partition is mounted.</span>
+<span class="token punctuation">}</span>
+    MountedPartition represents a partition that has been mounted on the system<span class="token punctuation">.</span>
+    It embeds a Partition and adds disk<span class="token operator">-</span>specific information such as disk
+    signature<span class="token punctuation">,</span> disk tag<span class="token punctuation">,</span> and the mount path<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>MountedPartition<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the MountedPartition<span class="token punctuation">.</span>
+    It includes both the partition details and the disk<span class="token operator">-</span>specific metadata<span class="token punctuation">.</span>
+</code></pre><h3 id="partition">PARTITION </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> Partition <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Status      <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// Status indicates the partition's status (e.g., active/inactive).</span>
+        Type        <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// Type specifies the partition type (primary, extended, etc.).</span>
+        Fit         <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// Fit defines the partition's fit type (best, first, or worst fit).</span>
+        Start       <span class="token builtin">int32</span>    <span class="token comment">// Start is the starting byte position of the partition on the disk.</span>
+        Size        <span class="token builtin">int32</span>    <span class="token comment">// Size indicates the total size of the partition in bytes.</span>
+        Name        <span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// Name holds the partition's name.</span>
+        Correlative <span class="token builtin">int32</span>    <span class="token comment">// Correlative is a sequential number used for identification.</span>
+        Id          <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token builtin">byte</span>  <span class="token comment">// Id is a unique identifier for the partition.</span>
+<span class="token punctuation">}</span>
+    Partition represents a disk partition<span class="token punctuation">.</span> It holds metadata including its
+    status<span class="token punctuation">,</span> <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> fit<span class="token punctuation">,</span> starting position<span class="token punctuation">,</span> size<span class="token punctuation">,</span> name<span class="token punctuation">,</span> a correlative number<span class="token punctuation">,</span>
+    and a unique identifier<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewPartition</span><span class="token punctuation">(</span>status<span class="token punctuation">,</span> type_<span class="token punctuation">,</span> fit <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">,</span> start<span class="token punctuation">,</span> size <span class="token builtin">int32</span><span class="token punctuation">,</span> name <span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">,</span> correlative <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token operator">*</span>Partition
+    NewPartition creates a <span class="token builtin">new</span> Partition with the provided parameters<span class="token punctuation">.</span>
+    It returns a pointer to the newly created Partition<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>Partition<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted <span class="token builtin">string</span> representation of the Partition<span class="token punctuation">.</span> The
+    output includes details such as start position<span class="token punctuation">,</span> status<span class="token punctuation">,</span> size<span class="token punctuation">,</span> name<span class="token punctuation">,</span> <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span>
+    fit<span class="token punctuation">,</span> ID<span class="token punctuation">,</span> and correlative number<span class="token punctuation">.</span>
+</code></pre><h3 id="pointerblock">POINTERBLOCK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> PointerBlock <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Pointers <span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token builtin">int32</span> <span class="token comment">// Pointers holds an array of pointer values.</span>
+<span class="token punctuation">}</span>
+    PointerBlock represents a block of pointers in the filesystem<span class="token punctuation">.</span> It contains
+    an array of <span class="token number">16</span> pointers represented as <span class="token builtin">int32</span> values<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>PointerBlock<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a <span class="token builtin">string</span> representation of the PointerBlock<span class="token punctuation">.</span> It formats the
+    Pointers array into a readable <span class="token builtin">string</span><span class="token punctuation">.</span>
+</code></pre><h3 id="superblock">SUPERBLOCK </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> SuperBlock <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        FilesystemType  <span class="token builtin">int32</span>    <span class="token comment">// FilesystemType indicates the type of the filesystem.</span>
+        InodesCount     <span class="token builtin">int32</span>    <span class="token comment">// InodesCount is the total number of inodes in the filesystem.</span>
+        BlocksCount     <span class="token builtin">int32</span>    <span class="token comment">// BlocksCount is the total number of blocks in the filesystem.</span>
+        FreeBlocksCount <span class="token builtin">int32</span>    <span class="token comment">// FreeBlocksCount is the number of free blocks available.</span>
+        FreeInodesCount <span class="token builtin">int32</span>    <span class="token comment">// FreeInodesCount is the number of free inodes available.</span>
+        MTime           <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// MTime represents the last modification time (e.g., "2025-09-20 12:00:00").</span>
+        UMTime          <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token comment">// UMTime represents the last unmount time.</span>
+        MntCount        <span class="token builtin">int32</span>    <span class="token comment">// MntCount is the count of how many times the filesystem has been mounted.</span>
+        Magic           <span class="token builtin">int32</span>    <span class="token comment">// Magic holds a magic number for identifying or validating the filesystem.</span>
+        InodeSize       <span class="token builtin">int32</span>    <span class="token comment">// InodeSize specifies the size of each inode in bytes.</span>
+        BlockSize       <span class="token builtin">int32</span>    <span class="token comment">// BlockSize specifies the size of each block in bytes.</span>
+        FirstInode      <span class="token builtin">int32</span>    <span class="token comment">// FirstInode is the index of the first inode.</span>
+        FirstBlock      <span class="token builtin">int32</span>    <span class="token comment">// FirstBlock is the index of the first block.</span>
+        BmInodeStart    <span class="token builtin">int32</span>    <span class="token comment">// BmInodeStart is the starting position of the inode bitmap.</span>
+        BmBlockStart    <span class="token builtin">int32</span>    <span class="token comment">// BmBlockStart is the starting position of the block bitmap.</span>
+        InodeStart      <span class="token builtin">int32</span>    <span class="token comment">// InodeStart is the starting position of the inodes.</span>
+        BlockStart      <span class="token builtin">int32</span>    <span class="token comment">// BlockStart is the starting position of the blocks.</span>
+<span class="token punctuation">}</span>
+    SuperBlock holds the metadata <span class="token keyword keyword-for">for</span> a filesystem's superblock<span class="token punctuation">.</span> It contains
+    various fields describing the filesystem's properties such as inode and
+    block counts<span class="token punctuation">,</span> timestamps<span class="token punctuation">,</span> and layout information<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>sb <span class="token operator">*</span>SuperBlock<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a formatted multi<span class="token operator">-</span>line <span class="token builtin">string</span> representation of the
+    SuperBlock<span class="token punctuation">.</span> It formats all the fields of the superblock into a readable
+    <span class="token builtin">string</span><span class="token punctuation">.</span>
+</code></pre><h3 id="user">USER </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> User <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        Id       <span class="token builtin">int32</span>  <span class="token comment">// Id is the unique identifier for the user.</span>
+        Group    <span class="token builtin">string</span> <span class="token comment">// Group represents the user's group or role.</span>
+        Name     <span class="token builtin">string</span> <span class="token comment">// Name is the user's full name.</span>
+        Password <span class="token builtin">string</span> <span class="token comment">// Password stores the user's password.</span>
+<span class="token punctuation">}</span>
+    User represents a user in the system<span class="token punctuation">.</span> It contains the user's ID<span class="token punctuation">,</span> group<span class="token punctuation">,</span>
+    name<span class="token punctuation">,</span> and password<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>u <span class="token operator">*</span>User<span class="token punctuation">)</span> <span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+    ToString returns a <span class="token builtin">string</span> representation of the User<span class="token punctuation">.</span> The output format is<span class="token punctuation">:</span>
+    <span class="token string">"&lt;Id&gt;,U,&lt;Group&gt;,&lt;Name&gt;,&lt;Password&gt;"</span>
+</code></pre><h3 id="dirtree">DirTree </h3>
+<pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-type">type</span> DirTree <span class="token keyword keyword-struct">struct</span> <span class="token punctuation">{</span>
+        SuperBlock  <span class="token operator">*</span>SuperBlock <span class="token comment">// Pointer to the superblock of the filesystem.</span>
+        File        <span class="token operator">*</span>os<span class="token punctuation">.</span>File    <span class="token comment">// Reference to the file representing the disk.</span>
+        BlockBitMap <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span>      <span class="token comment">// BlockBitMap indicates the allocation status of each block.</span>
+        InodeBitMap <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span>      <span class="token comment">// InodeBitMap indicates the allocation status of each inode.</span>
+<span class="token punctuation">}</span>
+    DirTree represents a directory tree structure <span class="token keyword keyword-for">for</span> the filesystem<span class="token punctuation">.</span>
+    It contains a pointer to the superblock<span class="token punctuation">,</span> a reference to the disk file<span class="token punctuation">,</span>
+    and bitmaps <span class="token keyword keyword-for">for</span> blocks and inodes<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token function">NewDirTree</span><span class="token punctuation">(</span>superBlock SuperBlock<span class="token punctuation">,</span> file <span class="token operator">*</span>os<span class="token punctuation">.</span>File<span class="token punctuation">)</span> <span class="token operator">*</span>DirTree
+    NewDirTree creates a <span class="token builtin">new</span> DirTree instance using the provided superblock and
+    file<span class="token punctuation">.</span> It reads the block and inode bitmaps from the disk file based on the
+    superblock information<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">AppendToFileInode</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> inode <span class="token operator">*</span>Inode<span class="token punctuation">)</span> <span class="token builtin">error</span>
+    AppendToFileInode appends the given <span class="token builtin">string</span> content to a file represented
+    by the inode<span class="token punctuation">.</span> It determines the last file block<span class="token punctuation">,</span> appends the <span class="token builtin">new</span> content<span class="token punctuation">,</span>
+    splits the result into chunks<span class="token punctuation">,</span> and writes updated file blocks to disk<span class="token punctuation">.</span> Note<span class="token punctuation">:</span>
+    Indirect addressing is not fully supported<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">CreateNewDir</span><span class="token punctuation">(</span>index <span class="token builtin">int32</span><span class="token punctuation">,</span> inode <span class="token operator">*</span>Inode<span class="token punctuation">,</span> dirName <span class="token builtin">string</span><span class="token punctuation">,</span> uid <span class="token builtin">int32</span><span class="token punctuation">,</span> gid <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token operator">*</span>Inode<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    CreateNewDir creates a <span class="token builtin">new</span> directory under a parent directory represented
+    by the given inode<span class="token punctuation">.</span> It creates a <span class="token builtin">new</span> inode <span class="token keyword keyword-for">for</span> the directory<span class="token punctuation">,</span> initializes
+    its folder block with <span class="token keyword keyword-default">default</span> entries <span class="token punctuation">(</span><span class="token string">"."</span> and <span class="token string">".."</span><span class="token punctuation">)</span><span class="token punctuation">,</span> writes the <span class="token builtin">new</span>
+    folder block and inode to disk<span class="token punctuation">,</span> and updates the parent's inode<span class="token punctuation">.</span> Returns
+    the <span class="token builtin">new</span> directory inode index<span class="token punctuation">,</span> a pointer to the <span class="token builtin">new</span> Inode<span class="token punctuation">,</span> and an <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span>
+    encountered<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">CreateNewFile</span><span class="token punctuation">(</span>index <span class="token builtin">int32</span><span class="token punctuation">,</span> inode <span class="token operator">*</span>Inode<span class="token punctuation">,</span> fileName <span class="token builtin">string</span><span class="token punctuation">,</span> content <span class="token builtin">string</span><span class="token punctuation">,</span> uid <span class="token builtin">int32</span><span class="token punctuation">,</span> gid <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token operator">*</span>Inode<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    CreateNewFile creates a <span class="token builtin">new</span> file under a directory represented by the given
+    inode<span class="token punctuation">.</span> It creates a <span class="token builtin">new</span> inode <span class="token keyword keyword-for">for</span> the file<span class="token punctuation">,</span> appends the initial content to
+    the file's inode<span class="token punctuation">,</span> writes the <span class="token builtin">new</span> inode to disk<span class="token punctuation">,</span> and returns the <span class="token builtin">new</span> file
+    inode index<span class="token punctuation">,</span> pointer<span class="token punctuation">,</span> and <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span> any<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">CreateNewInode</span><span class="token punctuation">(</span>index <span class="token builtin">int32</span><span class="token punctuation">,</span> inode <span class="token operator">*</span>Inode<span class="token punctuation">,</span> name <span class="token builtin">string</span><span class="token punctuation">,</span> UID<span class="token punctuation">,</span> GID <span class="token builtin">int32</span><span class="token punctuation">,</span> inodeType <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token operator">*</span>Inode<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    CreateNewInode creates a <span class="token builtin">new</span> inode entry within a directory represented
+    by the parent inode<span class="token punctuation">.</span> It adds the <span class="token builtin">new</span> inode entry to a folder block<span class="token punctuation">,</span>
+    updates bitmaps<span class="token punctuation">,</span> writes the <span class="token builtin">new</span> inode to disk<span class="token punctuation">,</span> and updates the parent inode
+    accordingly<span class="token punctuation">.</span> Returns the <span class="token builtin">new</span> inode index<span class="token punctuation">,</span> a pointer to the <span class="token builtin">new</span> Inode<span class="token punctuation">,</span>
+    and an <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span> encountered<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">FreeInodeBlockContent</span><span class="token punctuation">(</span>inode <span class="token operator">*</span>Inode<span class="token punctuation">)</span> <span class="token builtin">error</span>
+    FreeInodeBlockContent frees all data blocks associated with an inode
+    by updating the block bitmap and resetting the inode's block pointers<span class="token punctuation">.</span>
+    It writes the updated bitmap to disk<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">GetAvailableBlockAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetAvailableBlockAddress searches the block bitmap <span class="token keyword keyword-for">for</span> a free block and
+    returns its address<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">GetAvailableInodeAdress</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetAvailableInodeAdress searches the inode bitmap <span class="token keyword keyword-for">for</span> a free inode and
+    returns its address<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">GetFileContentByInode</span><span class="token punctuation">(</span>inode <span class="token operator">*</span>Inode<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetFileContentByInode retrieves the content of a file represented by the
+    given inode<span class="token punctuation">.</span> It verifies the inode <span class="token keyword keyword-type">type</span><span class="token punctuation">,</span> then reads and concatenates file
+    blocks <span class="token punctuation">(</span>including indirect blocks<span class="token punctuation">)</span> into a single <span class="token builtin">string</span><span class="token punctuation">.</span> The inode's access
+    time is updated upon retrieval<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">GetInodeByIndex</span><span class="token punctuation">(</span>index <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>Inode<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetInodeByIndex retrieves an inode from the disk given its index<span class="token punctuation">.</span> It reads
+    the inode from the disk using the superblock's inode start position<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">GetInodeByPath</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int32</span><span class="token punctuation">,</span> <span class="token operator">*</span>Inode<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    GetInodeByPath retrieves an inode by traversing the directory tree using
+    the provided path<span class="token punctuation">.</span> It returns the inode index<span class="token punctuation">,</span> a pointer to the Inode<span class="token punctuation">,</span>
+    and an <span class="token builtin">error</span> <span class="token keyword keyword-if">if</span> the inode cannot be found<span class="token punctuation">.</span>
+</code></pre><pre data-role="codeBlock" data-info="go" class="language-go go"><code><span class="token keyword keyword-func">func</span> <span class="token punctuation">(</span>dt <span class="token operator">*</span>DirTree<span class="token punctuation">)</span> <span class="token function">SplitRawBytes</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> chunkSize <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+    SplitRawBytes splits a <span class="token builtin">string</span> into chunks of the given size and returns a
+    slice of <span class="token builtin">string</span> chunks<span class="token punctuation">.</span>
+</code></pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
