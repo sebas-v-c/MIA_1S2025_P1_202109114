@@ -15,7 +15,7 @@ func main() {
 
 	r.GET("/status", Handlers.StatusHandler)
 	r.POST("/parse", Handlers.ParseCodeHandler)
-	r.GET("/discs", Handlers.DiscsHandler)
+	r.POST("/discs", Handlers.DiscsHandler)
 
 	err := r.SetTrustedProxies(nil)
 	if err != nil {
