@@ -5,6 +5,8 @@ import Output from "./components/Output.tsx";
 import {useState} from "react";
 import axios, {AxiosResponse} from "axios";
 import toast, {Toaster} from "react-hot-toast";
+import * as React from "react";
+import Explorer from "./components/explorer/Explorer.tsx";
 
 export enum Command {
     MKDISK,
@@ -50,6 +52,7 @@ function App() {
     const [synErrors, setSynErrors] = useState<Array<SynError>>([])
     const [runErrors, setRunErrors] = useState<Array<RunError>>([])
     const [commandLogs, setCommandLogs] = useState<Array<string>>([])
+    const [consoleMode, setConsoleMode] = React.useState(false);
 
     const handleRun = async() => {
         setSynErrors([])
@@ -75,13 +78,25 @@ function App() {
         setCode("")
     }
 
+    const handleExplore = () => {
+        setConsoleMode(!consoleMode);
+    }
+
 
     return (
         <div className="h-screen flex flex-col bg-[#1e1e2e] text-white ">
             <Toaster position="bottom-right" reverseOrder={false} />
-            <Topbar onFileUpload={setCode} onRun={handleRun} onClear={handleClear}/>
-            <Console code={code} onCodeChange={setCode}/>
-            <Output synErrors={synErrors} runErrors={runErrors} commandLogs={commandLogs}/>
+            <Topbar onFileUpload={setCode} onRun={handleRun} onClear={handleClear} onExplorer={handleExplore} barMode={consoleMode}/>
+            {consoleMode? (
+                <>
+                    <Console code={code} onCodeChange={setCode}/>
+                    <Output synErrors={synErrors} runErrors={runErrors} commandLogs={commandLogs}/>
+                </>
+            ) : (
+                <>
+                    <Explorer/>
+                </>
+            )}
         </div>
     )
 }
