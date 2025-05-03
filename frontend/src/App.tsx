@@ -6,7 +6,7 @@ import {useState} from "react";
 import axios, {AxiosResponse} from "axios";
 import toast, {Toaster} from "react-hot-toast";
 import * as React from "react";
-import Explorer from "./components/explorer/Explorer.tsx";
+import Explorer, {PartitionInfo} from "./components/Explorer.tsx";
 
 export enum Command {
     MKDISK,
@@ -47,12 +47,31 @@ export type ApiResponse = {
     commandLogs: Array<string>
 }
 
+export type User = {
+    id: number,
+    group: string,
+    name: string,
+    password: string
+}
+
+export type MountedPartition = PartitionInfo &{
+    discSignature: number,
+    discTag: string,
+    path: string
+}
+
+export type LoggedUser = {
+    User: User,
+    MountedPartition: MountedPartition
+}
+
 function App() {
     const [code, setCode] = useState<string>("# Write some code here...")
     const [synErrors, setSynErrors] = useState<Array<SynError>>([])
     const [runErrors, setRunErrors] = useState<Array<RunError>>([])
     const [commandLogs, setCommandLogs] = useState<Array<string>>([])
     const [consoleMode, setConsoleMode] = React.useState(false);
+    const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
 
     const handleRun = async() => {
         setSynErrors([])
@@ -60,14 +79,12 @@ function App() {
         setCommandLogs(["Running..."]);
 
         axios.post<{code: string}, AxiosResponse<ApiResponse>>("http://localhost:8080/parse", {"code": code? code : " "}).then((response) =>{
-            console.log(response.data.runErrors)
             setSynErrors(response.data.synErrors? response.data.synErrors : []);
             setRunErrors(response.data.runErrors? response.data.runErrors : []);
             setCommandLogs(response.data.commandLogs? response.data.commandLogs : []);
-            console.log(response);
         }).catch(error => {
-            toast.error("Failed to connect to the API, Check internet or server")
-            console.log(error)
+            console.error("API request failed:", error);
+            toast.error("Failed to connect to the API, Check internet or server");
         })
     }
 
@@ -82,11 +99,41 @@ function App() {
         setConsoleMode(!consoleMode);
     }
 
+    const handleLogin = (user: User, partition: MountedPartition) => {
+        setLoggedUser({User: user, MountedPartition: partition});
+    }
+
+    const handleLogout = async (e:React.FormEvent) => {
+        e.preventDefault();
+        const parseResponse = await axios.post("http://localhost:8080/parse", { code: "\nmounted\nlogout\nmounted\n" }, {
+        });
+
+        const { synErrors, runErrors } = parseResponse.data;
+
+        // Handle syntax or runtime errors from the parse step
+        if (synErrors || runErrors.length > 0) {
+            if (synErrors) {
+                //@ts-expect-error any implementation
+                toast.error("Syntax Errors:\n" + synErrors.map((e) => e.Msg).join("\n"));
+            }
+            if (runErrors.length > 0) {
+                //@ts-expect-error any implementation
+                toast.error("Runtime Errors:\n" + runErrors.map((e) => e.Msg).join("\n"));
+            }
+            console.error("Parse Errors:", {
+                synErrors,
+                runErrors,
+            });
+            return;
+        }
+
+        setLoggedUser(null);
+    }
 
     return (
         <div className="h-screen flex flex-col bg-[#1e1e2e] text-white ">
             <Toaster position="bottom-right" reverseOrder={false} />
-            <Topbar onFileUpload={setCode} onRun={handleRun} onClear={handleClear} onExplorer={handleExplore} barMode={consoleMode}/>
+            <Topbar onFileUpload={setCode} onRun={handleRun} onClear={handleClear} onExplorer={handleExplore} barMode={consoleMode} loggedUser={loggedUser} onLogOut={handleLogout}/>
             {consoleMode? (
                 <>
                     <Console code={code} onCodeChange={setCode}/>
@@ -94,7 +141,7 @@ function App() {
                 </>
             ) : (
                 <>
-                    <Explorer/>
+                    <Explorer onLogin={handleLogin} currentUser={loggedUser}/>
                 </>
             )}
         </div>

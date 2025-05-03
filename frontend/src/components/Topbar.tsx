@@ -1,14 +1,17 @@
 import * as React from "react";
+import {LoggedUser} from "../App.tsx";
 
 interface TopbarProps {
     onFileUpload: (value: (((prevState: string) => string) | string)) => void,
     onRun: () => Promise<void>,
     onClear: () => void,
     onExplorer: () => void,
-    barMode: boolean
+    barMode: boolean,
+    loggedUser: LoggedUser | null,
+    onLogOut: (e: React.FormEvent) => Promise<void>,
 }
 
-function Topbar({onFileUpload, onRun, onClear, onExplorer, barMode}: TopbarProps) {
+function Topbar({onFileUpload, onRun, onClear, onExplorer, barMode, loggedUser, onLogOut}: TopbarProps) {
 
 
     function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -68,6 +71,14 @@ function Topbar({onFileUpload, onRun, onClear, onExplorer, barMode}: TopbarProps
                         onClick={onExplorer}
                     >
                         Console
+                    </button>
+                )}
+                {loggedUser && (
+                    <button
+                        className="bg-[#ff79c6] hover:bg-[#ff79c6] px-4 py-2 rounded-lg cursor-pointer transition"
+                        onClick={onLogOut}
+                    >
+                        Log Out
                     </button>
                 )}
             </div>

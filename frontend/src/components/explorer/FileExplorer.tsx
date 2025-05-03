@@ -1,126 +1,140 @@
-import React, { useState } from 'react';
-import { FaFolder, FaFile } from 'react-icons/fa';
+import { useState } from 'react';
 
-export interface FileItem {
+export type FileType = 'File' | 'Directory' | 'Disc' | 'Partition';
+
+export type File = {
     name: string;
-    isDirectory: boolean;
-    size?: number;
+    size: number;
+    type: FileType;
+    createdTime: string;
+    modifiedTime: string;
     content?: string;
-    children?: FileItem[];
+    // Disc-specific fields
+    mbrSize?: number;
+    signature?: number;
+    fit?: string;
+    // Partition-specific fields
+    partitions?: File[];
+    status?: string;
+    start?: number;
+    correlative?: number;
+    id?: string;
+    partType?: string;
+};
+
+export interface FileExplorerProps {
+    files: File[];
+    onFolderOpen?: (item: File) => void;
+    onFileOpen?: (item: File) => void;
+    onFolderDoubleClick?: (item: File) => void;
+    onFileDoubleClick?: (item: File) => void;
+    onNavigateUp?: () => void;
 }
 
-interface FileExplorerProps {
-    files: FileItem[];
-    onOpenFile?: (file: FileItem) => void;
-}
 
-const FileExplorer: React.FC<FileExplorerProps> = ({ files, onOpenFile }) => {
-    const [currentFiles, setCurrentFiles] = useState<FileItem[]>(files);
-    const [pathStack, setPathStack] = useState<FileItem[]>([]);
-    const [selectedItem, setSelectedItem] = useState<FileItem | null>(null);
+const getIcon = (type: FileType) => {
+    switch (type) {
+        case 'Directory': return '📁';
+        case 'Disc':      return '💽';
+        case 'Partition': return '📀';
+        default:          return '📄';
+    }
+};
 
-    const handleItemClick = (item: FileItem) => {
-        setSelectedItem(item);
-        if (item.isDirectory) {
-            setPathStack(prev => [...prev, item]);
-            setCurrentFiles(item.children || []);
-        } else {
-            if (onOpenFile) {
-                onOpenFile(item);
-            }
-        }
+export default function FileExplorer({
+                                         files,
+                                         onFolderOpen,
+                                         onFileOpen,
+                                         onFolderDoubleClick,
+                                         onFileDoubleClick,
+                                         onNavigateUp,
+                                     }: FileExplorerProps) {
+    const [selected, setSelected] = useState<File | null>(null);
+
+    const handleClick = (f: File) => {
+        setSelected(f);
+        if (f.type === 'Directory') onFolderOpen?.(f);
+        //else onFileOpen?.(f);
     };
 
-    const goUp = () => {
-        if (pathStack.length > 0) {
-            const newStack = [...pathStack];
-            newStack.pop();
-            setPathStack(newStack);
-            setSelectedItem(null);
-            if (newStack.length === 0) {
-                setCurrentFiles(files);
-            } else {
-                const parent = newStack[newStack.length - 1];
-                setCurrentFiles(parent.children || []);
-            }
-        }
+    const handleDoubleClick = (f: File) => {
+        if (f.type === 'Directory') onFolderDoubleClick?.(f);
+        else if (f.type === 'Disc') onFileDoubleClick?.(f);
+        else if (f.type === 'Partition') onFileDoubleClick?.(f);
     };
+
 
     return (
-        <div style={{ display: 'flex', height: '100%' }}>
-            {/* Sidebar with file/folder icons */}
-            <div style={{ flex: 1, borderRight: '1px solid #ccc', padding: '1rem', display: 'flex', flexDirection: 'column' }}>
-                <button onClick={goUp} disabled={pathStack.length === 0}>Up</button>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-                    gap: '1rem',
-                    marginTop: '1rem',
-                    overflowY: 'auto'
-                }}>
-                    {currentFiles.map(item => (
-                        <div
-                            key={item.name}
-                            onClick={() => handleItemClick(item)}
-                            style={{ cursor: 'pointer', textAlign: 'center' }}
+        <div className="flex h-full w-full font-sans">
+            {/* Sidebar */}
+            <div className="flex-1 border-r border-gray-800 bg-gray-900 overflow-y-auto p-4">
+                <button
+                    onClick={onNavigateUp}
+                    disabled={!onNavigateUp}
+                    className="mb-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                >
+                    ⬆️ Up
+                </button>
+                <ul className="space-y-2">
+                    {files.map(f => (
+                        <li
+                            key={`${f.name}-${f.createdTime}`}
+                            onClick={() => handleClick(f)}
+                            onDoubleClick={() => handleDoubleClick(f)}
+                            className={`flex items-center p-2 rounded cursor-pointer hover:bg-blue-800 ${
+                                selected === f ? 'bg-blue-900 text-white' : 'text-gray-100'
+                            }`}
                         >
-                            {item.isDirectory ? <FaFolder size={48} /> : <FaFile size={48} />}
-                            <div
-                                title={item.name}
-                                style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                            >
-                                {item.name}
-                            </div>
-                        </div>
+                            <span className="mr-2">{getIcon(f.type)}</span>
+                            {f.name}
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
 
-            {/* Details panel */}
-            <div style={{ width: '300px', padding: '1rem' }}>
-                {selectedItem ? (
-                    <div>
-                        <h3>{selectedItem.name}</h3>
-                        <p>Type: {selectedItem.isDirectory ? 'Directory' : 'File'}</p>
-                        {!selectedItem.isDirectory && <p>Size: {selectedItem.size} bytes</p>}
-                        {!selectedItem.isDirectory && (
-                            <div style={{
-                                marginTop: '1rem',
-                                maxHeight: 'calc(100% - 4rem)',
-                                overflow: 'auto',
-                                background: '#f9f9f9',
-                                padding: '0.5rem',
-                                border: '1px solid #ddd'
-                            }}>
-                                <pre>{selectedItem.content}</pre>
+            {/* Info panel */}
+            <div className="flex-none w-1/3 max-w-xs p-4 bg-gray-800 text-gray-100 overflow-y-auto">
+                {selected ? (
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">{selected.name}</h3>
+                        <ul className="space-y-2">
+                            <li><strong>Type:</strong> {selected.type}</li>
+                            {selected.type === 'Disc' && (
+                                <>
+                                    <li><strong>MBR Size:</strong> {selected.mbrSize} bytes</li>
+                                    <li><strong>Signature:</strong> {selected.signature}</li>
+                                    <li><strong>Fit:</strong> {selected.fit}</li>
+                                    <li><strong>Partitions:</strong> {selected.partitions?.length}</li>
+                                </>
+                            )}
+                            {selected.type === 'Partition' && (
+                                <>
+                                    <li><strong>Status:</strong> {selected.status}</li>
+                                    <li><strong>Start:</strong> {selected.start}</li>
+                                    <li><strong>Correlative:</strong> {selected.correlative}</li>
+                                    <li><strong>ID:</strong> {selected.id}</li>
+                                    <li><strong>Partition Type:</strong> {selected.partType}</li>
+                                    <li><strong>Size:</strong> {selected.size}</li>
+                                </>
+                            )}
+                            <li><strong>Created:</strong> {selected.createdTime}</li>
+                            <li><strong>Modified:</strong> {selected.modifiedTime}</li>
+                        </ul>
+                        {selected.content !== undefined && (
+                            <div>
+                                <strong>Content:</strong>
+                                <textarea
+                                    readOnly
+                                    className="w-full h-32 mt-1 p-2 bg-gray-700 text-white rounded resize-none"
+                                    value={selected.content}
+                                />
                             </div>
                         )}
-                        {selectedItem.isDirectory && <p>Items: {(selectedItem.children || []).length}</p>}
                     </div>
                 ) : (
-                    <p>Select a file or folder</p>
+                    <div className="text-gray-500">Select an item to see details</div>
                 )}
             </div>
         </div>
     );
-};
-
-export default FileExplorer;
-
-/**
- * Example usage:
- *
- * const files: FileItem[] = [
- *   {
- *     name: 'Documents',
- *     isDirectory: true,
- *     children: [
- *       { name: 'Resume.pdf', isDirectory: false, size: 102400, content: '...' },
- *       { name: 'Projects', isDirectory: true, children: [] }
- *     ]
- *   },
- *   { name: 'readme.txt', isDirectory: false, size: 1024, content: 'Hello world' },
- * ];
- *
- * <FileExplorer files={files} onOpenFile={file => console.log('Opening', file.name)} />
- */
+}
