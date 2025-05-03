@@ -28,23 +28,23 @@ type FileInfo struct {
 }
 
 type DiscInfo struct {
-	Name        string          `json:"name"`
-	Size        int32           `json:"size"`
-	CreatedTime string          `json:"createdTime"`
-	Signature   int32           `json:"signature"`
-	Fit         string          `json:"fit"`
-	Partition   []PartitionInfo `json:"partition"`
+	Name         string          `json:"name"`
+	MbrSize      int32           `json:"mbrSize"`
+	CreationDate string          `json:"creationDate"`
+	Signature    int32           `json:"signature"`
+	Fit          string          `json:"fit"`
+	Partitions   []PartitionInfo `json:"partitions"`
 }
 
 type PartitionInfo struct {
 	Status      string `json:"status"`
 	Type        string `json:"type"`
 	Fit         string `json:"fit"`
-	Start       int32  `json:"start"`
-	Size        int32  `json:"size"`
+	Start       int32  `json:"start"` // Changed from int to int32 to match Partition
+	Size        int32  `json:"size"`  // Changed from int to int32 to match Partition
 	Name        string `json:"name"`
-	Correlative int32  `json:"correlative"`
-	Id          string `json:"id"`
+	Correlative int32  `json:"correlative"` // Changed from int to int32 to match Partition
+	Id          string `json:"id"`          // Changed to string since Id in Partition is [4]byte
 }
 
 // getDiscsDirectory returns the root Discs directory relative to this handler
@@ -53,6 +53,39 @@ func getDiscsDirectory() string {
 	handlersDir := filepath.Dir(currentFile)
 	// Go up one level to project root, then into Discs folder
 	return filepath.Join(filepath.Dir(handlersDir), "Discs")
+}
+
+// Convert MBR to DiscInfo
+func MBRToDiscInfo(mbr *Structs.MBR, name string) DiscInfo {
+	partitions := make([]PartitionInfo, 0)
+	for _, p := range mbr.Partitions {
+		if p.Size > 0 { // Only include non-empty partitions
+			partitions = append(partitions, PartitionToPartitionInfo(&p))
+		}
+	}
+
+	return DiscInfo{
+		Name:         name,
+		MbrSize:      mbr.MbrSize,
+		CreationDate: string(mbr.CreationDate[:]),
+		Signature:    mbr.Signature,
+		Fit:          string(mbr.Fit[:]),
+		Partitions:   partitions,
+	}
+}
+
+// Convert Partition to PartitionInfo
+func PartitionToPartitionInfo(p *Structs.Partition) PartitionInfo {
+	return PartitionInfo{
+		Status:      string(p.Status[:]),
+		Type:        string(p.Type[:]),
+		Fit:         string(p.Fit[:]),
+		Start:       p.Start,
+		Size:        p.Size,
+		Name:        string(p.Name[:]),
+		Correlative: p.Correlative,
+		Id:          string(p.Id[:]),
+	}
 }
 
 // listDirectoryContents reads the given path and returns FileInfo for each entry
@@ -81,30 +114,7 @@ func listDirectoryContents(path string) ([]DiscInfo, error) {
 			return nil, err
 		}
 
-		partitions := make([]PartitionInfo, 0)
-		for _, p := range diskMBR.Partitions {
-			if p.Size > 0 {
-				partitions = append(partitions, PartitionInfo{
-					Status:      string(p.Status[:]),
-					Type:        string(p.Type[:]),
-					Fit:         string(p.Fit[:]),
-					Start:       p.Start,
-					Size:        p.Size,
-					Name:        string(p.Name[:]),
-					Correlative: p.Correlative,
-					Id:          string(p.Id[:]),
-				})
-			}
-		}
-
-		discs = append(discs, DiscInfo{
-			Size:        diskMBR.MbrSize,
-			CreatedTime: string(diskMBR.CreationDate[:]),
-			Signature:   diskMBR.Signature,
-			Fit:         string(diskMBR.Fit[:]),
-			Partition:   partitions,
-		})
-
+		discs = append(discs, MBRToDiscInfo(&diskMBR, entry.Name()))
 	}
 	return discs, nil
 }

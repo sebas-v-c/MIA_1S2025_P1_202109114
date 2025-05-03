@@ -16,6 +16,8 @@ func main() {
 	r.GET("/status", Handlers.StatusHandler)
 	r.POST("/parse", Handlers.ParseCodeHandler)
 	r.POST("/discs", Handlers.DiscsHandler)
+	r.GET("/login", Handlers.LoginHandler)
+	r.POST("/explore", Handlers.ExploreHandler)
 
 	err := r.SetTrustedProxies(nil)
 	if err != nil {

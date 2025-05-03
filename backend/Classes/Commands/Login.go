@@ -122,7 +122,7 @@ func (l *Login) loginUser(user string, password string, partition *Structs.Parti
 		words := strings.Split(line, ",")
 		id, _ := strconv.Atoi(words[0])
 		// Skip lines that are invalid: user deleted (id == 0), not a user entry, or malformed.
-		if words[1] != "U" || id == 0 || len(words) != 5 {
+		if len(words) == 1 || words[1] != "U" || id == 0 || len(words) != 5 {
 			continue
 		}
 
