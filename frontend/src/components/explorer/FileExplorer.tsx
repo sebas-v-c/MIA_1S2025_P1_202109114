@@ -44,7 +44,7 @@ const getIcon = (type: FileType) => {
 export default function FileExplorer({
                                          files,
                                          onFolderOpen,
-                                         onFileOpen,
+                                         //onFileOpen,
                                          onFolderDoubleClick,
                                          onFileDoubleClick,
                                          onNavigateUp,
