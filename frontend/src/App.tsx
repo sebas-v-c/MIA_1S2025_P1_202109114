@@ -48,16 +48,16 @@ export type ApiResponse = {
 }
 
 export type User = {
-    id: number,
-    group: string,
-    name: string,
-    password: string
+    Id: number[],
+    Group: string,
+    Name: string,
+    Password: string
 }
 
 export type MountedPartition = PartitionInfo &{
-    discSignature: number,
-    discTag: string,
-    path: string
+    DiscSignature: number,
+    DiscTag: string,
+    Path: string
 }
 
 export type LoggedUser = {

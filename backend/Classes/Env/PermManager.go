@@ -119,6 +119,11 @@ func GetUserGID(groupName string, mountedPartition Structs.MountedPartition) (in
 		// Each line is expected to be comma-separated.
 		words := strings.Split(line, ",")
 		id, _ := strconv.Atoi(words[0])
+
+		if len(words) <= 1 {
+			continue
+		}
+
 		// Validate the line:
 		// - If id == 0, the user was deleted and is invalid.
 		// - The second field must be "G" to denote a group.
@@ -135,4 +140,102 @@ func GetUserGID(groupName string, mountedPartition Structs.MountedPartition) (in
 	}
 	// Return an error if the group ID was not found.
 	return -1, errors.New("user GID was not found")
+}
+
+// GetGroupNameByID retrieves the group name for a given group ID from the mounted partition.
+// It returns the group name as a string and an error if the group is not found.
+func GetGroupNameByID(groupID int32, mountedPartition Structs.MountedPartition) (string, error) {
+	file, err := Utils.OpenFile(mountedPartition.Path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	var superBlock Structs.SuperBlock
+	if err := Utils.ReadObject(file, &superBlock, int64(mountedPartition.Start)); err != nil {
+		return "", err
+	}
+
+	dirTree := Structs.NewDirTree(superBlock, file)
+	var fileInode *Structs.Inode
+
+	_, fileInode, err = dirTree.GetInodeByPath("/users.txt")
+	if err != nil {
+		return "", err
+	}
+
+	fileContent, err := dirTree.GetFileContentByInode(fileInode)
+	if err != nil {
+		return "", err
+	}
+
+	fileContentLines := strings.Split(fileContent, "\n")
+
+	for _, line := range fileContentLines {
+		words := strings.Split(line, ",")
+		id, err := strconv.Atoi(words[0])
+		if err != nil {
+			continue
+		}
+
+		if len(words) <= 1 {
+			continue
+		}
+
+		// Look for group entries (type "G") with matching ID
+		if words[1] == "G" && id != 0 && len(words) == 3 && int32(id) == groupID {
+			return words[2], nil
+		}
+	}
+
+	return "", errors.New("group name was not found")
+}
+
+// GetUserNameByID retrieves the username for a given user ID from the mounted partition.
+// It returns the username as a string and an error if the user is not found.
+func GetUserNameByID(userID int32, mountedPartition Structs.MountedPartition) (string, error) {
+	file, err := Utils.OpenFile(mountedPartition.Path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	var superBlock Structs.SuperBlock
+	if err := Utils.ReadObject(file, &superBlock, int64(mountedPartition.Start)); err != nil {
+		return "", err
+	}
+
+	dirTree := Structs.NewDirTree(superBlock, file)
+	var fileInode *Structs.Inode
+
+	_, fileInode, err = dirTree.GetInodeByPath("/users.txt")
+	if err != nil {
+		return "", err
+	}
+
+	fileContent, err := dirTree.GetFileContentByInode(fileInode)
+	if err != nil {
+		return "", err
+	}
+
+	fileContentLines := strings.Split(fileContent, "\n")
+
+	for _, line := range fileContentLines {
+		words := strings.Split(line, ",")
+		id, err := strconv.Atoi(words[0])
+		if err != nil {
+			continue
+		}
+
+		if len(words) <= 1 {
+			continue
+		}
+
+		// Look for user entries (type "U") with matching ID
+		if words[1] == "U" && id != 0 && len(words) == 5 && int32(id) == userID {
+			return words[3], nil
+		}
+	}
+
+	return "", errors.New("username was not found")
 }

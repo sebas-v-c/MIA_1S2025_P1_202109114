@@ -76,13 +76,14 @@ func MBRToDiscInfo(mbr *Structs.MBR, name string) DiscInfo {
 
 // Convert Partition to PartitionInfo
 func PartitionToPartitionInfo(p *Structs.Partition) PartitionInfo {
+	name := strings.TrimRight(string(p.Name[:]), "\x00")
 	return PartitionInfo{
 		Status:      string(p.Status[:]),
 		Type:        string(p.Type[:]),
 		Fit:         string(p.Fit[:]),
 		Start:       p.Start,
 		Size:        p.Size,
-		Name:        string(p.Name[:]),
+		Name:        name,
 		Correlative: p.Correlative,
 		Id:          string(p.Id[:]),
 	}

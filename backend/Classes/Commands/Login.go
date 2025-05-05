@@ -117,6 +117,9 @@ func (l *Login) loginUser(user string, password string, partition *Structs.Parti
 
 	// Split the file content into lines and iterate over each line.
 	fileContentLines := strings.Split(fileContent, "\n")
+
+	// Remove the trailing empty line.
+	fileContentLines = fileContentLines[:len(fileContentLines)-1]
 	for _, line := range fileContentLines {
 		// Split each line by commas to extract user details.
 		words := strings.Split(line, ",")

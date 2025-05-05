@@ -557,6 +557,75 @@ func (dt *DirTree) GetInodeByIndex(index int32) (*Inode, error) {
 	return &inode, nil
 }
 
+// GetFolderContent retrieves the contents of a directory represented by the given inode.
+// It reads through the inode's direct blocks (up to first 12 blocks) and returns a list 
+// of files and directories contained within.
+//
+// Parameters:
+//   - inode: *Inode - Pointer to the inode representing the directory to read
+//
+// Returns:
+//   - []*File - Slice of File pointers, each containing the name and inode information
+//     of the directory entries
+//   - error - Error if any occurred during reading the directory contents
+//
+// Notes:
+//   - Currently does not support indirect block addressing (blocks beyond the first 12)
+//   - Skips empty directory entries (where Inode == -1)
+//   - Trims null bytes from file names
+func (dt *DirTree) GetFolderContent(inode *Inode) ([]*File, error) {
+    // Initialize a slice to store the directory contents
+    var folderContent []*File
+
+    // Iterate through the inode's block pointers
+    for i, block := range inode.IBlock {
+        // Skip unused blocks (marked as -1)
+        if block == -1 {
+            continue
+        }
+
+        // Currently only supporting direct blocks (first 12)
+        // Return error if we encounter indirect blocks
+        if i >= 12 {
+            return nil, errors.New("cannot load indirect addresses, functionality not implemented")
+        }
+
+        // Create a folder block structure to hold the block's contents
+        var folderBlock FolderBlock
+        
+        // Read the folder block from disk
+        // Calculate position: start of blocks + (block number * size of folder block)
+        if err := Utils.ReadObject(dt.File, &folderBlock, int64(dt.SuperBlock.BlockStart+block*int32(binary.Size(FolderBlock{})))); err != nil {
+            return nil, err
+        }
+
+        // Process each entry in the folder block
+        for _, content := range folderBlock.Content {
+            // Only process valid entries (inode != -1 indicates used entry)
+            if content.Inode != -1 {
+                // Create an inode structure to hold the entry's inode data
+                var loadedInode Inode
+                
+                // Read the entry's inode from disk
+                // Calculate position: start of inodes + (inode number * size of inode)
+                if err := Utils.ReadObject(dt.File, &loadedInode, int64(dt.SuperBlock.InodeStart+content.Inode*int32(binary.Size(Inode{})))); err != nil {
+                    return nil, err
+                }
+
+                // Clean up the filename by removing null bytes from the end
+                fileName := strings.TrimRight(string(content.Name[:]), "\x00")
+                
+                // Add the file information to our result slice
+                folderContent = append(folderContent, &File{Name: fileName, Inode: loadedInode})
+            }
+        }
+    }
+
+    // Return the collected folder contents and nil error
+    return folderContent, nil
+}
+
+
 // freeBlocks calculates and returns the number of free blocks based on the block bitmap.
 func (dt *DirTree) freeBlocks() int32 {
 	var counter int32 = 0

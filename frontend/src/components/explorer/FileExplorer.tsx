@@ -8,7 +8,12 @@ export type File = {
     type: FileType;
     createdTime: string;
     modifiedTime: string;
+    // File-specific fields
+    accessedTime?: string;
     content?: string;
+    owner?: string;
+    group?: string;
+    permissions?: string;
     // Disc-specific fields
     mbrSize?: number;
     signature?: number;
@@ -117,10 +122,24 @@ export default function FileExplorer({
                                     <li><strong>Size:</strong> {selected.size}</li>
                                 </>
                             )}
+                            {selected.type === 'Directory' && (
+                                <>
+                                    <li><strong>Owner: </strong> {selected.owner}</li>
+                                    <li><strong>Group: </strong> {selected.group}</li>
+                                    <li><strong>Permissions: </strong> {selected.permissions}</li>
+                                </>
+                            )}
+                            {selected.type === 'File' && (
+                                <>
+                                    <li><strong>Owner: </strong> {selected.owner}</li>
+                                    <li><strong>Group: </strong> {selected.group}</li>
+                                    <li><strong>Permissions: </strong> {selected.permissions}</li>
+                                </>
+                            )}
                             <li><strong>Created:</strong> {selected.createdTime}</li>
                             <li><strong>Modified:</strong> {selected.modifiedTime}</li>
                         </ul>
-                        {selected.content !== undefined && (
+                        {selected.type === "File" && (
                             <div>
                                 <strong>Content:</strong>
                                 <textarea
