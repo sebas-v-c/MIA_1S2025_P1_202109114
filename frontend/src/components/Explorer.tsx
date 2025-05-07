@@ -69,7 +69,7 @@ export default function Explorer({onLogin, currentUser}: ExplorerProps) {
         setError(null);
         try {
             const res = await axios.post<ApiResponse>(
-                "http://localhost:8080/discs",
+                "http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/discs",
                 {path}
             );
 
@@ -246,7 +246,7 @@ const requestExplore = async (path: string) => {
     try {
         // Call the /explore endpoint with the proper body
         const response = await axios.post<ApiFileResponse>(
-            "http://localhost:8080/explore",
+            "http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/explore",
             { "path": path }
         );
 

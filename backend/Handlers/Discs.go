@@ -137,7 +137,8 @@ func DiscsHandler(c *gin.Context) {
 		return
 	}
 
-	discsDir := getDiscsDirectory()
+	//discsDir := getDiscsDirectory()
+	discsDir := "/home/ubuntu/backend/Discs"
 	path := strings.TrimPrefix(req.Path, "%")
 
 	// Case 1: list all discs

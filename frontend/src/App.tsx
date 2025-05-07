@@ -78,7 +78,7 @@ function App() {
         setRunErrors([])
         setCommandLogs(["Running..."]);
 
-        axios.post<{code: string}, AxiosResponse<ApiResponse>>("http://localhost:8080/parse", {"code": code? code : " "}).then((response) =>{
+        axios.post<{code: string}, AxiosResponse<ApiResponse>>("http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/parse", {"code": code? code : " "}).then((response) =>{
             setSynErrors(response.data.synErrors? response.data.synErrors : []);
             setRunErrors(response.data.runErrors? response.data.runErrors : []);
             setCommandLogs(response.data.commandLogs? response.data.commandLogs : []);
@@ -105,7 +105,7 @@ function App() {
 
     const handleLogout = async (e:React.FormEvent) => {
         e.preventDefault();
-        const parseResponse = await axios.post("http://localhost:8080/parse", { code: "\nmounted\nlogout\nmounted\n" }, {
+        const parseResponse = await axios.post("http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/parse", { code: "\nmounted\nlogout\nmounted\n" }, {
         });
 
         const { synErrors, runErrors } = parseResponse.data;

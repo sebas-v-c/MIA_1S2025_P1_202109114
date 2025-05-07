@@ -26,7 +26,7 @@ export default function LogIn({ onLogin, defaultIdPartition = "", onClose }: Log
         setLoading(true);
 
         try {
-            const parseResponse = await axios.post("http://localhost:8080/parse", { code: "\nmounted\nlogin -id=" + idPartition + " -user=" + username + " -pass=" + password + "\nmounted" }, {
+            const parseResponse = await axios.post("http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/parse", { code: "\nmounted\nlogin -id=" + idPartition + " -user=" + username + " -pass=" + password + "\nmounted" }, {
             });
 
             const { synErrors, runErrors } = parseResponse.data;
@@ -50,7 +50,7 @@ export default function LogIn({ onLogin, defaultIdPartition = "", onClose }: Log
 
 
             // Step 2: Proceed to login with the provided credentials
-            const loginResponse = await axios.get<LoggedUser>("http://localhost:8080/login", {
+            const loginResponse = await axios.get<LoggedUser>("http://ec2-18-218-94-128.us-east-2.compute.amazonaws.com:80/login", {
                 params: {
                     idPartition: idPartition,
                     username: username,
